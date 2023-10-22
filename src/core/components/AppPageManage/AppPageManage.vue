@@ -19,7 +19,7 @@ const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 
 const { pageTree, renameNode } = usePageTree()
 const { createPageGroup } = usePageGroup()
-const { createPage, moveToGroup } = usePageData()
+const { createPage, moveToGroup, deletePage } = usePageData()
 const { showRenameDialog, showMoveToGroupDialog } = useDialogX()
 
 const dialogEvents = {
@@ -50,6 +50,12 @@ const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
           moveToGroup(item.id, groupdId)
         }
       )
+      break
+    case 'deletePage':
+      dialogEvents.onOpen()
+      deletePage(item.id, () => {
+        dialogEvents.onClosed()
+      })
       break
   }
 }
@@ -141,6 +147,9 @@ const _createPage = () => {
                     </el-dropdown-item>
                     <el-dropdown-item
                       :class="[$style.dropdown_item, $style.delete]"
+                      :command="
+                        data.type === 'N' ? 'deletePage' : 'deleteGroup'
+                      "
                     >
                       删除
                     </el-dropdown-item>

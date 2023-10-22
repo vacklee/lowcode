@@ -1,8 +1,9 @@
-import { computed, defineAsyncComponent, getCurrentInstance } from 'vue'
-import { FormInstance } from 'element-plus'
+import { computed, defineAsyncComponent, getCurrentInstance, h } from 'vue'
+import { FormInstance, ElMessageBox } from 'element-plus'
 import { AppData } from '../data/app'
 import { DialogEvents, useDialog } from './use-dialog'
 import { genId } from 'core/utils/common'
+import commonStyle from 'core/styles/common.module.scss'
 
 export function useAppData() {
   const instance = getCurrentInstance()
@@ -152,8 +153,33 @@ export function usePageData() {
     targetPage.groupdId = groupId
   }
 
+  // 删除页面
+  const deletePage = (pageId: string, callback?: () => void) => {
+    const page = appData.value.pages.find(item => item.id === pageId)!
+
+    ElMessageBox.confirm(
+      h('span', [
+        '确认删除页面 ',
+        h('span', { class: commonStyle.heightlight }, page.title),
+        ' ？'
+      ]),
+      {
+        type: 'warning',
+        beforeClose(action, _, done) {
+          if (action === 'confirm') {
+            const index = appData.value.pages.indexOf(page)
+            appData.value.pages.splice(index, 1)
+          }
+          done()
+          callback?.()
+        }
+      }
+    ).catch(() => 0)
+  }
+
   return {
     createPage,
-    moveToGroup
+    moveToGroup,
+    deletePage
   }
 }
