@@ -5,9 +5,11 @@ import {
   Search,
   Folder,
   Document,
-  More
+  More,
+  HomeFilled
 } from '@element-plus/icons-vue'
 import {
+  useAppData,
   usePageTree,
   usePageGroup,
   usePageData,
@@ -17,10 +19,18 @@ import { useDialogX } from 'core/hooks/use-dialog-x'
 
 const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 
+const { setAppState } = useAppData()
 const { pageTree, renameNode } = usePageTree()
 const { createPageGroup, deletePageGroup } = usePageGroup()
 const { createPage, moveToGroup, deletePage } = usePageData()
 const { showRenameDialog, showMoveToGroupDialog } = useDialogX()
+
+const nodeIcon = (node: PageTreeNode<'F' | 'N'>) => {
+  if (node.type === 'F') {
+    return Folder
+  }
+  return node.isIndex ? HomeFilled : Document
+}
 
 const dialogEvents = {
   onOpen: () => emits('dialog-open'),
@@ -30,6 +40,7 @@ const dialogEvents = {
 const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
   emits('command')
   switch (command) {
+    // 重命名
     case 'rename':
       showRenameDialog({
         label: '标题',
@@ -40,6 +51,7 @@ const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
         dialogEvents
       })
       break
+    // 移动分组
     case 'moveTo':
       showMoveToGroupDialog(
         {
@@ -51,17 +63,23 @@ const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
         }
       )
       break
+    // 删除页面
     case 'deletePage':
       dialogEvents.onOpen()
       deletePage(item.id, () => {
         dialogEvents.onClosed()
       })
       break
+    // 删除分组
     case 'deleteGroup':
       dialogEvents.onOpen()
       deletePageGroup(item.id, () => {
         dialogEvents.onClosed()
       })
+      break
+    // 设置首页
+    case 'setIndex':
+      setAppState('indexPage', item.id)
       break
   }
 }
@@ -107,7 +125,7 @@ const _createPage = () => {
           <div :class="$style.node">
             <div :class="$style.node_left">
               <el-icon :class="$style.node_icon">
-                <component :is="data.type === 'N' ? Document : Folder" />
+                <component :is="nodeIcon(data)" />
               </el-icon>
               <div :class="$style.node_title">
                 <span :class="$style.node_title">{{ data.title }}</span>
@@ -128,7 +146,10 @@ const _createPage = () => {
                 <template #dropdown>
                   <el-dropdown-menu>
                     <template v-if="data.type === 'N'">
-                      <el-dropdown-item :class="$style.dropdown_item">
+                      <el-dropdown-item
+                        :class="$style.dropdown_item"
+                        command="setIndex"
+                      >
                         设为首页
                       </el-dropdown-item>
                       <el-dropdown-item :class="$style.dropdown_item">

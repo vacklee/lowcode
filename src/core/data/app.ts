@@ -1,5 +1,11 @@
 import { genId } from 'core/utils/common'
 
+// 数据
+export type AppState = {
+  // 首页
+  indexPage: string
+}
+
 // 分组
 export type Group = {
   // 分组ID
@@ -50,6 +56,8 @@ export type AppData = {
   pageGroups: Group[]
   // 页面
   pages: AppPage[]
+  // 数据
+  state: AppState
 }
 
 export default function createAppData(): AppData {
@@ -79,6 +87,9 @@ export default function createAppData(): AppData {
         groupdId: 'group-1',
         nodeTree: []
       }
-    ]
+    ],
+    state: {
+      indexPage: ''
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { computed, defineAsyncComponent, getCurrentInstance, h } from 'vue'
 import { FormInstance, ElMessageBox } from 'element-plus'
-import { AppData } from '../data/app'
+import { AppData, AppState } from '../data/app'
 import { DialogEvents, useDialog } from './use-dialog'
 import { genId } from 'core/utils/common'
 import commonStyle from 'core/styles/common.module.scss'
@@ -11,7 +11,18 @@ export function useAppData() {
   const appData = computed<AppData>(
     () => instance?.appContext.app.config.globalProperties.appData.value
   )
-  return { appData }
+
+  // 是否首页
+  const isIndexPage = (pageId: string) => {
+    return appData.value.state.indexPage === pageId
+  }
+
+  // 设置数据
+  const setAppState = <K extends keyof AppState>(key: K, val: AppState[K]) => {
+    appData.value.state[key] = val
+  }
+
+  return { appData, isIndexPage, setAppState }
 }
 
 // 页面节点
@@ -21,9 +32,10 @@ export type PageTreeNode<T extends 'F' | 'N'> = {
   title: string
   nodes: T extends 'F' ? PageTreeNode<'N'>[] : undefined
   groupdId: T extends 'F' ? undefined : string
+  isIndex: boolean
 }
 export function usePageTree() {
-  const { appData } = useAppData()
+  const { appData, isIndexPage } = useAppData()
   const pageTree = computed(() => {
     const tree: PageTreeNode<'F' | 'N'>[] = []
     appData.value.pageGroups.forEach(item => {
@@ -32,7 +44,8 @@ export function usePageTree() {
         id: item.id,
         title: item.title,
         nodes: [],
-        groupdId: void 0
+        groupdId: void 0,
+        isIndex: false
       })
     })
     appData.value.pages.forEach(item => {
@@ -46,7 +59,8 @@ export function usePageTree() {
         id: item.id,
         title: item.title,
         nodes: void 0,
-        groupdId: group?.id
+        groupdId: group?.id,
+        isIndex: isIndexPage(item.id)
       })
     })
     return tree
