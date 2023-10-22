@@ -18,7 +18,7 @@ import { useDialogX } from 'core/hooks/use-dialog-x'
 const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 
 const { pageTree, renameNode } = usePageTree()
-const { createPageGroup } = usePageGroup()
+const { createPageGroup, deletePageGroup } = usePageGroup()
 const { createPage, moveToGroup, deletePage } = usePageData()
 const { showRenameDialog, showMoveToGroupDialog } = useDialogX()
 
@@ -54,6 +54,12 @@ const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
     case 'deletePage':
       dialogEvents.onOpen()
       deletePage(item.id, () => {
+        dialogEvents.onClosed()
+      })
+      break
+    case 'deleteGroup':
+      dialogEvents.onOpen()
+      deletePageGroup(item.id, () => {
         dialogEvents.onClosed()
       })
       break

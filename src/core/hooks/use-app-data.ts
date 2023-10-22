@@ -4,6 +4,7 @@ import { AppData } from '../data/app'
 import { DialogEvents, useDialog } from './use-dialog'
 import { genId } from 'core/utils/common'
 import commonStyle from 'core/styles/common.module.scss'
+import { heightlight } from 'core/utils/h'
 
 export function useAppData() {
   const instance = getCurrentInstance()
@@ -70,6 +71,7 @@ export function usePageTree() {
 // 页面分组
 export function usePageGroup() {
   const { appData } = useAppData()
+  const { _deletePage } = usePageData()
 
   // 新建页面分组
   const createPageGroup = () => {
@@ -87,7 +89,45 @@ export function usePageGroup() {
     })
   }
 
-  return { createPageGroup }
+  // 删除分组
+  const deletePageGroup = (groupId: string, callback?: () => void) => {
+    const group = appData.value.pageGroups.find(item => item.id === groupId)!
+    const pages = appData.value.pages.filter(item => item.groupdId === groupId)
+    const dothat = () => {
+      pages.forEach(item => _deletePage(item.id))
+      const index = appData.value.pageGroups.indexOf(group)
+      appData.value.pageGroups.splice(index, 1)
+      callback?.()
+    }
+
+    if (!pages.length) {
+      dothat()
+      return
+    }
+
+    ElMessageBox.confirm(
+      h('div', [
+        h('div', ['确认删除分组 ', heightlight(group.title), ' ？']),
+        h('div', [
+          '该分组及其包含的 ',
+          heightlight(`${pages.length}`),
+          ' 个页面将不可恢复：'
+        ]),
+        ...pages.map(item => h('div', item.title))
+      ]),
+      {
+        type: 'warning',
+        beforeClose(action, _, done) {
+          if (action === 'confirm') {
+            dothat()
+          }
+          done()
+        }
+      }
+    )
+  }
+
+  return { createPageGroup, deletePageGroup }
 }
 
 // 页面
@@ -153,7 +193,14 @@ export function usePageData() {
     targetPage.groupdId = groupId
   }
 
-  // 删除页面
+  // 删除页面逻辑
+  const _deletePage = (pageId: string) => {
+    const page = appData.value.pages.find(item => item.id === pageId)!
+    const index = appData.value.pages.indexOf(page)
+    appData.value.pages.splice(index, 1)
+  }
+
+  // 删除页面弹窗
   const deletePage = (pageId: string, callback?: () => void) => {
     const page = appData.value.pages.find(item => item.id === pageId)!
 
@@ -167,8 +214,7 @@ export function usePageData() {
         type: 'warning',
         beforeClose(action, _, done) {
           if (action === 'confirm') {
-            const index = appData.value.pages.indexOf(page)
-            appData.value.pages.splice(index, 1)
+            _deletePage(pageId)
           }
           done()
           callback?.()
@@ -180,6 +226,7 @@ export function usePageData() {
   return {
     createPage,
     moveToGroup,
-    deletePage
+    deletePage,
+    _deletePage
   }
 }
