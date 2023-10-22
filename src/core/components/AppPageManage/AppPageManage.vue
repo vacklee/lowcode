@@ -7,23 +7,43 @@ import {
   Document,
   More
 } from '@element-plus/icons-vue'
-import { usePageTree, usePageGroup, usePageData } from 'core/hooks/use-app-data'
+import {
+  usePageTree,
+  usePageGroup,
+  usePageData,
+  PageTreeNode
+} from 'core/hooks/use-app-data'
+import { useDialogX } from 'core/hooks/use-dialog-x'
 
 const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 
-const { pageTree } = usePageTree()
+const { pageTree, renameNode } = usePageTree()
 const { createPageGroup } = usePageGroup()
 const { createPage } = usePageData()
+const { showRenameDialog } = useDialogX()
 
-const onCommand = () => {
+const dialogEvents = {
+  onOpen: () => emits('dialog-open'),
+  onClosed: () => emits('dialog-closed')
+}
+
+const onCommand = (item: PageTreeNode<'F' | 'N'>, command: string) => {
   emits('command')
+  switch (command) {
+    case 'rename':
+      showRenameDialog({
+        label: '标题',
+        currentName: item.title,
+        callback(name) {
+          renameNode(item, name)
+        },
+        dialogEvents
+      })
+  }
 }
 
 const _createPage = () => {
-  createPage({
-    onOpen: () => emits('dialog-open'),
-    onClosed: () => emits('dialog-closed')
-  })
+  createPage(dialogEvents)
 }
 </script>
 
@@ -78,7 +98,7 @@ const _createPage = () => {
                 size="small"
                 placement="bottom-start"
                 trigger="click"
-                @command="onCommand"
+                @command="onCommand(data, $event)"
               >
                 <el-button :icon="More" size="small" text @click.stop />
                 <template #dropdown>
@@ -98,7 +118,10 @@ const _createPage = () => {
                       </el-dropdown-item>
                     </template>
 
-                    <el-dropdown-item :class="$style.dropdown_item">
+                    <el-dropdown-item
+                      :class="$style.dropdown_item"
+                      command="rename"
+                    >
                       重命名
                     </el-dropdown-item>
                     <el-dropdown-item

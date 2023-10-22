@@ -10,8 +10,11 @@ import { useAppData } from './use-app-data'
 import style from 'core/styles/dialog.module.scss'
 import appPlugins from 'core/expose/app-plugins'
 
+export type _PropsOf<P> = P extends { $props: infer T } ? T : never
 export type PropsOf<C extends Component> = C extends Component<infer P>
-  ? P
+  ? _PropsOf<P>
+  : C extends DefineComponent<infer P>
+  ? _PropsOf<P>
   : never
 
 export type DialogEvents = {
@@ -19,15 +22,18 @@ export type DialogEvents = {
   onClosed?: () => unknown
 }
 
+export type DialogBtn = Partial<ButtonProps> & {
+  content?: Component | string
+  onClick?: () => unknown
+}
+
 export type UseDialogParams<C extends Component> = {
   title: string
+  width?: string | number
   dialogProps?: Partial<DialogProps>
   component?: C
   componentProps?: PropsOf<C>
-  btns?: (Partial<ButtonProps> & {
-    content?: Component | string
-    onClick?: () => unknown
-  })[]
+  btns?: DialogBtn[]
 } & DialogEvents
 
 export function useDialog() {
@@ -58,8 +64,9 @@ export function useDialog() {
               state.dialogRef = instance as InstanceType<typeof ElDialog>
             },
             title: params.title,
+            width: params.width,
             modelValue: state.visible,
-            customClass: style.dialog,
+            class: style.dialog,
             modalClass: style.dialog_modal,
             modal: false,
             appendTobody: true,
@@ -76,24 +83,33 @@ export function useDialog() {
             ...(params.dialogProps || {})
           },
           {
-            default: h(ElScrollbar, {}, [
-              h('div', { class: style.dialog_content }, [
-                params.component
-                  ? h(params.component, {
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ref: (instance: any) => {
-                        state.contentRef = instance
-                      },
-                      ...(params.componentProps || {})
+            default: () =>
+              h(
+                ElScrollbar,
+                {},
+                {
+                  default: () =>
+                    h('div', { class: style.dialog_content }, [
+                      params.component
+                        ? h(params.component, {
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            ref: (instance: any) => {
+                              state.contentRef = instance
+                            },
+                            ...(params.componentProps || {})
+                          })
+                        : null
+                    ])
+                }
+              ),
+            footer: params.btns?.length
+              ? () =>
+                  params.btns?.map(item =>
+                    h(ElButton, item, {
+                      default: () => item.content
                     })
-                  : null
-              ])
-            ]),
-            footer: params.btns?.map(item =>
-              h(ElButton, item, {
-                default: item.content
-              })
-            )
+                  )
+              : null
           }
         ),
 

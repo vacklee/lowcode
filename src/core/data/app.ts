@@ -5,7 +5,7 @@ export type Group = {
   // 分组ID
   id: string
   // 分组名称
-  name: string
+  title: string
 }
 
 // 页面
@@ -63,7 +63,7 @@ export default function createAppData(): AppData {
     pageGroups: [
       {
         id: genId(),
-        name: '页面分组1'
+        title: '页面分组1'
       }
     ],
     pages: [

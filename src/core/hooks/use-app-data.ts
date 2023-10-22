@@ -27,7 +27,7 @@ export function usePageTree() {
       tree.push({
         type: 'F',
         id: item.id,
-        title: item.name,
+        title: item.title,
         nodes: []
       })
     })
@@ -46,8 +46,19 @@ export function usePageTree() {
     return tree
   })
 
+  // 重命名分组或页面
+  const renameNode = (node: PageTreeNode<'F' | 'N'>, name: string) => {
+    const datas =
+      node.type === 'F' ? appData.value.pageGroups : appData.value.pages
+    const target = datas.find(item => item.id === node.id)
+    if (target) {
+      target.title = name
+    }
+  }
+
   return {
-    pageTree
+    pageTree,
+    renameNode
   }
 }
 
@@ -58,16 +69,16 @@ export function usePageGroup() {
   // 新建页面分组
   const createPageGroup = () => {
     const exits = appData.value.pageGroups
-      .map(item => item.name)
+      .map(item => item.title)
       .filter(item => /^页面分组\d+$/.test(item))
       .map(item => +item.slice(4))
 
     const num = Math.max(0, ...exits) + 1
-    const name = `页面分组${num}`
+    const title = `页面分组${num}`
 
     appData.value.pageGroups.push({
       id: genId(),
-      name
+      title
     })
   }
 

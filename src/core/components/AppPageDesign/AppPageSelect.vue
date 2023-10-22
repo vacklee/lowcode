@@ -29,6 +29,11 @@ const onCommand = () => {
   _popoverVisibleStop.value = true
   _popoverVisibleStopResume()
 }
+
+const onDialogOpen = () => {
+  _popoverVisibleStop.value = true
+  _popoverVisibleStopResume.cancel()
+}
 </script>
 
 <template>
@@ -51,7 +56,7 @@ const onCommand = () => {
     <el-scrollbar :max-height="630">
       <AppPageManage
         @command="onCommand"
-        @dialog-open="_popoverVisibleStop = true"
+        @dialog-open="onDialogOpen"
         @dialog-closed="_popoverVisibleStopResume"
       />
     </el-scrollbar>
