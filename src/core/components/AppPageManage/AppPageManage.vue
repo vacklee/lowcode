@@ -19,15 +19,15 @@ const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 
 const { pageTree, renameNode } = usePageTree()
 const { createPageGroup } = usePageGroup()
-const { createPage } = usePageData()
-const { showRenameDialog } = useDialogX()
+const { createPage, moveToGroup } = usePageData()
+const { showRenameDialog, showMoveToGroupDialog } = useDialogX()
 
 const dialogEvents = {
   onOpen: () => emits('dialog-open'),
   onClosed: () => emits('dialog-closed')
 }
 
-const onCommand = (item: PageTreeNode<'F' | 'N'>, command: string) => {
+const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
   emits('command')
   switch (command) {
     case 'rename':
@@ -39,6 +39,18 @@ const onCommand = (item: PageTreeNode<'F' | 'N'>, command: string) => {
         },
         dialogEvents
       })
+      break
+    case 'moveTo':
+      showMoveToGroupDialog(
+        {
+          currentGroup: item.groupdId || '',
+          dialogEvents
+        },
+        groupdId => {
+          moveToGroup(item.id, groupdId)
+        }
+      )
+      break
   }
 }
 
@@ -113,7 +125,10 @@ const _createPage = () => {
                       <el-dropdown-item :class="$style.dropdown_item">
                         复制页面ID
                       </el-dropdown-item>
-                      <el-dropdown-item :class="$style.dropdown_item">
+                      <el-dropdown-item
+                        :class="$style.dropdown_item"
+                        command="moveTo"
+                      >
                         移动到分组
                       </el-dropdown-item>
                     </template>

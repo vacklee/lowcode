@@ -2,6 +2,8 @@ import { defineAsyncComponent } from 'vue'
 import { DialogBtn, DialogEvents, useDialog } from './use-dialog'
 import { FormInstance } from 'element-plus'
 
+type WithDialogEvents<T> = T & { dialogEvents?: DialogEvents }
+
 function cancelConfirmBtns(opts?: {
   onCancel?: () => unknown
   onConfirm?: () => unknown
@@ -17,6 +19,18 @@ function cancelConfirmBtns(opts?: {
       onClick: opts?.onConfirm
     }
   ]
+}
+
+type FormRef<T> = {
+  formRef: FormInstance
+  formdata: T
+}
+function validate<T>(ref: FormRef<T>, callback: (data: T) => void) {
+  ref.formRef.validate(isValid => {
+    if (isValid) {
+      callback(ref.formdata)
+    }
+  })
 }
 
 export function useDialogX() {
@@ -61,7 +75,44 @@ export function useDialogX() {
     return dialog
   }
 
+  /**
+   * 移动到分组
+   */
+  const showMoveToGroupDialog = (
+    opts: WithDialogEvents<{ currentGroup: string }>,
+    callback: (groupdId: string) => void
+  ) => {
+    const dialog = createDialog({
+      title: '移动到分组',
+      component: defineAsyncComponent(
+        () => import('core/components/AppForm/AppFormMoveToGroup.vue')
+      ),
+      componentProps: {
+        currentGroup: opts.currentGroup
+      },
+      btns: cancelConfirmBtns({
+        onCancel: () => {
+          dialog.close()
+        },
+        onConfirm: () => {
+          validate(
+            dialog.state.contentRef as unknown as FormRef<{
+              groupId: string
+            }>,
+            ({ groupId }) => {
+              callback(groupId)
+              dialog.close()
+            }
+          )
+        }
+      }),
+      ...(opts.dialogEvents || {})
+    })
+    return dialog
+  }
+
   return {
-    showRenameDialog
+    showRenameDialog,
+    showMoveToGroupDialog
   }
 }

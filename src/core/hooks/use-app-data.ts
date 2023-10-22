@@ -18,6 +18,7 @@ export type PageTreeNode<T extends 'F' | 'N'> = {
   id: string
   title: string
   nodes: T extends 'F' ? PageTreeNode<'N'>[] : undefined
+  groupdId: T extends 'F' ? undefined : string
 }
 export function usePageTree() {
   const { appData } = useAppData()
@@ -28,19 +29,22 @@ export function usePageTree() {
         type: 'F',
         id: item.id,
         title: item.title,
-        nodes: []
+        nodes: [],
+        groupdId: void 0
       })
     })
     appData.value.pages.forEach(item => {
-      const _tree =
-        tree.find(node => node.type === 'F' && node.id === item.groupdId)
-          ?.nodes || tree
+      const group = tree.find(
+        node => node.type === 'F' && node.id === item.groupdId
+      )
+      const _tree = group?.nodes || tree
 
       _tree.push({
         type: 'N',
         id: item.id,
         title: item.title,
-        nodes: void 0
+        nodes: void 0,
+        groupdId: group?.id
       })
     })
     return tree
@@ -142,7 +146,14 @@ export function usePageData() {
     return dialog
   }
 
+  // 移动到分组
+  const moveToGroup = (pageId: string, groupId: string) => {
+    const targetPage = appData.value.pages.find(item => item.id === pageId)!
+    targetPage.groupdId = groupId
+  }
+
   return {
-    createPage
+    createPage,
+    moveToGroup
   }
 }
