@@ -7,15 +7,23 @@ import {
   Document,
   More
 } from '@element-plus/icons-vue'
-import { usePageTree, usePageGroup } from 'core/hooks/use-app-data'
+import { usePageTree, usePageGroup, usePageData } from 'core/hooks/use-app-data'
 
-const emits = defineEmits(['command'])
+const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 
 const { pageTree } = usePageTree()
 const { createPageGroup } = usePageGroup()
+const { createPage } = usePageData()
 
 const onCommand = () => {
   emits('command')
+}
+
+const _createPage = () => {
+  createPage({
+    onOpen: () => emits('dialog-open'),
+    onClosed: () => emits('dialog-closed')
+  })
 }
 </script>
 
@@ -27,7 +35,14 @@ const onCommand = () => {
         <el-button :icon="FolderAdd" size="small" @click="createPageGroup">
           新建分组
         </el-button>
-        <el-button :icon="Plus" size="small" type="primary">新建页面</el-button>
+        <el-button
+          :icon="Plus"
+          size="small"
+          type="primary"
+          @click="_createPage"
+        >
+          新建页面
+        </el-button>
       </div>
     </div>
 
@@ -50,10 +65,12 @@ const onCommand = () => {
               <el-icon :class="$style.node_icon">
                 <component :is="data.type === 'N' ? Document : Folder" />
               </el-icon>
-              <span :class="$style.node_title">{{ data.title }}</span>
-              <span :class="$style.node_id" v-if="data.type === 'N'">
-                ({{ data.id }})
-              </span>
+              <div :class="$style.node_title">
+                <span :class="$style.node_title">{{ data.title }}</span>
+                <span :class="$style.node_id" v-if="data.type === 'N'">
+                  ({{ data.id }})
+                </span>
+              </div>
             </div>
 
             <div :class="$style.node_right">
@@ -134,6 +151,17 @@ const onCommand = () => {
     &_id {
       color: $text-color-gray;
       margin-left: $spacing-mini;
+    }
+
+    &_left {
+      flex: 1;
+      width: 0;
+    }
+
+    &_title {
+      flex: 1;
+      width: 0;
+      @include text-cut();
     }
   }
 }

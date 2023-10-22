@@ -49,7 +49,11 @@ const onCommand = () => {
     </template>
 
     <el-scrollbar :max-height="630">
-      <AppPageManage @command="onCommand" />
+      <AppPageManage
+        @command="onCommand"
+        @dialog-open="_popoverVisibleStop = true"
+        @dialog-closed="_popoverVisibleStopResume"
+      />
     </el-scrollbar>
   </el-popover>
 </template>

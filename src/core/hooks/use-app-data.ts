@@ -1,6 +1,8 @@
-import { v4 } from 'uuid'
-import { computed, getCurrentInstance } from 'vue'
+import { computed, defineAsyncComponent, getCurrentInstance } from 'vue'
+import { FormInstance } from 'element-plus'
 import { AppData } from '../data/app'
+import { DialogEvents, useDialog } from './use-dialog'
+import { genId } from 'core/utils/common'
 
 export function useAppData() {
   const instance = getCurrentInstance()
@@ -64,10 +66,72 @@ export function usePageGroup() {
     const name = `页面分组${num}`
 
     appData.value.pageGroups.push({
-      id: v4(),
+      id: genId(),
       name
     })
   }
 
   return { createPageGroup }
+}
+
+// 页面
+export function usePageData() {
+  const { appData } = useAppData()
+  const { createDialog } = useDialog()
+
+  // 新建页面数据
+  const addPage = (id: string, title: string) => {
+    appData.value.pages.push({
+      id,
+      title,
+      groupdId: '',
+      nodeTree: []
+    })
+  }
+
+  // 新建页面弹窗
+  const createPage = (opts?: DialogEvents) => {
+    const dialog = createDialog({
+      title: '新建页面',
+      dialogProps: {
+        width: 500
+      },
+      component: defineAsyncComponent(
+        () => import('core/components/AppForm/AppFormCreatePage.vue')
+      ),
+      btns: [
+        {
+          content: '取消',
+          onClick() {
+            dialog.close()
+          }
+        },
+        {
+          content: '确定',
+          type: 'primary',
+          onClick() {
+            const instance = dialog.state.contentRef.formRef as FormInstance
+            instance.validate(isValid => {
+              if (isValid) {
+                const formdata = dialog.state.contentRef.formdata as {
+                  id: string
+                  title: string
+                }
+
+                dialog.close()
+                addPage(formdata.id, formdata.title)
+              }
+            })
+          }
+        }
+      ],
+      ...opts
+    })
+
+    return dialog
+  }
+
+  return {
+    createPage
+  }
 }

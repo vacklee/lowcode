@@ -15,3 +15,9 @@ $border-radius-base: 3px;
 
 $sidebar-width: 48px;
 $sidebar-background: #f1f2f5;
+
+@mixin text-cut {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

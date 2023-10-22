@@ -1,3 +1,5 @@
+import { genId } from 'core/utils/common'
+
 // 分组
 export type Group = {
   // 分组ID
@@ -60,19 +62,19 @@ export default function createAppData(): AppData {
     },
     pageGroups: [
       {
-        id: 'group-1',
+        id: genId(),
         name: '页面分组1'
       }
     ],
     pages: [
       {
-        id: 'page-1',
+        id: genId(),
         title: '空白页',
         groupdId: '',
         nodeTree: []
       },
       {
-        id: 'page-2',
+        id: genId(),
         title: '空白页',
         groupdId: 'group-1',
         nodeTree: []

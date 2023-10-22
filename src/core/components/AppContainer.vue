@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, ref } from 'vue'
 import AppPageDesign from './AppPageDesign/AppPageDesign.vue'
 import AppSettings from './AppSettings.vue'
 import AppSidebarMenu, { MenuItem } from './AppSidebarMenu.vue'
-import { computed, ref } from 'vue'
 
 const sidebarMenu: MenuItem[] = [
   {

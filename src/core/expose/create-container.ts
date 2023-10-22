@@ -1,7 +1,7 @@
 import { createApp, ref } from 'vue'
-import ElementPlus from 'element-plus'
 import { AppData } from '../data/app'
 import AppContainer from '../components/AppContainer.vue'
+import appPlugins from './app-plugins'
 
 export type CreateContainerParams = {
   el: HTMLElement
@@ -13,7 +13,7 @@ export default function createContainer(params: CreateContainerParams) {
   const app = createApp(AppContainer)
 
   app.config.globalProperties.appData = appData
-  app.use(ElementPlus)
+  app.use(appPlugins)
 
   app.mount(params.el)
 }
