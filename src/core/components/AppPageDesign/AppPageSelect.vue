@@ -1,14 +1,42 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { debounce } from 'lodash'
 import { ArrowDownBold } from '@element-plus/icons-vue'
+import AppPageManage from '../AppPageManage/AppPageManage.vue'
 
-const popoverVisible = ref(false)
+const _popoverVisible = ref(true)
+
+/**
+ * _popoverVisibleStop 为 true 时表示在 popover 弹层中点击了插入在 body 层的按钮
+ * 此时应该阻止弹层隐藏
+ */
+const _popoverVisibleStop = ref(false)
+const _popoverVisibleStopResume = debounce(() => {
+  _popoverVisibleStop.value = false
+}, 500)
+
+const popoverVisible = computed({
+  get: () => _popoverVisible.value,
+  set: val => {
+    if (_popoverVisibleStop.value) {
+      return
+    }
+    _popoverVisible.value = val
+  }
+})
+
+const onCommand = () => {
+  _popoverVisibleStop.value = true
+  _popoverVisibleStopResume()
+}
 </script>
 
 <template>
   <el-popover
     trigger="click"
     placement="bottom-start"
+    :width="320"
+    :popper-class="$style.popper"
     v-model:visible="popoverVisible"
   >
     <template #reference>
@@ -19,6 +47,10 @@ const popoverVisible = ref(false)
         </el-icon>
       </div>
     </template>
+
+    <el-scrollbar :max-height="630">
+      <AppPageManage @command="onCommand" />
+    </el-scrollbar>
   </el-popover>
 </template>
 
@@ -47,5 +79,9 @@ const popoverVisible = ref(false)
     background: #ebedf1;
     justify-content: space-between;
   }
+}
+
+.popper {
+  padding: 0 !important;
 }
 </style>

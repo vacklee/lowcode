@@ -6,6 +6,12 @@
       'base': $color-primary,
     ),
   ),
+  $font-size: (
+    'base': $font-size-base
+  ),
+  $text-color: (
+    'regular': $text-color-base
+  )
 );
 
 // 如果只是按需导入，则可以忽略以下内容。

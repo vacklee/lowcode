@@ -58,7 +58,25 @@ export default function createAppData(): AppData {
       faviconURL: '',
       description: ''
     },
-    pageGroups: [],
-    pages: []
+    pageGroups: [
+      {
+        id: 'group-1',
+        name: '页面分组1'
+      }
+    ],
+    pages: [
+      {
+        id: 'page-1',
+        title: '空白页',
+        groupdId: '',
+        nodeTree: []
+      },
+      {
+        id: 'page-2',
+        title: '空白页',
+        groupdId: 'group-1',
+        nodeTree: []
+      }
+    ]
   }
 }
