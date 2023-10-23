@@ -138,7 +138,7 @@ export function usePageGroup() {
           done()
         }
       }
-    )
+    ).catch(() => 0)
   }
 
   return { createPageGroup, deletePageGroup }

@@ -16,6 +16,7 @@ import {
   PageTreeNode
 } from 'core/hooks/use-app-data'
 import { useDialogX } from 'core/hooks/use-dialog-x'
+import { copyText, tipPromise } from 'core/utils/common'
 
 const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 
@@ -80,6 +81,13 @@ const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
     // 设置首页
     case 'setIndex':
       setAppState('indexPage', item.id)
+      break
+    // 复制ID
+    case 'copyId':
+      tipPromise(copyText(item.id), {
+        successMsg: '已复制到剪贴板',
+        errorMsg: '复制失败：{e}'
+      })
       break
   }
 }
@@ -155,7 +163,10 @@ const _createPage = () => {
                       <el-dropdown-item :class="$style.dropdown_item">
                         复制页面
                       </el-dropdown-item>
-                      <el-dropdown-item :class="$style.dropdown_item">
+                      <el-dropdown-item
+                        :class="$style.dropdown_item"
+                        command="copyId"
+                      >
                         复制页面ID
                       </el-dropdown-item>
                       <el-dropdown-item
