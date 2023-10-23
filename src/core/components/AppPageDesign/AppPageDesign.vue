@@ -6,6 +6,7 @@ import AppWithPlatform from '../AppWithPlatform.vue'
 import { computed } from 'vue'
 import { useAppData, useCanvasData } from 'core/hooks/use-app-data'
 import AppCanvasSelect from '../AppControls/AppCanvasSelect.vue'
+import AppRightPanel from '../AppRightPanel/AppRightPanel.vue'
 
 const { getAppState, setPlatfrom } = useAppData()
 const { canvasAttrs } = useCanvasData()
@@ -34,6 +35,10 @@ const currentPlatform = computed({
         <el-scrollbar :view-class="$style.editor_body_center_content">
           <AppWithPlatform />
         </el-scrollbar>
+      </div>
+
+      <div :class="$style.editor_body_right">
+        <AppRightPanel />
       </div>
     </div>
   </div>
@@ -85,6 +90,10 @@ const currentPlatform = computed({
       padding: $spacing-base;
       display: inline-flex;
     }
+  }
+
+  &_body_right {
+    width: 280px;
   }
 }
 </style>
