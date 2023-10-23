@@ -1,11 +1,20 @@
 import { genId } from 'core/utils/common'
 
+// 预览平台
+export enum AppPlatform {
+  H5 = 'H5',
+  MINI = 'MINI',
+  PC = 'PC'
+}
+
 // 数据
 export type AppState = {
   // 首页
   indexPage: string
   // 当前选择的页面
   currentPage: string
+  // 当前预览平台
+  platform: AppPlatform
 }
 
 // 分组
@@ -92,7 +101,8 @@ export default function createAppData(): AppData {
     ],
     state: {
       indexPage: '',
-      currentPage: ''
+      currentPage: '',
+      platform: AppPlatform.H5
     }
   }
 }

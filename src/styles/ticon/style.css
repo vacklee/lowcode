@@ -1,0 +1,895 @@
+@font-face {
+  font-family: wedaeditor;
+  src: url(fonts/wedaeditor.1abbeae006.3d2437b6.eot);
+  src: url(fonts/wedaeditor.1abbeae006.3d2437b6.eot#iefix) format("embedded-opentype"),
+    url(fonts/wedaeditor.cfad824251.7aef14be.ttf) format("truetype"),
+    url(fonts/wedaeditor.d812131a3e.75f658b0.woff) format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block
+}
+
+[class*=" t-icon-"],[class^=t-icon-] {
+  font-family: wedaeditor!important;
+  speak: never;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  font-size: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  width: auto;
+  height: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale
+}
+
+.t-icon-delete:hover {
+  cursor: pointer
+}
+
+.t-icon-popout {
+  min-width: 12px;
+  min-height: 12px;
+  width: 12px;
+  height: 12px;
+  font-size: 12px
+}
+
+.t-icon-sql-server:before {
+  content: ""
+}
+
+.t-icon-style-align-stretch:before {
+  content: ""
+}
+
+.t-icon-style-align-horizontal-space-between:before {
+  content: ""
+}
+
+.t-icon-style-align-baseline:before {
+  content: ""
+}
+
+.t-icon-minus-circle:before {
+  content: ""
+}
+
+.t-icon-no-web:before {
+  content: ""
+}
+
+.t-icon-no-mini-program:before {
+  content: ""
+}
+
+.t-icon-code:before {
+  content: ""
+}
+
+.t-icon-style-border-all:before {
+  content: ""
+}
+
+.t-icon-book:before {
+  content: ""
+}
+
+.t-icon-layout-new:before {
+  content: ""
+}
+
+.t-icon-layout-c:before {
+  content: ""
+}
+
+.t-icon-style-border-radius:before {
+  content: ""
+}
+
+.t-icon-layout-top:before {
+  content: ""
+}
+
+.t-icon-layout-left:before {
+  content: ""
+}
+
+.t-icon-box:before {
+  content: ""
+}
+
+.t-icon-no-edit:before {
+  content: ""
+}
+
+.t-icon-outline-tree-data:before {
+  content: ""
+}
+
+.t-icon-outline-tree-style:before {
+  content: ""
+}
+
+.t-icon-outline-tree-event:before {
+  content: ""
+}
+
+.t-icon-outline-tree-for:before {
+  content: ""
+}
+
+.t-icon-outline-tree-class:before {
+  content: ""
+}
+
+.t-icon-outline-tree-if:before {
+  content: ""
+}
+
+.t-icon-share:before {
+  content: ""
+}
+
+.t-icon-fullscreen-exit:before {
+  content: ""
+}
+
+.t-icon-popout:before {
+  content: ""
+}
+
+.t-icon-copy-path:before {
+  content: ""
+}
+
+.t-icon-fullscreen:before {
+  content: ""
+}
+
+.t-icon-git-fork:before {
+  content: ""
+}
+
+.t-icon-file-add:before {
+  content: ""
+}
+
+.t-icon-json-file:before {
+  content: ""
+}
+
+.t-icon-refresh:before {
+  content: ""
+}
+
+.t-icon-history:before {
+  content: ""
+}
+
+.t-icon-logout:before {
+  content: ""
+}
+
+.t-icon-express-layout:before {
+  content: ""
+}
+
+.t-icon-resize:before {
+  content: ""
+}
+
+.t-icon-adopt:before {
+  content: ""
+}
+
+.t-icon-done:before {
+  content: ""
+}
+
+.t-icon-check-circle-filled:before {
+  content: ""
+}
+
+.t-icon-error-circle-filled:before {
+  content: ""
+}
+
+.t-icon-bind-data:before {
+  content: ""
+}
+
+.t-icon-fn-var:before {
+  content: ""
+}
+
+.t-icon-chat:before {
+  content: ""
+}
+
+.t-icon-swap:before {
+  content: ""
+}
+
+.t-icon-border-less:before {
+  content: ""
+}
+
+.t-icon-font-y:before {
+  content: ""
+}
+
+.t-icon-font-x:before {
+  content: ""
+}
+
+.t-icon-font-a:before {
+  content: ""
+}
+
+.t-icon-font-b:before {
+  content: ""
+}
+
+.t-icon-layer-bottom:before {
+  content: ""
+}
+
+.t-icon-layer-top:before {
+  content: ""
+}
+
+.t-icon-layer-down:before {
+  content: ""
+}
+
+.t-icon-layer-up:before {
+  content: ""
+}
+
+.t-icon-array-font:before {
+  content: ""
+}
+
+.t-icon-object-font:before {
+  content: ""
+}
+
+.t-icon-number-font:before {
+  content: ""
+}
+
+.t-icon-bool:before {
+  content: ""
+}
+
+.t-icon-string-font:before {
+  content: ""
+}
+
+.t-icon-style-align-vertical-spacing:before {
+  content: ""
+}
+
+.t-icon-style-border-right:before {
+  content: ""
+}
+
+.t-icon-style-line-height:before {
+  content: ""
+}
+
+.t-icon-straw:before {
+  content: ""
+}
+
+.t-icon-style-border-bottom:before {
+  content: ""
+}
+
+.t-icon-style-border-left:before {
+  content: ""
+}
+
+.t-icon-style-border-top:before {
+  content: ""
+}
+
+.t-icon-style-border-width:before {
+  content: ""
+}
+
+.t-icon-style-border-radius-top-right:before {
+  content: ""
+}
+
+.t-icon-style-border-radius-top-left:before {
+  content: ""
+}
+
+.t-icon-style-border-radius-bottom-right:before {
+  content: ""
+}
+
+.t-icon-style-border-radius-bottom-left:before {
+  content: ""
+}
+
+.t-icon-style-img-cover:before {
+  content: ""
+}
+
+.t-icon-style-align-vertical-center:before {
+  content: ""
+}
+
+.t-icon-style-align-top:before {
+  content: ""
+}
+
+.t-icon-style-align-right:before {
+  content: ""
+}
+
+.t-icon-style-align-left:before {
+  content: ""
+}
+
+.t-icon-style-align-horizontal-spacing:before {
+  content: ""
+}
+
+.t-icon-style-align-horizontal-center:before {
+  content: ""
+}
+
+.t-icon-style-align-bottom:before {
+  content: ""
+}
+
+.t-icon-style-img-position-top-right:before {
+  content: ""
+}
+
+.t-icon-style-img-position-top-left:before {
+  content: ""
+}
+
+.t-icon-style-img-position-top-center:before {
+  content: ""
+}
+
+.t-icon-style-img-position-center:before {
+  content: ""
+}
+
+.t-icon-style-img-position-center-right:before {
+  content: ""
+}
+
+.t-icon-style-img-position-center-left:before {
+  content: ""
+}
+
+.t-icon-style-img-position-bottom-right:before {
+  content: ""
+}
+
+.t-icon-style-img-position-bottom-left:before {
+  content: ""
+}
+
+.t-icon-style-img-position-bottom-center:before {
+  content: ""
+}
+
+.t-icon-clear:before {
+  content: ""
+}
+
+.t-icon-logic-flow:before {
+  content: ""
+}
+
+.t-icon-folder:before {
+  content: ""
+}
+
+.t-icon-var-datasource:before {
+  content: ""
+}
+
+.t-icon-var-null:before {
+  content: ""
+}
+
+.t-icon-var-page:before {
+  content: ""
+}
+
+.t-icon-system:before {
+  content: ""
+}
+
+.t-icon-connector:before {
+  content: ""
+}
+
+.t-icon-style-text-align-center:before {
+  content: ""
+}
+
+.t-icon-style-text-align-left:before {
+  content: ""
+}
+
+.t-icon-style-text-align-right:before {
+  content: ""
+}
+
+.t-icon-style-text-align-spacing:before {
+  content: ""
+}
+
+.t-icon-style-img-repeat:before {
+  content: ""
+}
+
+.t-icon-association:before {
+  content: ""
+}
+
+.t-icon-swap-right:before {
+  content: ""
+}
+
+.t-icon-arrowdown--fill:before {
+  content: ""
+}
+
+.t-icon-pencil:before {
+  content: ""
+}
+
+.t-icon-git-pull:before {
+  content: ""
+}
+
+.t-icon-tag:before {
+  content: ""
+}
+
+.t-icon-git-commit:before {
+  content: ""
+}
+
+.t-icon-local:before {
+  content: ""
+}
+
+.t-icon-plus-rectangle:before {
+  content: ""
+}
+
+.t-icon-minus-rectangle:before {
+  content: ""
+}
+
+.t-icon-flash-circle:before {
+  content: ""
+}
+
+.t-icon-view-list:before {
+  content: ""
+}
+
+.t-icon-if:before {
+  content: ""
+}
+
+.t-icon-folder-add:before {
+  content: ""
+}
+
+.t-icon-export-package:before {
+  content: ""
+}
+
+.t-icon-cloud-sync:before {
+  content: ""
+}
+
+.t-icon-multi-terminal:before {
+  content: ""
+}
+
+.t-icon-nav:before {
+  content: ""
+}
+
+.t-icon-login:before {
+  content: ""
+}
+
+.t-icon-version:before {
+  content: ""
+}
+
+.t-icon-arrowup--line:before {
+  content: ""
+}
+
+.t-icon-arrowdown--line:before {
+  content: ""
+}
+
+.t-icon-drag:before {
+  content: ""
+}
+
+.t-icon-file-list:before {
+  content: ""
+}
+
+.t-icon-more-vertical:before {
+  content: ""
+}
+
+.t-icon-feedback:before {
+  content: ""
+}
+
+.t-icon-miniprogram-pure:before {
+  content: ""
+}
+
+.t-icon-documents:before {
+  content: ""
+}
+
+.t-icon-img-l:before {
+  content: ""
+}
+
+.t-icon-redo:before {
+  content: ""
+}
+
+.t-icon-component:before {
+  content: ""
+}
+
+.t-icon-template-guide:before {
+  content: ""
+}
+
+.t-icon-back:before {
+  content: ""
+}
+
+.t-icon-editor:before {
+  content: ""
+}
+
+.t-icon-hotkey:before {
+  content: ""
+}
+
+.t-icon-json:before {
+  content: ""
+}
+
+.t-icon-creator:before {
+  content: ""
+}
+
+.t-icon-material:before {
+  content: ""
+}
+
+.t-icon-upload:before {
+  content: ""
+}
+
+.t-icon-user:before {
+  content: ""
+}
+
+.t-icon-variable:before {
+  content: ""
+}
+
+.t-icon-age:before {
+  content: ""
+}
+
+.t-icon-copy:before {
+  content: ""
+}
+
+.t-icon-dashboard:before {
+  content: ""
+}
+
+.t-icon-delete:before {
+  content: ""
+}
+
+.t-icon-var-font:before {
+  content: ""
+}
+
+.t-icon-gray:before {
+  content: ""
+}
+
+.t-icon-master-slave:before {
+  content: ""
+}
+
+.t-icon-radio:before {
+  content: ""
+}
+
+.t-icon-save:before {
+  content: ""
+}
+
+.t-icon-tree:before {
+  content: ""
+}
+
+.t-icon-associate:before {
+  content: ""
+}
+
+.t-icon-const:before {
+  content: ""
+}
+
+.t-icon-date:before {
+  content: ""
+}
+
+.t-icon-email:before {
+  content: ""
+}
+
+.t-icon-field:before {
+  content: ""
+}
+
+.t-icon-name:before {
+  content: ""
+}
+
+.t-icon-relative-amount:before {
+  content: ""
+}
+
+.t-icon-rich-text:before {
+  content: ""
+}
+
+.t-icon-telephone:before {
+  content: ""
+}
+
+.t-icon-time:before {
+  content: ""
+}
+
+.t-icon-url:before {
+  content: ""
+}
+
+.t-icon-plus-circle:before {
+  content: ""
+}
+
+.t-icon-fix:before {
+  content: ""
+}
+
+.t-icon-layout:before {
+  content: ""
+}
+
+.t-icon-console:before {
+  content: ""
+}
+
+.t-icon-link:before {
+  content: ""
+}
+
+.t-icon-packup:before {
+  content: ""
+}
+
+.t-icon-component-custom:before {
+  content: ""
+}
+
+.t-icon-component-default:before {
+  content: ""
+}
+
+.t-icon-manage-library:before {
+  content: ""
+}
+
+.t-icon-notice:before {
+  content: ""
+}
+
+.t-icon-update:before {
+  content: ""
+}
+
+.t-icon-event-click:before {
+  content: ""
+}
+
+.t-icon-event-blur:before {
+  content: ""
+}
+
+.t-icon-event-focus:before {
+  content: ""
+}
+
+.t-icon-event-more:before {
+  content: ""
+}
+
+.t-icon-zoom-out:before {
+  content: ""
+}
+
+.t-icon-zoom-in:before {
+  content: ""
+}
+
+.t-icon-search:before {
+  content: ""
+}
+
+.t-icon-undo:before {
+  content: ""
+}
+
+.t-icon-guide:before {
+  content: ""
+}
+
+.t-icon-refresh1:before {
+  content: ""
+}
+
+.t-icon-image:before {
+  content: ""
+}
+
+.t-icon-setting:before {
+  content: ""
+}
+
+.t-icon-weda:before {
+  content: ""
+}
+
+.t-icon-bug:before {
+  content: ""
+}
+
+.t-icon-ide:before {
+  content: ""
+}
+
+.t-icon-menu:before {
+  content: ""
+}
+
+.t-icon-plus:before {
+  content: ""
+}
+
+.t-icon-dragin:before {
+  content: ""
+}
+
+.t-icon-checked:before {
+  content: ""
+}
+
+.t-icon-show:before {
+  content: ""
+}
+
+.t-icon-hide:before {
+  content: ""
+}
+
+.t-icon-unfold-more:before {
+  content: ""
+}
+
+.t-icon-arrowleft--line:before {
+  content: ""
+}
+
+.t-icon-arrowright--line:before {
+  content: ""
+}
+
+.t-icon-var-param:before {
+  content: ""
+}
+
+.t-icon-var-state:before {
+  content: ""
+}
+
+.t-icon-circle-check:before {
+  content: ""
+}
+
+.t-icon-publish:before {
+  content: ""
+}
+
+.t-icon-form:before {
+  content: ""
+}
+
+.t-icon-app:before {
+  content: ""
+}
+
+.t-icon-landing:before {
+  content: ""
+}
+
+.t-icon-list:before {
+  content: ""
+}
+
+.t-icon-docs:before {
+  content: ""
+}
+
+.t-icon-pagehome:before {
+  content: ""
+}
+
+.t-icon-pagenormal:before {
+  content: ""
+}
+
+.t-icon-preview:before {
+  content: ""
+}
+
+.t-icon-alert-close:before {
+  content: ""
+}
+
+.t-icon-phone:before {
+  content: ""
+}
+
+.t-icon-open-preview:before {
+  content: ""
+}
+
+.t-icon-miniprogram:before {
+  content: ""
+}
+
+.t-icon-pc:before {
+  content: ""
+}

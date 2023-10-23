@@ -1,6 +1,15 @@
 <script lang="ts" setup>
 import AppPageSelect from './AppPageSelect.vue'
 import AppCreatePageBtn from './AppCreatePageBtn.vue'
+import AppPlatformSelect from '../AppControls/AppPlatformSelect.vue'
+import { computed } from 'vue'
+import { useAppData } from 'core/hooks/use-app-data'
+
+const { getAppState, setPlatfrom } = useAppData()
+const currentPlatform = computed({
+  get: () => getAppState('platform'),
+  set: setPlatfrom
+})
 </script>
 
 <template>
@@ -9,6 +18,7 @@ import AppCreatePageBtn from './AppCreatePageBtn.vue'
       <div :class="$style.editor_header_left">
         <AppPageSelect />
         <AppCreatePageBtn />
+        <AppPlatformSelect v-model="currentPlatform" />
       </div>
     </div>
   </div>

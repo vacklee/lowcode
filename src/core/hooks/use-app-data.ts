@@ -1,6 +1,6 @@
 import { computed, defineAsyncComponent, getCurrentInstance, h } from 'vue'
 import { FormInstance, ElMessageBox } from 'element-plus'
-import { AppData, AppPage, AppState } from '../data/app'
+import { AppData, AppPage, AppPlatform, AppState } from '../data/app'
 import { DialogEvents, useDialog } from './use-dialog'
 import { genId } from 'core/utils/common'
 import commonStyle from 'core/styles/common.module.scss'
@@ -21,12 +21,23 @@ export function useAppData() {
     return appData.value.state.indexPage === pageId
   }
 
+  // 读取数据
+  const getAppState = <K extends keyof AppState>(key: K) =>
+    appData.value.state[key]
+
   // 设置数据
   const setAppState = <K extends keyof AppState>(key: K, val: AppState[K]) => {
     appData.value.state[key] = val
   }
 
-  return { appData, isIndexPage, setAppState }
+  // 设置预览平台
+  const setPlatfrom = (platform: AppPlatform) => {
+    if (platform !== appData.value.state.platform) {
+      setAppState('platform', platform)
+    }
+  }
+
+  return { appData, isIndexPage, getAppState, setAppState, setPlatfrom }
 }
 
 // 页面节点
