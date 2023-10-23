@@ -1,10 +1,14 @@
 import { computed, defineAsyncComponent, getCurrentInstance, h } from 'vue'
 import { FormInstance, ElMessageBox } from 'element-plus'
-import { AppData, AppState } from '../data/app'
+import { AppData, AppPage, AppState } from '../data/app'
 import { DialogEvents, useDialog } from './use-dialog'
 import { genId } from 'core/utils/common'
 import commonStyle from 'core/styles/common.module.scss'
 import { heightlight } from 'core/utils/h'
+import { useDialogX } from './use-dialog-x'
+import { cloneDeep } from 'lodash'
+
+export type DialogCallback<T = unknown> = (action: 'cancel' | 'confirm') => T
 
 export function useAppData() {
   const instance = getCurrentInstance()
@@ -148,6 +152,7 @@ export function usePageGroup() {
 export function usePageData() {
   const { appData } = useAppData()
   const { createDialog } = useDialog()
+  const { showCopyPageDialog } = useDialogX()
 
   // 新建页面数据
   const addPage = (id: string, title: string) => {
@@ -237,10 +242,31 @@ export function usePageData() {
     ).catch(() => 0)
   }
 
+  // 复制页面逻辑
+  const _copyPage = (sourcePage: AppPage, newId: string, newTitle: string) => {
+    const newPage = cloneDeep(sourcePage)
+    newPage.id = newId
+    newPage.title = newTitle
+    appData.value.pages.push(newPage)
+  }
+
+  // 复制页面弹窗
+  const copyPage = (pageId: string, callback?: DialogCallback) => {
+    const page = appData.value.pages.find(item => item.id === pageId)!
+    showCopyPageDialog(page, data => {
+      if (data) {
+        _copyPage(page, data.id, data.title)
+      }
+      callback?.(data ? 'confirm' : 'cancel')
+    })
+  }
+
   return {
     createPage,
     moveToGroup,
     deletePage,
-    _deletePage
+    _deletePage,
+    copyPage,
+    _copyPage
   }
 }

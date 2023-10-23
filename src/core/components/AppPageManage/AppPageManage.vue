@@ -23,7 +23,7 @@ const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 const { setAppState } = useAppData()
 const { pageTree, renameNode } = usePageTree()
 const { createPageGroup, deletePageGroup } = usePageGroup()
-const { createPage, moveToGroup, deletePage } = usePageData()
+const { createPage, moveToGroup, deletePage, copyPage } = usePageData()
 const { showRenameDialog, showMoveToGroupDialog } = useDialogX()
 
 const nodeIcon = (node: PageTreeNode<'F' | 'N'>) => {
@@ -87,6 +87,13 @@ const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
       tipPromise(copyText(item.id), {
         successMsg: '已复制到剪贴板',
         errorMsg: '复制失败：{e}'
+      })
+      break
+    // 复制页面
+    case 'copyPage':
+      dialogEvents.onOpen()
+      copyPage(item.id, () => {
+        dialogEvents.onClosed()
       })
       break
   }
@@ -160,7 +167,10 @@ const _createPage = () => {
                       >
                         设为首页
                       </el-dropdown-item>
-                      <el-dropdown-item :class="$style.dropdown_item">
+                      <el-dropdown-item
+                        :class="$style.dropdown_item"
+                        command="copyPage"
+                      >
                         复制页面
                       </el-dropdown-item>
                       <el-dropdown-item

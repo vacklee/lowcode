@@ -1,6 +1,7 @@
 import { defineAsyncComponent } from 'vue'
 import { DialogBtn, DialogEvents, useDialog } from './use-dialog'
 import { FormInstance } from 'element-plus'
+import { AppPage } from 'core/data/app'
 
 type WithDialogEvents<T> = T & { dialogEvents?: DialogEvents }
 
@@ -111,8 +112,44 @@ export function useDialogX() {
     return dialog
   }
 
+  /**
+   * 复制页面
+   */
+  const showCopyPageDialog = (
+    page: AppPage,
+    callback: (data?: { id: string; title: string }) => unknown
+  ) => {
+    const dialog = createDialog({
+      title: '复制页面',
+      component: defineAsyncComponent(
+        () => import('core/components/AppForm/AppFormCopyPage.vue')
+      ),
+      componentProps: { page },
+      btns: cancelConfirmBtns({
+        onCancel: () => {
+          dialog.close()
+          callback()
+        },
+        onConfirm: () => {
+          validate(
+            dialog.state.contentRef as unknown as FormRef<{
+              title: string
+              id: string
+            }>,
+            data => {
+              callback(data)
+              dialog.close()
+            }
+          )
+        }
+      })
+    })
+    return dialog
+  }
+
   return {
     showRenameDialog,
-    showMoveToGroupDialog
+    showMoveToGroupDialog,
+    showCopyPageDialog
   }
 }
