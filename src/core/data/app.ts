@@ -1,10 +1,19 @@
+import { getCanvasConfigs } from 'core/config/canvas'
 import { genId } from 'core/utils/common'
+import { AppPlatform } from 'core/config/enum'
 
-// 预览平台
-export enum AppPlatform {
-  H5 = 'H5',
-  MINI = 'MINI',
-  PC = 'PC'
+export { AppPlatform }
+
+// 画布属性
+export type CanvasAttrs = {
+  // 配置名称
+  name: string
+  // 宽
+  width: number
+  // 高
+  height: number
+  // 缩放
+  scale: number
 }
 
 // 数据
@@ -15,6 +24,8 @@ export type AppState = {
   currentPage: string
   // 当前预览平台
   platform: AppPlatform
+  // 当前画布属性
+  canvasAttrs: CanvasAttrs
 }
 
 // 分组
@@ -102,7 +113,13 @@ export default function createAppData(): AppData {
     state: {
       indexPage: '',
       currentPage: '',
-      platform: AppPlatform.H5
+      platform: AppPlatform.H5,
+      canvasAttrs: {
+        name: getCanvasConfigs(AppPlatform.H5)[0]?.name || '',
+        width: 0,
+        height: 0,
+        scale: 0.7
+      }
     }
   }
 }

@@ -7,6 +7,7 @@ import commonStyle from 'core/styles/common.module.scss'
 import { heightlight } from 'core/utils/h'
 import { useDialogX } from './use-dialog-x'
 import { cloneDeep } from 'lodash'
+import { canvasConfigMap } from 'core/config/canvas'
 
 export type DialogCallback<T = unknown> = (action: 'cancel' | 'confirm') => T
 
@@ -37,7 +38,19 @@ export function useAppData() {
     }
   }
 
-  return { appData, isIndexPage, getAppState, setAppState, setPlatfrom }
+  // 设置画布配置
+  const setCanvasConfigName = (name: string) => {
+    appData.value.state.canvasAttrs.name = name
+  }
+
+  return {
+    appData,
+    isIndexPage,
+    getAppState,
+    setAppState,
+    setPlatfrom,
+    setCanvasConfigName
+  }
 }
 
 // 页面节点
@@ -297,5 +310,44 @@ export function usePageData() {
     _copyPage,
     setCurrentpage,
     currentPage
+  }
+}
+
+// 画布数据
+export function useCanvasData() {
+  const { getAppState } = useAppData()
+
+  /**
+   * 画布宽、高、缩放
+   */
+  const canvasAttrs = computed<{
+    width: number
+    height: number
+    scale: number
+  } | null>(() => {
+    const _canvasAttrs = getAppState('canvasAttrs')
+    const platform = getAppState('platform')
+    if (platform === AppPlatform.PC) {
+      return null
+    }
+
+    let { width, height } = _canvasAttrs
+    if (_canvasAttrs.name) {
+      const config = canvasConfigMap.find(
+        item => item.name === _canvasAttrs.name
+      )!
+      width = config.width
+      height = config.height
+    }
+
+    return {
+      width,
+      height,
+      scale: _canvasAttrs.scale
+    }
+  })
+
+  return {
+    canvasAttrs
   }
 }

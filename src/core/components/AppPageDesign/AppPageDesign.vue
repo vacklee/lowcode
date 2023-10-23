@@ -2,8 +2,10 @@
 import AppPageSelect from './AppPageSelect.vue'
 import AppCreatePageBtn from './AppCreatePageBtn.vue'
 import AppPlatformSelect from '../AppControls/AppPlatformSelect.vue'
+import AppWithPlatform from '../AppWithPlatform.vue'
 import { computed } from 'vue'
 import { useAppData } from 'core/hooks/use-app-data'
+import AppCanvasSelect from '../AppControls/AppCanvasSelect.vue'
 
 const { getAppState, setPlatfrom } = useAppData()
 const currentPlatform = computed({
@@ -18,7 +20,18 @@ const currentPlatform = computed({
       <div :class="$style.editor_header_left">
         <AppPageSelect />
         <AppCreatePageBtn />
+        <el-divider direction="vertical" />
         <AppPlatformSelect v-model="currentPlatform" />
+        <el-divider direction="vertical" />
+        <AppCanvasSelect />
+      </div>
+    </div>
+
+    <div :class="$style.editor_body">
+      <div :class="$style.editor_body_center">
+        <el-scrollbar :view-class="$style.editor_body_center_content">
+          <AppWithPlatform />
+        </el-scrollbar>
       </div>
     </div>
   </div>
@@ -29,6 +42,8 @@ const currentPlatform = computed({
   width: 100%;
   height: 100%;
   background: #ebeef0;
+  display: flex;
+  flex-direction: column;
 
   &_header {
     height: 40px;
@@ -42,6 +57,31 @@ const currentPlatform = computed({
       display: flex;
       align-items: center;
       gap: $spacing-mini;
+
+      :global(.el-divider--vertical) {
+        margin: 0;
+      }
+    }
+  }
+
+  &_body {
+    flex: 1;
+    height: 0;
+    display: flex;
+  }
+
+  &_body_center {
+    flex: 1;
+    width: 0;
+    display: flex;
+    flex-direction: column;
+
+    &_content {
+      min-height: 100%;
+      min-width: 100%;
+      box-sizing: border-box;
+      padding: $spacing-base;
+      display: inline-flex;
     }
   }
 }
