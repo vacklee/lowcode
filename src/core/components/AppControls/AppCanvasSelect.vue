@@ -1,21 +1,39 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { ArrowDown } from '@element-plus/icons-vue'
 import AppPoppover from '../AppPoppover.vue'
 import AppCell from '../AppCell.vue'
-import { useAppData } from 'core/hooks/use-app-data'
+import { useAppData, useCanvasData } from 'core/hooks/use-app-data'
 import { getCanvasConfigs } from 'core/config/canvas'
+import AppScalePopper from '../AppPopper/AppScalePopper.vue'
 
 const { getAppState, setCanvasConfigName } = useAppData()
+const { canvasAttrs } = useCanvasData()
 const canvasConfigs = computed(() => getCanvasConfigs(getAppState('platform')))
 const isSelected = (name: string) => name === getAppState('canvasAttrs').name
+
+const popperRef = ref<InstanceType<typeof AppPoppover>>(null!)
+const onScalePopperVisibleChange = (visible: boolean) => {
+  if (visible) {
+    popperRef.value.popoverVisibleStopPause()
+  } else {
+    popperRef.value.popoverVisibleStopResume()
+  }
+}
+
+const currentScale = computed(() => {
+  if (canvasAttrs.value) {
+    return `${canvasAttrs.value.scale * 100}%`
+  }
+  return null
+})
 </script>
 
 <template>
-  <AppPoppover :popper-width="260">
+  <AppPoppover ref="popperRef" :popper-width="260">
     <template #reference>
       <div :class="$style.trigger">
-        <span>80%</span>
+        <span>{{ currentScale }}</span>
         <el-icon :size="10">
           <ArrowDown />
         </el-icon>
@@ -24,12 +42,14 @@ const isSelected = (name: string) => name === getAppState('canvasAttrs').name
 
     <template #default>
       <div :class="$style.group">
-        <AppCell
-          prefix-icon="t-icon-search"
-          label="显示比例"
-          small-text="80%"
-          :show-arrow="true"
-        />
+        <AppScalePopper @visible-change="onScalePopperVisibleChange">
+          <AppCell
+            prefix-icon="t-icon-search"
+            label="显示比例"
+            :small-text="currentScale || ''"
+            :show-arrow="true"
+          />
+        </AppScalePopper>
       </div>
 
       <template v-if="canvasConfigs.length">

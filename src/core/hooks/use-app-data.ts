@@ -315,7 +315,7 @@ export function usePageData() {
 
 // 画布数据
 export function useCanvasData() {
-  const { getAppState } = useAppData()
+  const { appData, getAppState } = useAppData()
 
   /**
    * 画布宽、高、缩放
@@ -347,7 +347,15 @@ export function useCanvasData() {
     }
   })
 
+  /**
+   * 设置画布缩放
+   */
+  const setScale = (scale: number) => {
+    appData.value.state.canvasAttrs.scale = scale
+  }
+
   return {
-    canvasAttrs
+    canvasAttrs,
+    setScale
   }
 }

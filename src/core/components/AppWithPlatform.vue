@@ -19,10 +19,27 @@ const wrapStyle = computed(() =>
 const innerStyle = computed(() => ({
   transform: `scale(${canvasAttrs.value?.scale || 1})`
 }))
+
+const outerStyle = computed(() => {
+  let minWidth = '100%'
+  let minHeight = '100%'
+
+  if (canvasAttrs.value) {
+    minWidth = `${canvasAttrs.value.width * canvasAttrs.value.scale}px`
+    minHeight = `${canvasAttrs.value.height * canvasAttrs.value.scale}px`
+  }
+
+  return {
+    minWidth,
+    minHeight,
+    maxWidth: minWidth,
+    maxHeight: minHeight
+  }
+})
 </script>
 
 <template>
-  <div :class="$style.platform_outer">
+  <div :class="$style.platform_outer" :style="outerStyle">
     <div :class="$style.platform" :style="wrapStyle">
       <div :class="$style.platform_inner" :style="innerStyle"></div>
     </div>
@@ -48,12 +65,11 @@ const innerStyle = computed(() => ({
   }
 
   &_outer {
-    min-width: 100%;
-    min-height: 100%;
     position: static;
     display: flex;
-    align-items: center;
     justify-content: center;
+    margin: 0 auto;
+    overflow: hidden;
   }
 }
 </style>

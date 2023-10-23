@@ -4,10 +4,12 @@ import AppCreatePageBtn from './AppCreatePageBtn.vue'
 import AppPlatformSelect from '../AppControls/AppPlatformSelect.vue'
 import AppWithPlatform from '../AppWithPlatform.vue'
 import { computed } from 'vue'
-import { useAppData } from 'core/hooks/use-app-data'
+import { useAppData, useCanvasData } from 'core/hooks/use-app-data'
 import AppCanvasSelect from '../AppControls/AppCanvasSelect.vue'
 
 const { getAppState, setPlatfrom } = useAppData()
+const { canvasAttrs } = useCanvasData()
+
 const currentPlatform = computed({
   get: () => getAppState('platform'),
   set: setPlatfrom
@@ -23,7 +25,7 @@ const currentPlatform = computed({
         <el-divider direction="vertical" />
         <AppPlatformSelect v-model="currentPlatform" />
         <el-divider direction="vertical" />
-        <AppCanvasSelect />
+        <AppCanvasSelect v-if="canvasAttrs" />
       </div>
     </div>
 

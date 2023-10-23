@@ -6,12 +6,16 @@ withDefaults(
   defineProps<{
     popperWidth?: number | string
     maxContentHeight?: number | string
+    placement?: string
   }>(),
   {
     popperWidth: 320,
-    maxContentHeight: 630
+    maxContentHeight: 630,
+    placement: 'bottom-start'
   }
 )
+
+const emits = defineEmits(['visible-change'])
 
 const _popoverVisible = ref(false)
 
@@ -28,6 +32,7 @@ const popoverVisible = computed({
       return
     }
     _popoverVisible.value = val
+    emits('visible-change', val)
   }
 })
 
@@ -47,7 +52,7 @@ defineExpose({
 <template>
   <el-popover
     trigger="click"
-    placement="bottom-start"
+    :placement="placement"
     :width="popperWidth"
     :popper-class="$style.popper"
     v-model:visible="popoverVisible"

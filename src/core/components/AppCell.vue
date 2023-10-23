@@ -4,6 +4,7 @@ type AppCellProps = {
   label?: string
   smallText?: string
   showArrow?: boolean
+  onClick?: Function
 }
 
 export type { AppCellProps }
@@ -22,10 +23,18 @@ const suffixIcon = computed(() => {
   }
   return null
 })
+
+const onClick = () => {
+  if (props.onClick) {
+    props.onClick()
+  } else {
+    emits('click')
+  }
+}
 </script>
 
 <template>
-  <div :class="$style.cell" @click="emits('click')">
+  <div :class="$style.cell" @click="onClick">
     <el-icon :class="$style.cell_prefix" :size="16">
       <template v-if="prefixIcon">
         <i :class="prefixIcon" v-if="typeof prefixIcon === 'string'"></i>

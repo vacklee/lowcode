@@ -118,7 +118,7 @@ export default function createAppData(): AppData {
         name: getCanvasConfigs(AppPlatform.H5)[0]?.name || '',
         width: 0,
         height: 0,
-        scale: 0.7
+        scale: 1
       }
     }
   }
