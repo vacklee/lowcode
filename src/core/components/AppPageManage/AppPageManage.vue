@@ -23,7 +23,14 @@ const emits = defineEmits(['command', 'dialog-open', 'dialog-closed'])
 const { setAppState } = useAppData()
 const { pageTree, renameNode } = usePageTree()
 const { createPageGroup, deletePageGroup } = usePageGroup()
-const { createPage, moveToGroup, deletePage, copyPage } = usePageData()
+const {
+  createPage,
+  moveToGroup,
+  deletePage,
+  copyPage,
+  currentPage,
+  setCurrentpage
+} = usePageData()
 const { showRenameDialog, showMoveToGroupDialog } = useDialogX()
 
 const nodeIcon = (node: PageTreeNode<'F' | 'N'>) => {
@@ -102,6 +109,12 @@ const onCommand = (item: PageTreeNode<'N' | 'F'>, command: string) => {
 const _createPage = () => {
   createPage(dialogEvents)
 }
+
+const _setCurrentPage = (node: PageTreeNode<'F' | 'N'>) => {
+  if (node.type === 'N' && currentPage.value?.id !== node.id) {
+    setCurrentpage(node.id)
+  }
+}
 </script>
 
 <template>
@@ -138,12 +151,19 @@ const _createPage = () => {
       >
         <template #default="{ data }">
           <div :class="$style.node">
-            <div :class="$style.node_left">
+            <div :class="$style.node_left" @click="_setCurrentPage(data)">
               <el-icon :class="$style.node_icon">
                 <component :is="nodeIcon(data)" />
               </el-icon>
-              <div :class="$style.node_title">
-                <span :class="$style.node_title">{{ data.title }}</span>
+              <div
+                :class="[
+                  $style.node_title,
+                  {
+                    [$style.active]: currentPage?.id === data.id
+                  }
+                ]"
+              >
+                <span :class="$style.node_title_text">{{ data.title }}</span>
                 <span :class="$style.node_id" v-if="data.type === 'N'">
                   ({{ data.id }})
                 </span>
@@ -257,6 +277,10 @@ const _createPage = () => {
       flex: 1;
       width: 0;
       @include text-cut();
+
+      &.active > .node_title_text {
+        color: $color-primary;
+      }
     }
   }
 }

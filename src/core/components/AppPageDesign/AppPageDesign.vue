@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import AppPageSelect from './AppPageSelect.vue'
+import AppCreatePageBtn from './AppCreatePageBtn.vue'
 </script>
 
 <template>
   <div :class="$style.editor">
     <div :class="$style.editor_header">
-      <AppPageSelect />
+      <div :class="$style.editor_header_left">
+        <AppPageSelect />
+        <AppCreatePageBtn />
+      </div>
     </div>
   </div>
 </template>
@@ -23,6 +27,12 @@ import AppPageSelect from './AppPageSelect.vue'
     display: flex;
     align-items: center;
     padding: 0 $spacing-medium;
+
+    &_left {
+      display: flex;
+      align-items: center;
+      gap: $spacing-mini;
+    }
   }
 }
 </style>

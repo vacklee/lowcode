@@ -4,6 +4,8 @@ import { genId } from 'core/utils/common'
 export type AppState = {
   // 首页
   indexPage: string
+  // 当前选择的页面
+  currentPage: string
 }
 
 // 分组
@@ -89,7 +91,8 @@ export default function createAppData(): AppData {
       }
     ],
     state: {
-      indexPage: ''
+      indexPage: '',
+      currentPage: ''
     }
   }
 }

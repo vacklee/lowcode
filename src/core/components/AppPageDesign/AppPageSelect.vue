@@ -3,8 +3,11 @@ import { computed, ref } from 'vue'
 import { debounce } from 'lodash'
 import { ArrowDownBold } from '@element-plus/icons-vue'
 import AppPageManage from '../AppPageManage/AppPageManage.vue'
+import { usePageData } from 'core/hooks/use-app-data'
 
-const _popoverVisible = ref(true)
+const { currentPage } = usePageData()
+
+const _popoverVisible = ref(false)
 
 /**
  * _popoverVisibleStop 为 true 时表示在 popover 弹层中点击了插入在 body 层的按钮
@@ -46,7 +49,9 @@ const onDialogOpen = () => {
   >
     <template #reference>
       <div :class="[$style.select, popoverVisible && $style.active]">
-        <span :class="$style.select_text">页面：空白页</span>
+        <span :class="$style.select_text">
+          页面：{{ currentPage?.title || '' }}
+        </span>
         <el-icon :class="$style.select_icon" :size="8">
           <ArrowDownBold />
         </el-icon>
@@ -77,6 +82,8 @@ const onDialogOpen = () => {
 
   &_text {
     font-weight: bold;
+    max-width: 102px;
+    @include text-cut();
   }
 
   &_icon {

@@ -150,9 +150,16 @@ export function usePageGroup() {
 
 // 页面
 export function usePageData() {
-  const { appData } = useAppData()
+  const { appData, setAppState } = useAppData()
   const { createDialog } = useDialog()
   const { showCopyPageDialog } = useDialogX()
+
+  // 当前页面
+  const currentPage = computed(() =>
+    appData.value.pages.find(
+      item => item.id === appData.value.state.currentPage
+    )
+  )
 
   // 新建页面数据
   const addPage = (id: string, title: string) => {
@@ -165,7 +172,10 @@ export function usePageData() {
   }
 
   // 新建页面弹窗
-  const createPage = (opts?: DialogEvents) => {
+  const createPage = (
+    opts?: DialogEvents,
+    callback?: (pageId: string) => unknown
+  ) => {
     const dialog = createDialog({
       title: '新建页面',
       dialogProps: {
@@ -195,6 +205,7 @@ export function usePageData() {
 
                 dialog.close()
                 addPage(formdata.id, formdata.title)
+                callback?.(formdata.id)
               }
             })
           }
@@ -261,12 +272,19 @@ export function usePageData() {
     })
   }
 
+  // 设置当前页面
+  const setCurrentpage = (pageId: string) => {
+    setAppState('currentPage', pageId)
+  }
+
   return {
     createPage,
     moveToGroup,
     deletePage,
     _deletePage,
     copyPage,
-    _copyPage
+    _copyPage,
+    setCurrentpage,
+    currentPage
   }
 }
