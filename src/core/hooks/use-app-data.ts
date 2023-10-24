@@ -43,13 +43,24 @@ export function useAppData() {
     appData.value.state.canvasAttrs.name = name
   }
 
+  // 获取当前选中节点的ID
+  const getCurrentSelectedNodeId = () => {
+    return getAppState('currentSelectNodeId')
+  }
+  // 设置当前选中节点的ID
+  const setCurrentSelectedNodeId = (id: string) => {
+    setAppState('currentSelectNodeId', id)
+  }
+
   return {
     appData,
     isIndexPage,
     getAppState,
     setAppState,
     setPlatfrom,
-    setCanvasConfigName
+    setCanvasConfigName,
+    getCurrentSelectedNodeId,
+    setCurrentSelectedNodeId
   }
 }
 

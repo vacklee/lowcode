@@ -23,7 +23,7 @@ const onMouseDown = () => {
 }
 
 const onDragStart = (payload: DragEvent) => {
-  payload.dataTransfer!.effectAllowed = 'link'
+  payload.dataTransfer!.effectAllowed = 'copy'
 }
 </script>
 

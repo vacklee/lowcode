@@ -1,5 +1,4 @@
 import { getCanvasConfigs } from 'core/config/canvas'
-import { genId } from 'core/utils/common'
 import { AppPlatform } from 'core/config/enum'
 
 export { AppPlatform }
@@ -26,6 +25,8 @@ export type AppState = {
   platform: AppPlatform
   // 当前画布属性
   canvasAttrs: CanvasAttrs
+  // 当前选中的节点ID
+  currentSelectNodeId: string
 }
 
 // 分组
@@ -90,26 +91,8 @@ export default function createAppData(): AppData {
       faviconURL: '',
       description: ''
     },
-    pageGroups: [
-      {
-        id: genId(),
-        title: '页面分组1'
-      }
-    ],
-    pages: [
-      {
-        id: genId(),
-        title: '空白页',
-        groupdId: '',
-        nodeTree: []
-      },
-      {
-        id: genId(),
-        title: '空白页',
-        groupdId: 'group-1',
-        nodeTree: []
-      }
-    ],
+    pageGroups: [],
+    pages: [],
     state: {
       indexPage: '',
       currentPage: '',
@@ -119,7 +102,8 @@ export default function createAppData(): AppData {
         width: 0,
         height: 0,
         scale: 1
-      }
+      },
+      currentSelectNodeId: ''
     }
   }
 }

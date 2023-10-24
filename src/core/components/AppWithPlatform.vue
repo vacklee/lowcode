@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useCanvasData } from 'core/hooks/use-app-data'
+import AppNodeRender from './AppNodeRender/AppNodeRender.vue'
 
 const { canvasAttrs } = useCanvasData()
 const wrapStyle = computed(() =>
@@ -41,7 +42,9 @@ const outerStyle = computed(() => {
 <template>
   <div :class="$style.platform_outer" :style="outerStyle">
     <div :class="$style.platform" :style="wrapStyle">
-      <div :class="$style.platform_inner" :style="innerStyle"></div>
+      <div :class="$style.platform_inner" :style="innerStyle">
+        <AppNodeRender />
+      </div>
     </div>
   </div>
 </template>
@@ -60,7 +63,6 @@ const outerStyle = computed(() => {
   &_inner {
     width: 100%;
     height: 100%;
-    background-color: #fff;
     transform-origin: center 0;
   }
 
