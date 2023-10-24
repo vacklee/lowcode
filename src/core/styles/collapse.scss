@@ -1,0 +1,11 @@
+.collapse {
+  
+  & :global(.el-collapse-item__header) {
+    --el-collapse-header-height: 32px;
+    padding-left: $spacing-small;
+  }
+
+  & :global(.el-collapse-item__content) {
+    padding: 0;
+  }
+}
