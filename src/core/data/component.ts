@@ -27,6 +27,8 @@ export type AppComponent = {
   baseAttrs: Record<string, any>
   // 创建实例自定义逻辑
   onCreateInstance?: (node: AppComponent) => AppComponent
+  // 插槽名称
+  slot: string
 }
 
 /** 创建组件 */
@@ -40,6 +42,7 @@ export function createAppComponent(
     instanceName: '',
     baseAttrs: {},
     nodes: [],
+    slot: 'default',
     ...(opts || {})
   }
 }

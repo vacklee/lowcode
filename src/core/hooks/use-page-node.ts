@@ -45,6 +45,7 @@ export function usePageNode() {
     const newComp = createComponentInstance(componentId)
     targetNode.nodes.push(newComp)
     console.log(bodyNode.value)
+    return newComp
   }
 
   return {

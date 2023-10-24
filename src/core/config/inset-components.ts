@@ -8,9 +8,14 @@ import { Constants } from './constant'
 export const insetComponents: Record<AllComponentIds, Component> = {
   [Constants.BODY_NODE_ID]: {},
 
-  CARD: {},
+  // 卡片
+  CARD: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/CardNode.vue')
+  ),
+
   DIALOG: {},
 
+  // 网格布局
   GRID_LAYOUT: defineAsyncComponent(
     () => import('core/components/AppNodeRender/Insets/GridLayoutNode.vue')
   ),

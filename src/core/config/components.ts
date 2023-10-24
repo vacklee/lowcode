@@ -37,11 +37,21 @@ export const resetComponents = {
   ),
 
   // 卡片
-  CARD: createAppComponent({
-    id: 'CARD',
-    icon: 'c-card',
-    title: '卡片'
-  }),
+  CARD: createAppComponent(
+    {
+      id: 'CARD',
+      icon: 'c-card',
+      title: '卡片'
+    },
+    {
+      baseAttrs: {
+        showHeader: true,
+        showContent: true,
+        showFooter: false,
+        showDivider: true
+      }
+    }
+  ),
 
   // 轮播容器
   SWIPER_CONTAINER: createAppComponent({

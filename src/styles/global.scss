@@ -17,6 +17,8 @@ $border-radius-base: 3px;
 $sidebar-width: 48px;
 $sidebar-background: #f1f2f5;
 
+$card-box-shadow: 0px 2px 4px 0px rgba(#000, 0.03);
+
 @mixin text-cut {
   overflow: hidden;
   text-overflow: ellipsis;
