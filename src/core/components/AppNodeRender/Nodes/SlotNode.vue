@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import AppCIcon from 'core/components/AppCIcon.vue'
+import { usePageNode } from 'core/hooks/use-page-node'
+import { AllComponentIds } from '@/core/config/components'
 
-defineProps<{
+const props = defineProps<{
+  id: string
   isEmpty?: boolean
 }>()
+
+const { insertNode } = usePageNode()
 
 const isEnter = ref(false)
 
@@ -17,21 +22,22 @@ const onDragEnter = (payload: DragEvent) => {
   payload.stopPropagation()
   // 为了让上一元素的 dragleave 事件先触发
   setTimeout(() => {
-    console.log('dragenter', payload)
     isEnter.value = true
   }, 0)
 }
 
 const onDragLeave = (payload: DragEvent) => {
   payload.stopPropagation()
-  console.log('dragleave', payload)
   isEnter.value = false
 }
 
 const onDrop = (payload: DragEvent) => {
   payload.stopPropagation()
-  console.log('drop', payload)
   isEnter.value = false
+  const componentId = payload.dataTransfer!.getData('component-id')
+  if (componentId) {
+    insertNode(props.id, componentId as AllComponentIds)
+  }
 }
 
 const dragEventProxy = (el: HTMLElement) => {

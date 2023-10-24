@@ -1,5 +1,6 @@
 import { getCanvasConfigs } from 'core/config/canvas'
 import { AppPlatform } from 'core/config/enum'
+import { AppComponent } from './component'
 
 export { AppPlatform }
 
@@ -46,17 +47,7 @@ export type AppPage = {
   // 页面标题
   title: string
   // 页面节点树
-  nodeTree: AppNode[]
-}
-
-// 页面节点
-export type AppNode = {
-  // 节点类型
-  type: string
-  // 节点名称
-  name: string
-  // 子节点
-  subNodes?: AppNode[]
+  nodeTree: AppComponent[]
 }
 
 // 应用基础信息
@@ -92,10 +83,17 @@ export default function createAppData(): AppData {
       description: ''
     },
     pageGroups: [],
-    pages: [],
+    pages: [
+      {
+        id: 'page-1',
+        title: '测试',
+        groupdId: '',
+        nodeTree: []
+      }
+    ],
     state: {
       indexPage: '',
-      currentPage: '',
+      currentPage: 'page-1',
       platform: AppPlatform.H5,
       canvasAttrs: {
         name: getCanvasConfigs(AppPlatform.H5)[0]?.name || '',

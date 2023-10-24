@@ -7,9 +7,11 @@ import { computed } from 'vue'
 import { useAppData, useCanvasData } from 'core/hooks/use-app-data'
 import AppCanvasSelect from '../AppControls/AppCanvasSelect.vue'
 import AppRightPanel from '../AppRightPanel/AppRightPanel.vue'
+import { usePageNode } from 'core/hooks/use-page-node'
 
 const { getAppState, setPlatfrom } = useAppData()
 const { canvasAttrs } = useCanvasData()
+const { currentPage } = usePageNode()
 
 const currentPlatform = computed({
   get: () => getAppState('platform'),
@@ -30,7 +32,7 @@ const currentPlatform = computed({
       </div>
     </div>
 
-    <div :class="$style.editor_body">
+    <div :class="$style.editor_body" v-if="currentPage">
       <div :class="$style.editor_body_center">
         <el-scrollbar :view-class="$style.editor_body_center_content">
           <AppWithPlatform />

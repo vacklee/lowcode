@@ -16,11 +16,17 @@ export type AppComponentInfo = {
 export type AppComponent = {
   // 基础信息
   basicInfo: AppComponentInfo
+  // 实例ID
+  instanceID: string
+  // 内嵌节点
+  nodes: AppComponent[]
 }
 
 /** 创建组件 */
 export function createAppComponent(basicInfo: AppComponentInfo): AppComponent {
   return {
-    basicInfo
+    basicInfo,
+    instanceID: '',
+    nodes: []
   }
 }

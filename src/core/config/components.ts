@@ -1,7 +1,17 @@
 import { createAppComponent } from 'core/data/component'
+import { Constants } from './constant'
+import { cloneDeep } from 'lodash'
+import { genId } from '../utils/common'
 
 // 内置组件
 export const resetComponents = {
+  // BODY容器
+  [Constants.BODY_NODE_ID]: createAppComponent({
+    id: Constants.BODY_NODE_ID,
+    icon: '',
+    title: Constants.BODY_NODE_ID
+  }),
+
   // 普通容器
   NOMAL_CONTAINER: createAppComponent({
     id: 'NOMAL_CONTAINER',
@@ -96,6 +106,7 @@ export const resetComponents = {
 
 // 内置组件ID
 export type ResetComponentIds = keyof typeof resetComponents
+export type AllComponentIds = ResetComponentIds
 
 /**
  * 组件分组
@@ -141,3 +152,13 @@ export const resetComponentGroups: AppComponentGroup[] = [
     ]
   }
 ]
+
+// 创建组件实例
+export function createComponentInstance(
+  id: AllComponentIds,
+  instanceId = genId()
+) {
+  const comp = cloneDeep(resetComponents[id])
+  comp.instanceID = instanceId
+  return comp
+}

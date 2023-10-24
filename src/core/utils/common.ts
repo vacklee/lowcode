@@ -38,3 +38,24 @@ export function tipPromise(
       ElMessage.error(msg)
     })
 }
+
+// 深度查询
+export function deepFind<D>(
+  arr: D[],
+  func: (item: D) => boolean,
+  getChilds: (item: D) => D[]
+): D | undefined {
+  for (const item of arr) {
+    if (func(item)) {
+      return item
+    }
+
+    const childs = getChilds(item)
+    const childRes = deepFind(childs, func, getChilds)
+    if (childRes) {
+      return childRes
+    }
+  }
+
+  return void 0
+}

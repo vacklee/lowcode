@@ -62,6 +62,7 @@ const onClickOutSide = () => {
   &.empty {
     height: auto;
     min-height: 100%;
+    position: relative;
   }
 
   &::before {

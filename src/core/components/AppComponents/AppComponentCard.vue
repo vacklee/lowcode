@@ -24,6 +24,7 @@ const onMouseDown = () => {
 
 const onDragStart = (payload: DragEvent) => {
   payload.dataTransfer!.effectAllowed = 'copy'
+  payload.dataTransfer!.setData('component-id', props.id)
 }
 </script>
 

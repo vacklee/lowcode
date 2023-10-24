@@ -1,12 +1,16 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import SelectNode from './SelectNode.vue'
 import SlotNode from './SlotNode.vue'
 import { Constants } from 'core/config/constant'
 import AppNodeEmpty from '../AppNodeEmpty.vue'
+import { usePageNode } from 'core/hooks/use-page-node'
+import RenderNode from './RenderNode.vue'
+
+const { bodyNode } = usePageNode()
 
 const id = ref(Constants.BODY_NODE_ID)
-const isEmpty = ref(true)
+const isEmpty = computed(() => !bodyNode.value?.nodes.length)
 const bodyRef = ref<HTMLElement>(null!)
 const slotRef = ref<InstanceType<typeof SlotNode>>(null!)
 
@@ -20,8 +24,10 @@ onMounted(() => {
     <AppNodeEmpty v-if="isEmpty" />
     <div :class="[$style.body_inner, isEmpty && $style.empty]">
       <SelectNode :id="id" :is-empty="isEmpty">
-        <SlotNode ref="slotRef" :is-empty="isEmpty" />
+        <SlotNode ref="slotRef" :id="id" :is-empty="isEmpty" />
       </SelectNode>
+
+      <RenderNode :nodes="bodyNode.nodes" v-if="bodyNode" />
     </div>
   </div>
 </template>
