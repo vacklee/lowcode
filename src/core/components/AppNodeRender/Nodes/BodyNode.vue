@@ -40,12 +40,22 @@ onMounted(() => {
   position: relative;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 
   &_inner {
     position: relative;
     &.empty {
       height: 100%;
     }
+  }
+
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-corner,
+  &::-webkit-scrollbar-button,
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-track-piece {
+    display: none;
+    background-color: transparent;
   }
 }
 </style>

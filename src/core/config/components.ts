@@ -20,11 +20,21 @@ export const resetComponents = {
   }),
 
   // 网格布局
-  GRID_LAYOUT: createAppComponent({
-    id: 'GRID_LAYOUT',
-    icon: 'c-grid-container',
-    title: '网格布局'
-  }),
+  GRID_LAYOUT: createAppComponent(
+    {
+      id: 'GRID_LAYOUT',
+      icon: 'c-grid-container',
+      title: '网格布局'
+    },
+    {
+      baseAttrs: {
+        rows: 2,
+        cols: 3,
+        rowGap: '8px',
+        colGap: '8px'
+      }
+    }
+  ),
 
   // 卡片
   CARD: createAppComponent({
@@ -158,7 +168,15 @@ export function createComponentInstance(
   id: AllComponentIds,
   instanceId = genId()
 ) {
-  const comp = cloneDeep(resetComponents[id])
+  const srcNode = resetComponents[id]
+
+  const comp = cloneDeep(srcNode)
   comp.instanceID = instanceId
+  comp.instanceName = comp.basicInfo.title
+
+  if (srcNode.onCreateInstance) {
+    srcNode.onCreateInstance(comp)
+  }
+
   return comp
 }

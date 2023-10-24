@@ -10,7 +10,11 @@ export const insetComponents: Record<AllComponentIds, Component> = {
 
   CARD: {},
   DIALOG: {},
-  GRID_LAYOUT: {},
+
+  GRID_LAYOUT: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/GridLayoutNode.vue')
+  ),
+
   GRID_NAVS: {},
   LAYOUT: {},
   MENU_NAVS: {},
