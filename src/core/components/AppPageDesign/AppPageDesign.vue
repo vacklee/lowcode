@@ -8,14 +8,20 @@ import { useAppData, useCanvasData } from 'core/hooks/use-app-data'
 import AppCanvasSelect from '../AppControls/AppCanvasSelect.vue'
 import AppRightPanel from '../AppRightPanel/AppRightPanel.vue'
 import { usePageNode } from 'core/hooks/use-page-node'
+import AppCollapseBtn from '../AppCollapseBtn.vue'
 
-const { getAppState, setPlatfrom } = useAppData()
+const { getAppState, setPlatfrom, setAppState } = useAppData()
 const { canvasAttrs } = useCanvasData()
 const { currentPage } = usePageNode()
 
 const currentPlatform = computed({
   get: () => getAppState('platform'),
   set: setPlatfrom
+})
+
+const showRightPanel = computed({
+  get: () => getAppState('showRightPanel'),
+  set: val => setAppState('showRightPanel', val)
 })
 </script>
 
@@ -39,8 +45,11 @@ const currentPlatform = computed({
         </el-scrollbar>
       </div>
 
-      <div :class="$style.editor_body_right">
-        <AppRightPanel />
+      <div :class="[$style.editor_body_right, showRightPanel && $style.show]">
+        <div :class="$style.editor_panel">
+          <AppRightPanel />
+        </div>
+        <AppCollapseBtn v-model="showRightPanel" />
       </div>
     </div>
   </div>
@@ -95,7 +104,19 @@ const currentPlatform = computed({
   }
 
   &_body_right {
-    width: 280px;
+    width: 0;
+    position: relative;
+    transition: width 0.2s linear;
+
+    &.show {
+      width: 280px;
+    }
+  }
+
+  &_panel {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 }
 </style>

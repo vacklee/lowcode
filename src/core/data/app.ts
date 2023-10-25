@@ -28,6 +28,10 @@ export type AppState = {
   canvasAttrs: CanvasAttrs
   // 当前选中的节点ID
   currentSelectNodeId: string
+  // 左侧菜单是否可见
+  showLeftPanel: boolean
+  // 右侧菜单是否可见
+  showRightPanel: boolean
 }
 
 // 分组
@@ -101,7 +105,9 @@ export default function createAppData(): AppData {
         height: 0,
         scale: 1
       },
-      currentSelectNodeId: ''
+      currentSelectNodeId: '',
+      showLeftPanel: true,
+      showRightPanel: true
     }
   }
 }
