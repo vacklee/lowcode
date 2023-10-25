@@ -32,6 +32,8 @@ export type AppState = {
   showLeftPanel: boolean
   // 右侧菜单是否可见
   showRightPanel: boolean
+  // 当前右侧面板选中
+  rightPanelTab: 'components' | 'settings'
 }
 
 // 分组
@@ -107,7 +109,8 @@ export default function createAppData(): AppData {
       },
       currentSelectNodeId: '',
       showLeftPanel: true,
-      showRightPanel: true
+      showRightPanel: true,
+      rightPanelTab: 'components'
     }
   }
 }

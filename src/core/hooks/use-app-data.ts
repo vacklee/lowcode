@@ -50,6 +50,8 @@ export function useAppData() {
   // 设置当前选中节点的ID
   const setCurrentSelectedNodeId = (id: string) => {
     setAppState('currentSelectNodeId', id)
+    // 选择节点后自动切换到配置面板
+    setAppState('rightPanelTab', 'settings')
   }
 
   return {

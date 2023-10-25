@@ -7,7 +7,12 @@ import { AppComponent } from '../data/component'
 
 /** 页面节点相关 */
 export function usePageNode() {
-  const { appData, getAppState, setCurrentSelectedNodeId } = useAppData()
+  const {
+    appData,
+    getAppState,
+    setCurrentSelectedNodeId,
+    getCurrentSelectedNodeId
+  } = useAppData()
 
   // 当前页面
   const currentPage = computed(() => {
@@ -88,6 +93,11 @@ export function usePageNode() {
     return nodePaths.some(item => item.instanceID === parentNodeId)
   }
 
+  /** 当前选中的节点 */
+  const currentNode = computed(() => {
+    return getNodeById(getCurrentSelectedNodeId())
+  })
+
   return {
     currentPage,
     getNodeById,
@@ -95,6 +105,7 @@ export function usePageNode() {
     insertNode,
     bodyNode,
     getNodePaths,
-    checkIsSubNodeId
+    checkIsSubNodeId,
+    currentNode
   }
 }

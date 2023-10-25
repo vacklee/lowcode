@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
-import AppAttrs from '../AppAttrs/AppAttrs.vue'
+import { computed } from 'vue'
+import AppSettings from '../AppSettings/AppSettings.vue'
 import AppComponents from '../AppComponents/AppComponents.vue'
+import { useAppData } from '@/core/hooks/use-app-data'
 
 const tabs = [
   {
@@ -10,20 +11,27 @@ const tabs = [
     component: AppComponents
   },
   {
-    id: 'attrs',
-    title: '属性',
-    component: AppAttrs
+    id: 'settings',
+    title: '配置',
+    component: AppSettings,
+    viewClass: 'max_height'
   }
 ]
 
-const activeId = ref('components')
+const { getAppState, setAppState } = useAppData()
+
+const activeId = computed<string>({
+  get: () => getAppState('rightPanelTab'),
+  set: val => setAppState('rightPanelTab', val as 'components' | 'settings')
+})
+
 const setActiveId = (id: string) => {
   activeId.value = id
 }
 
-const currentComponent = computed(
-  () => tabs.find(item => item.id === activeId.value)?.component
-)
+const currentTab = computed(() => tabs.find(item => item.id === activeId.value))
+const currentComponent = computed(() => currentTab.value?.component)
+const viewClass = computed(() => currentTab.value?.viewClass || '')
 </script>
 
 <template>
@@ -45,7 +53,7 @@ const currentComponent = computed(
     </div>
 
     <div :class="$style.panel_content">
-      <el-scrollbar>
+      <el-scrollbar :view-class="viewClass && $style[viewClass]">
         <component v-if="currentComponent" :is="currentComponent" />
       </el-scrollbar>
     </div>
@@ -101,5 +109,9 @@ const currentComponent = computed(
       width: 100%;
     }
   }
+}
+
+.max_height {
+  height: 100%;
 }
 </style>

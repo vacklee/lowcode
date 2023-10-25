@@ -17,9 +17,11 @@ const props = withDefaults(
   defineProps<{
     tabs?: AppTab[]
     modelValue?: string
+    tabTheme?: 'normal' | 'capsual'
   }>(),
   {
-    tabs: () => []
+    tabs: () => [],
+    tabTheme: 'normal'
   }
 )
 
@@ -37,19 +39,21 @@ const currentComponent = computed(
 
 <template>
   <div :class="$style.box">
-    <div :class="$style.tabs">
-      <div
-        :class="[
-          $style.tab_item,
-          {
-            [$style.active]: activeId === item.id
-          }
-        ]"
-        v-for="item in tabs"
-        :key="item.id"
-        @click="setActiveId(item.id)"
-      >
-        <span>{{ item.title }}</span>
+    <div :class="$style[`${tabTheme}_tabs_wrap`]">
+      <div :class="[$style[`${tabTheme}_tabs`]]">
+        <div
+          :class="[
+            $style.tab_item,
+            {
+              [$style.active]: activeId === item.id
+            }
+          ]"
+          v-for="item in tabs"
+          :key="item.id"
+          @click="setActiveId(item.id)"
+        >
+          <span>{{ item.title }}</span>
+        </div>
       </div>
     </div>
 
@@ -76,7 +80,7 @@ const currentComponent = computed(
   }
 }
 
-.tabs {
+.normal_tabs {
   height: 40px;
   padding: 0 $spacing-small;
   border-bottom: 1px solid $border-color-base;
@@ -105,6 +109,35 @@ const currentComponent = computed(
     &:hover::after,
     &.active::after {
       width: 100%;
+    }
+  }
+}
+
+.capsual_tabs {
+  height: 32px;
+  background: #e3e6eb;
+  border-radius: $border-radius-base;
+  display: flex;
+  box-sizing: border-box;
+  padding: calc($spacing-mini / 2);
+  gap: calc($spacing-mini / 2);
+
+  &_wrap {
+    padding: $spacing-mini $spacing-small;
+  }
+
+  .tab_item {
+    flex: 1;
+    width: 0;
+    height: 100%;
+    border-radius: $border-radius-base;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &.active {
+      background: #fff;
     }
   }
 }
