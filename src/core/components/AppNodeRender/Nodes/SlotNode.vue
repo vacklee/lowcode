@@ -36,7 +36,7 @@ const onDrop = (payload: DragEvent) => {
   isEnter.value = false
   const componentId = payload.dataTransfer!.getData('component-id')
   if (componentId) {
-    insertNode(props.id, componentId as AllComponentIds)
+    insertNode(props.id, componentId as AllComponentIds, true)
   }
 }
 

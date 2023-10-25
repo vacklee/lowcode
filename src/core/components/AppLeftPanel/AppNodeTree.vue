@@ -6,8 +6,8 @@ import { AppComponent } from '@/core/data/component'
 import { useAppData } from '@/core/hooks/use-app-data'
 import { ElTree } from 'element-plus'
 
-const { getAppState, setAppState } = useAppData()
-const { bodyNode } = usePageNode()
+const { getCurrentSelectedNodeId, setCurrentSelectedNodeId } = useAppData()
+const { bodyNode, getParentNode, getNodePaths } = usePageNode()
 
 const treeRef = ref<InstanceType<typeof ElTree>>(null!)
 const treeData = computed(() => (bodyNode.value ? [bodyNode.value] : []))
@@ -15,18 +15,26 @@ const _ = (node: AppComponent) => node
 
 /** 默认展开节点逻辑 */
 const currentExpands = ref(new Set<string>())
+const defaultExpandedKeys = computed(() =>
+  [...currentExpands.value].filter((id, _index, arr) => {
+    // 过滤掉父节点未展开的节点
+    const idPaths = getNodePaths(id).map(item => item.instanceID)
+    return idPaths.every(_id => arr.includes(_id))
+  })
+)
+
 const onNodeExpand = (_: unknown, { data }: { data: AppComponent }) => {
   currentExpands.value.add(data.instanceID)
 }
 const onNodeCollapse = (_: unknown, { data }: { data: AppComponent }) => {
+  // 删除当前节点的默认展开状态
   currentExpands.value.delete(data.instanceID)
 }
-const defaultExpandedKeys = computed(() => [...currentExpands.value])
 
 /** 节点选中逻辑 */
 const currentNodeKey = computed({
-  get: () => getAppState('currentSelectNodeId') || void 0,
-  set: val => setAppState('currentSelectNodeId', val || '')
+  get: () => getCurrentSelectedNodeId() || void 0,
+  set: val => setCurrentSelectedNodeId(val || '')
 })
 
 const onCurrentChange = (node: AppComponent) => {
@@ -36,8 +44,15 @@ const onCurrentChange = (node: AppComponent) => {
 watch(
   [currentNodeKey],
   () => {
+    const val = currentNodeKey.value
+    if (val) {
+      const parentNode = getParentNode(val)
+      if (parentNode) {
+        currentExpands.value.add(parentNode.instanceID)
+      }
+    }
     if (treeRef.value) {
-      treeRef.value.setCurrentKey(currentNodeKey.value)
+      treeRef.value.setCurrentKey(val)
     }
   },
   { immediate: true }
@@ -48,6 +63,7 @@ watch(
   <div :class="$style.box">
     <el-tree
       ref="treeRef"
+      :key="currentNodeKey"
       :data="treeData"
       :props="{
         label: 'instanceName',

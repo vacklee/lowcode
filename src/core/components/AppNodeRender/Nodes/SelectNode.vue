@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { OnClickOutside } from '@vueuse/components'
 import { useAppData } from 'core/hooks/use-app-data'
 
 const props = defineProps<{
@@ -26,27 +25,19 @@ const onClick = () => {
     selected.value = true
   }
 }
-
-const onClickOutSide = () => {
-  if (selected.value) {
-    selected.value = false
-  }
-}
 </script>
 
 <template>
-  <OnClickOutside
+  <div
     :class="[
       $style.select,
       selected && $style.selected,
       isEmpty && $style.empty
     ]"
     @click="onClick"
-    @trigger="onClickOutSide"
   >
-    <div />
     <slot />
-  </OnClickOutside>
+  </div>
 </template>
 
 <style lang="scss" module>

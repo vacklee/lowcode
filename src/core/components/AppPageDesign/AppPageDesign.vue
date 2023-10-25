@@ -11,7 +11,8 @@ import { usePageNode } from 'core/hooks/use-page-node'
 import AppCollapseBtn from '../AppCollapseBtn.vue'
 import AppLeftPanel from '../AppLeftPanel/AppLeftPanel.vue'
 
-const { getAppState, setPlatfrom, setAppState } = useAppData()
+const { getAppState, setPlatfrom, setAppState, setCurrentSelectedNodeId } =
+  useAppData()
 const { canvasAttrs } = useCanvasData()
 const { currentPage } = usePageNode()
 
@@ -29,6 +30,10 @@ const showRightPanel = computed({
   get: () => getAppState('showRightPanel'),
   set: val => setAppState('showRightPanel', val)
 })
+
+const onClickBody = () => {
+  setCurrentSelectedNodeId('')
+}
 </script>
 
 <template>
@@ -52,7 +57,7 @@ const showRightPanel = computed({
         <AppCollapseBtn direct="left" v-model="showLeftPanel" />
       </div>
 
-      <div :class="$style.editor_body_center">
+      <div :class="$style.editor_body_center" @click="onClickBody">
         <el-scrollbar :view-class="$style.editor_body_center_content">
           <AppWithPlatform />
         </el-scrollbar>
