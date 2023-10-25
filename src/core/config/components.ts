@@ -8,7 +8,7 @@ export const resetComponents = {
   // BODY容器
   [Constants.BODY_NODE_ID]: createAppComponent({
     id: Constants.BODY_NODE_ID,
-    icon: '',
+    icon: 't-icon-docs',
     title: Constants.BODY_NODE_ID
   }),
 

@@ -24,6 +24,7 @@ export function usePageNode() {
       Constants.BODY_NODE_ID
     )
     node.nodes = currentPage.value.nodeTree
+    node.instanceName = `页面：${currentPage.value.title}`
     return node
   })
 

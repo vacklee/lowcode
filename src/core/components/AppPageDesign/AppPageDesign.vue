@@ -9,6 +9,7 @@ import AppCanvasSelect from '../AppControls/AppCanvasSelect.vue'
 import AppRightPanel from '../AppRightPanel/AppRightPanel.vue'
 import { usePageNode } from 'core/hooks/use-page-node'
 import AppCollapseBtn from '../AppCollapseBtn.vue'
+import AppLeftPanel from '../AppLeftPanel/AppLeftPanel.vue'
 
 const { getAppState, setPlatfrom, setAppState } = useAppData()
 const { canvasAttrs } = useCanvasData()
@@ -17,6 +18,11 @@ const { currentPage } = usePageNode()
 const currentPlatform = computed({
   get: () => getAppState('platform'),
   set: setPlatfrom
+})
+
+const showLeftPanel = computed({
+  get: () => getAppState('showLeftPanel'),
+  set: val => setAppState('showLeftPanel', val)
 })
 
 const showRightPanel = computed({
@@ -39,17 +45,24 @@ const showRightPanel = computed({
     </div>
 
     <div :class="$style.editor_body" v-if="currentPage">
+      <div :class="[$style.editor_body_aside, showLeftPanel && $style.show]">
+        <div :class="$style.editor_panel">
+          <AppLeftPanel />
+        </div>
+        <AppCollapseBtn direct="left" v-model="showLeftPanel" />
+      </div>
+
       <div :class="$style.editor_body_center">
         <el-scrollbar :view-class="$style.editor_body_center_content">
           <AppWithPlatform />
         </el-scrollbar>
       </div>
 
-      <div :class="[$style.editor_body_right, showRightPanel && $style.show]">
+      <div :class="[$style.editor_body_aside, showRightPanel && $style.show]">
         <div :class="$style.editor_panel">
           <AppRightPanel />
         </div>
-        <AppCollapseBtn v-model="showRightPanel" />
+        <AppCollapseBtn direct="right" v-model="showRightPanel" />
       </div>
     </div>
   </div>
@@ -103,10 +116,11 @@ const showRightPanel = computed({
     }
   }
 
-  &_body_right {
+  &_body_aside {
     width: 0;
     position: relative;
     transition: width 0.2s linear;
+    z-index: 10;
 
     &.show {
       width: 280px;
