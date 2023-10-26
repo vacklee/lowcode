@@ -3,8 +3,14 @@ import { FormItemProps, ElSwitch } from 'element-plus'
 import { PropsOf } from '@/core/hooks/use-dialog'
 
 export enum AutoFromControlsEnum {
+  // 开关
   BoolSwitch = 'BoolSwitch',
-  FourDirectBtn = 'FourDirectBtn'
+  // 四方向按钮
+  FourDirectBtn = 'FourDirectBtn',
+  // 列宽调节器
+  CellWidth = 'CellWidth',
+  // 列宽调节器单个
+  CellWidthItem = 'CellWidthItem'
 }
 
 export type AutoFormControl<T extends Component = Component> = {
@@ -12,8 +18,18 @@ export type AutoFormControl<T extends Component = Component> = {
   componentProps?: Partial<PropsOf<T>>
 }
 
-const _ = <T extends Component>(opts: AutoFormControl<T>) => opts
-export const AutoFromControls: Record<AutoFromControlsEnum, AutoFormControl> = {
+const _ =
+  <T extends Component>(opts: AutoFormControl<T>) =>
+  (props?: Partial<PropsOf<T>>) =>
+    ({
+      ...opts,
+      componentProps: {
+        ...(opts.componentProps || {}),
+        ...(props || {})
+      }
+    }) as AutoFormControl<T>
+
+export const AutoFromControls = {
   // 开关
   [AutoFromControlsEnum.BoolSwitch]: _({
     component: ElSwitch,
@@ -33,8 +49,22 @@ export const AutoFromControls: Record<AutoFromControlsEnum, AutoFormControl> = {
       rightText: '向右添加列',
       bottomText: '向下添加行'
     }
+  }),
+
+  // 列宽调节器
+  [AutoFromControlsEnum.CellWidth]: _({
+    component: defineAsyncComponent(() => import('./Controls/CellWidth.vue'))
+  }),
+
+  // 列宽调节器单个
+  [AutoFromControlsEnum.CellWidthItem]: _({
+    component: defineAsyncComponent(
+      () => import('./Controls/CellWidthItem.vue')
+    )
   })
 }
+
+export type AutoFormControlType = keyof typeof AutoFromControls
 
 export type AutoFormColumn = {
   // 数据标识
@@ -44,13 +74,15 @@ export type AutoFormColumn = {
   // 描述
   description: string
   // 类型
-  type: AutoFromControlsEnum
+  type: AutoFormControlType
   // 其他配置
   elFormItemProps?: Partial<FormItemProps>
+  // 控件配置
+  controlProps?: Record<string, unknown>
 }
 
 export function autoFormColumn(
-  type: AutoFromControlsEnum,
+  type: AutoFormControlType,
   name: string,
   label: string,
   description = '',

@@ -1,15 +1,50 @@
-export type CellSpan = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
-export type CellWidth = 'fill' | 'auto' | CellSpan | string
+export type Unit = 'px' | 'rem' | 'rpx'
 
-export function computedCellWidth(cellwidth: CellWidth, prefix = '') {
-  const flex = cellwidth === 'fill' ? '1' : 'auto'
+export enum CellWidthEnum {
+  FILL = 'fill',
+  AUTO = 'auto'
+}
+
+export type CellSpan = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+export type CellWidth = CellWidthEnum | CellSpan | string
+
+export function isPixel(s: unknown): s is string {
+  return typeof s === 'string' && /^\d+(px|rpx|rem)$/.test(s)
+}
+
+export function parsePixel(s: unknown) {
+  const obj = {
+    value: 0,
+    unit: 'px'
+  }
+
+  if (isPixel(s)) {
+    const [, numStr, uniStr] = s.match(/^(\d+)(px|rem|rpx)$/)!
+    obj.value = +numStr
+    obj.unit = uniStr
+  }
+
+  return obj
+}
+
+export function computedCellWidth(
+  cellwidth: CellWidth,
+  prefix = '',
+  format?: (s: string) => string
+) {
+  let flex = cellwidth === CellWidthEnum.FILL ? '1' : 'none'
   let width = 'auto'
 
-  if (cellwidth === 'fill') {
+  if (cellwidth === CellWidthEnum.FILL) {
     width = '0'
-  } else if (/^\d+px$/.test(cellwidth)) {
+  } else if (isPixel(cellwidth)) {
+    flex = 'none'
     width = cellwidth
+    if (format) {
+      width = format(width)
+    }
   } else if (typeof cellwidth === 'number') {
+    flex = 'none'
     width = `${100 * (cellwidth / 12)}%`
   }
 

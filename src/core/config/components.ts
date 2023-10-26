@@ -76,7 +76,8 @@ export const resetComponents = {
           AutoFromControlsEnum.FourDirectBtn,
           'emit:row-col',
           '行和列'
-        )
+        ),
+        autoFormColumn(AutoFromControlsEnum.CellWidth, 'colWidth', '列宽')
       ]
     }
   ),

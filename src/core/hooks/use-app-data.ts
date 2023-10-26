@@ -8,6 +8,7 @@ import { heightlight } from 'core/utils/h'
 import { useDialogX } from './use-dialog-x'
 import { cloneDeep } from 'lodash'
 import { canvasConfigMap } from 'core/config/canvas'
+import { isPixel } from '../utils/unit'
 
 export type DialogCallback<T = unknown> = (action: 'cancel' | 'confirm') => T
 
@@ -369,8 +370,22 @@ export function useCanvasData() {
     appData.value.state.canvasAttrs.scale = scale
   }
 
+  // 像素换算
+  const toPx = (pixel: unknown) => {
+    if (!isPixel(pixel)) return '0px'
+    const [, numStr, uniStr] = pixel.match(/^(\d+)(px|rem|rpx)$/)!
+    let num = +numStr
+    if (uniStr === 'rem') {
+      num *= 10
+    } else if (uniStr === 'rpx' && canvasAttrs.value) {
+      num = canvasAttrs.value.width * (num / 750)
+    }
+    return `${num}px`
+  }
+
   return {
     canvasAttrs,
-    setScale
+    setScale,
+    toPx
   }
 }

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { type Component } from 'vue'
 import { AutoFormColumn, AutoFromControls } from './types'
 import { FormProps } from 'element-plus'
 
@@ -20,7 +21,13 @@ withDefaults(
   }
 )
 
-const getControl = (column: AutoFormColumn) => AutoFromControls[column.type]
+const getControl = (column: AutoFormColumn) => {
+  const res = AutoFromControls[column.type](column.controlProps)
+  return {
+    component: res.component as Component,
+    componentProps: res.componentProps
+  }
+}
 </script>
 
 <template>
@@ -48,8 +55,11 @@ const getControl = (column: AutoFormColumn) => AutoFromControls[column.type]
 
 <style lang="scss" module>
 .form {
-  & :global(.el-form-item):last-child {
+  & :global(.el-form-item) {
     margin-bottom: 0;
+    &:not(:last-child) {
+      margin-bottom: $spacing-mini;
+    }
   }
 }
 </style>

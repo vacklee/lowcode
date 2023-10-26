@@ -5,16 +5,18 @@ import { computedCellWidth } from 'core/utils/unit'
 import NomalContainerNode from './NomalContainerNode.vue'
 import { usePageNode } from '@/core/hooks/use-page-node'
 import { createComponentInstance } from '@/core/config/components'
+import { useCanvasData } from '@/core/hooks/use-app-data'
 
 const { watchNode, emitNode, getParentNode } = usePageNode()
+const { toPx } = useCanvasData()
 
 const props = defineProps<{
   node: AppComponent
 }>()
 
 const colStyle = computed(() => ({
-  ...computedCellWidth(props.node.baseAttrs.colWidth.mobile, '--mobile-'),
-  ...computedCellWidth(props.node.baseAttrs.colWidth.pc, '--pc-')
+  ...computedCellWidth(props.node.baseAttrs.colWidth.mobile, '--mobile-', toPx),
+  ...computedCellWidth(props.node.baseAttrs.colWidth.pc, '--pc-', toPx)
 }))
 
 /** 添加删除行和列 */
