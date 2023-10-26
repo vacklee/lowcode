@@ -1,4 +1,4 @@
-import { createAppComponent } from 'core/data/component'
+import { AppComponent, createAppComponent } from 'core/data/component'
 import { Constants } from './constant'
 import { cloneDeep } from 'lodash'
 import { genId } from '../utils/common'
@@ -33,9 +33,43 @@ export const resetComponents = {
     {
       baseAttrs: {
         rows: 2,
-        cols: 3,
         rowGap: '8px',
         colGap: '8px'
+      }
+    }
+  ),
+
+  // 网格布局 - 行
+  GRID_LAYOUT_ROW: createAppComponent(
+    {
+      id: 'GRID_LAYOUT_ROW',
+      icon: '',
+      title: '行'
+    },
+    {
+      extends: ['NOMAL_CONTAINER'],
+      baseAttrs: {
+        cols: 3,
+        colGap: 'inherit',
+        alignItems: 'flex-start'
+      }
+    }
+  ),
+
+  // 网格布局 - 列
+  GRID_LAYOUT_COL: createAppComponent(
+    {
+      id: 'GRID_LAYOUT_COL',
+      icon: '',
+      title: '列'
+    },
+    {
+      extends: ['NOMAL_CONTAINER'],
+      baseAttrs: {
+        colWidth: {
+          mobile: 'fill',
+          pc: 'fill'
+        }
       }
     }
   ),
@@ -203,14 +237,66 @@ export const resetComponentGroups: AppComponentGroup[] = [
   }
 ]
 
+/** 查询组件 */
+export function getComponentById(id: string) {
+  if (id in resetComponents) {
+    return resetComponents[id as ResetComponentIds]
+  }
+}
+
+/** 组件继承 */
+export function extendsComponent(name: string, target: AppComponent) {
+  const source = getComponentById(name)
+  if (!source) {
+    return target
+  }
+
+  const cloneSource = cloneDeep(source)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const assign = (obj1: any, obj2: any) => {
+    for (const k in obj2) {
+      if (!obj1[k]) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        obj1[k] = obj2[k]
+      }
+    }
+    return obj1
+  }
+  const extendJson = (key: keyof AppComponent) => {
+    const targetJson = target[key] as Record<string, unknown>
+    const sourceJson = cloneSource[key] as Record<string, unknown>
+    assign(targetJson, sourceJson)
+    delete cloneSource[key]
+  }
+  const extendArr = (key: keyof AppComponent) => {
+    const targetJson = target[key] as Array<unknown>
+    const sourceJson = cloneSource[key] as Array<unknown>
+    targetJson.push(...sourceJson)
+    delete cloneSource[key]
+  }
+
+  extendJson('basicInfo')
+  extendJson('baseAttrs')
+  extendJson('heightAttrs')
+  extendArr('baseAttrsForm')
+  extendArr('heightAttrsForm')
+  extendArr('nodes')
+
+  assign(target, cloneSource)
+  return target
+}
+
 // 创建组件实例
 export function createComponentInstance(
   id: AllComponentIds,
   instanceId = genId()
 ) {
-  const srcNode = resetComponents[id]
-
+  const srcNode = getComponentById(id)!
   const comp = cloneDeep(srcNode)
+  if (comp.extends.length) {
+    comp.extends.forEach(name => extendsComponent(name, comp))
+  }
+
   comp.instanceID = instanceId
   comp.instanceName = comp.basicInfo.title
 

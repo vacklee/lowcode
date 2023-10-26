@@ -20,6 +20,16 @@ export const insetComponents: Record<AllComponentIds, Component> = {
     () => import('core/components/AppNodeRender/Insets/GridLayoutNode.vue')
   ),
 
+  // 网格布局 - 行
+  GRID_LAYOUT_ROW: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/GridLayoutRowNode.vue')
+  ),
+
+  // 网格布局 - 列
+  GRID_LAYOUT_COL: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/GridLayoutColNode.vue')
+  ),
+
   GRID_NAVS: {},
   LAYOUT: {},
   MENU_NAVS: {},

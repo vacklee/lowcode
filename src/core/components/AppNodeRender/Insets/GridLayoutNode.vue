@@ -13,19 +13,15 @@ const props = defineProps<{
 
 const wrapStyle = computed(() => ({
   '--rows': props.node.baseAttrs.rows,
-  '--cols': props.node.baseAttrs.cols,
   '--row-gap': props.node.baseAttrs.rowGap,
   '--col-gap': props.node.baseAttrs.colGap
 }))
 
-const count = computed(
-  () => props.node.baseAttrs.rows * props.node.baseAttrs.cols
-)
-
 const nodes = computed(() => {
   const _nodes = props.node.nodes
-  while (_nodes.length < count.value) {
-    insertNode(props.node.instanceID, 'NOMAL_CONTAINER')
+  const rows = props.node.baseAttrs.rows
+  while (_nodes.length < rows) {
+    insertNode(props.node.instanceID, 'GRID_LAYOUT_ROW')
   }
   return _nodes
 })
@@ -41,13 +37,11 @@ const nodes = computed(() => {
 <style lang="scss" module>
 .grid_layout {
   --rows: 1;
-  --cols: 1;
   --row-gap: 0px;
   --col-gap: 0px;
-  --col-width: calc((100% - (var(--cols) - 1) * var(--col-gap)) / var(--cols));
 
-  display: grid;
-  grid-template-columns: repeat(var(--cols), var(--col-width));
+  display: flex;
+  flex-direction: column;
   row-gap: var(--row-gap);
   column-gap: var(--col-gap);
   position: relative;

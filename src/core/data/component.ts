@@ -38,6 +38,8 @@ export type AppComponent = {
   onCreateInstance?: (node: AppComponent) => AppComponent
   // 插槽名称
   slot: string
+  // 继承自
+  extends: string[]
 }
 
 /** 创建组件 */
@@ -55,6 +57,7 @@ export function createAppComponent(
     heightAttrsForm: [],
     nodes: [],
     slot: 'default',
+    extends: [],
     ...(opts || {})
   }
 }
