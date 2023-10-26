@@ -7,7 +7,7 @@ import { useAppData } from '@/core/hooks/use-app-data'
 import { ElTree } from 'element-plus'
 
 const { getCurrentSelectedNodeId, setCurrentSelectedNodeId } = useAppData()
-const { bodyNode, getParentNode, getNodePaths } = usePageNode()
+const { bodyNode, getNodePaths } = usePageNode()
 
 const treeRef = ref<InstanceType<typeof ElTree>>(null!)
 const treeData = computed(() => (bodyNode.value ? [bodyNode.value] : []))
@@ -46,11 +46,10 @@ watch(
   () => {
     const val = currentNodeKey.value
     if (val) {
-      const parentNode = getParentNode(val)
-      if (parentNode) {
-        currentExpands.value.add(parentNode.instanceID)
-      }
+      const nodePaths = getNodePaths(val)
+      nodePaths.forEach(item => currentExpands.value.add(item.instanceID))
     }
+
     if (treeRef.value) {
       treeRef.value.setCurrentKey(val)
     }
