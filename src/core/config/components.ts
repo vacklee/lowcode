@@ -70,7 +70,14 @@ export const resetComponents = {
           mobile: 'fill',
           pc: 'fill'
         }
-      }
+      },
+      baseAttrsForm: [
+        autoFormColumn(
+          AutoFromControlsEnum.FourDirectBtn,
+          'emit:row-col',
+          '行和列'
+        )
+      ]
     }
   ),
 

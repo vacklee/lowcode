@@ -4,6 +4,7 @@ import { AllComponentIds, createComponentInstance } from '../config/components'
 import { Constants } from '../config/constant'
 import { deepFind } from '../utils/common'
 import { AppComponent } from '../data/component'
+import { useEvents } from './use-events'
 
 /** 页面节点相关 */
 export function usePageNode() {
@@ -13,6 +14,8 @@ export function usePageNode() {
     setCurrentSelectedNodeId,
     getCurrentSelectedNodeId
   } = useAppData()
+
+  const { on, emit } = useEvents()
 
   // 当前页面
   const currentPage = computed(() => {
@@ -68,7 +71,7 @@ export function usePageNode() {
     const newComp = createComponentInstance(componentId)
     targetNode.nodes.push(newComp)
     autoSelect && setCurrentSelectedNodeId(newComp.instanceID)
-    console.log(bodyNode.value)
+    // console.log(bodyNode.value)
     return newComp
   }
 
@@ -98,6 +101,24 @@ export function usePageNode() {
     return getNodeById(getCurrentSelectedNodeId())
   })
 
+  /** 监听节点事件 */
+  const watchNode = <T = unknown>(
+    node: AppComponent,
+    name: string,
+    handle: (opts: { node: AppComponent; value: T }) => unknown,
+    once = false
+  ) => {
+    return on(`NODE:${node.instanceID}:${name}`, handle, once)
+  }
+
+  /** 触发节点事件 */
+  const emitNode = (node: AppComponent, name: string, value: unknown) => {
+    emit(`NODE:${node.instanceID}:${name}`, {
+      node,
+      value
+    })
+  }
+
   /** 设置节点属性 */
   const setNodeAttrs = (
     id: string,
@@ -107,6 +128,10 @@ export function usePageNode() {
   ) => {
     const node = getNodeById(id)
     if (node) {
+      if (/^emit:/.test(key)) {
+        emitNode(node, key.slice(5), value)
+        return
+      }
       node[type][key] = value
     }
   }
@@ -120,6 +145,8 @@ export function usePageNode() {
     getNodePaths,
     checkIsSubNodeId,
     currentNode,
-    setNodeAttrs
+    setNodeAttrs,
+    watchNode,
+    emitNode
   }
 }

@@ -24,7 +24,7 @@ const getControl = (column: AutoFormColumn) => AutoFromControls[column.type]
 </script>
 
 <template>
-  <el-form :model="model" v-bind="elFormProps">
+  <el-form :class="$style.form" :model="model" v-bind="elFormProps">
     <el-form-item
       v-for="item in columns"
       :key="item.name"
@@ -45,3 +45,11 @@ const getControl = (column: AutoFormColumn) => AutoFromControls[column.type]
     </el-form-item>
   </el-form>
 </template>
+
+<style lang="scss" module>
+.form {
+  & :global(.el-form-item):last-child {
+    margin-bottom: 0;
+  }
+}
+</style>

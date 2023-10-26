@@ -1,9 +1,10 @@
-import { Component } from 'vue'
+import { Component, defineAsyncComponent } from 'vue'
 import { FormItemProps, ElSwitch } from 'element-plus'
 import { PropsOf } from '@/core/hooks/use-dialog'
 
 export enum AutoFromControlsEnum {
-  BoolSwitch = 'BoolSwitch'
+  BoolSwitch = 'BoolSwitch',
+  FourDirectBtn = 'FourDirectBtn'
 }
 
 export type AutoFormControl<T extends Component = Component> = {
@@ -13,10 +14,24 @@ export type AutoFormControl<T extends Component = Component> = {
 
 const _ = <T extends Component>(opts: AutoFormControl<T>) => opts
 export const AutoFromControls: Record<AutoFromControlsEnum, AutoFormControl> = {
+  // 开关
   [AutoFromControlsEnum.BoolSwitch]: _({
     component: ElSwitch,
     componentProps: {
       size: 'small'
+    }
+  }),
+
+  // 四方向按钮
+  [AutoFromControlsEnum.FourDirectBtn]: _({
+    component: defineAsyncComponent(
+      () => import('./Controls/FourDirectBtn.vue')
+    ),
+    componentProps: {
+      topText: '向上添加行',
+      leftText: '向左添加列',
+      rightText: '向右添加列',
+      bottomText: '向下添加行'
     }
   })
 }

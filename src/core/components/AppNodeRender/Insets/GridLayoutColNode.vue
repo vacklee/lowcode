@@ -3,6 +3,10 @@ import { computed } from 'vue'
 import { AppComponent } from '@/core/data/component'
 import { computedCellWidth } from 'core/utils/unit'
 import NomalContainerNode from './NomalContainerNode.vue'
+import { usePageNode } from '@/core/hooks/use-page-node'
+import { createComponentInstance } from '@/core/config/components'
+
+const { watchNode, emitNode, getParentNode } = usePageNode()
 
 const props = defineProps<{
   node: AppComponent
@@ -12,6 +16,29 @@ const colStyle = computed(() => ({
   ...computedCellWidth(props.node.baseAttrs.colWidth.mobile, '--mobile-'),
   ...computedCellWidth(props.node.baseAttrs.colWidth.pc, '--pc-')
 }))
+
+/** 添加删除行和列 */
+watchNode<'top' | 'left' | 'right' | 'bottom'>(
+  props.node,
+  'row-col',
+  ({ value }) => {
+    const parentNode = getParentNode(props.node)!
+
+    if (value === 'top' || value === 'bottom') {
+      // 添加行的逻辑
+      emitNode(parentNode, 'row', value)
+      return
+    }
+
+    const newNode = createComponentInstance('GRID_LAYOUT_COL')
+    let currentIndex = parentNode.nodes.indexOf(props.node)
+    if (value === 'right') {
+      currentIndex += 1
+    }
+    parentNode.nodes.splice(currentIndex, 0, newNode)
+    parentNode.baseAttrs.cols += 1
+  }
+)
 </script>
 
 <template>

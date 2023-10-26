@@ -4,8 +4,10 @@ import { AppComponent } from '@/core/data/component'
 import SelectNode from '../Nodes/SelectNode.vue'
 import RenderNode from '../Nodes/RenderNode.vue'
 import { usePageNode } from '@/core/hooks/use-page-node'
+import { createComponentInstance } from '@/core/config/components'
+import { cloneDeep } from 'lodash'
 
-const { insertNode } = usePageNode()
+const { insertNode, watchNode, getParentNode } = usePageNode()
 
 const props = defineProps<{
   node: AppComponent
@@ -24,6 +26,19 @@ const nodes = computed(() => {
     insertNode(props.node.instanceID, 'GRID_LAYOUT_COL')
   }
   return _nodes
+})
+
+// 添加行
+watchNode<'top' | 'bottom'>(props.node, 'row', ({ value }) => {
+  const parent = getParentNode(props.node)!
+  const newNode = createComponentInstance('GRID_LAYOUT_ROW')
+  newNode.baseAttrs = cloneDeep(props.node.baseAttrs)
+
+  let currentIndex = parent.nodes.indexOf(props.node)
+  if (value === 'bottom') {
+    currentIndex += 1
+  }
+  parent.nodes.splice(currentIndex, 0, newNode)
 })
 </script>
 
