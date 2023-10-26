@@ -5,6 +5,7 @@ type AppTab = {
   id: string
   title: string
   component?: Component
+  componentProps?: Record<string, unknown>
 }
 
 export type { AppTab }

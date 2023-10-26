@@ -98,6 +98,19 @@ export function usePageNode() {
     return getNodeById(getCurrentSelectedNodeId())
   })
 
+  /** 设置节点属性 */
+  const setNodeAttrs = (
+    id: string,
+    type: 'baseAttrs' | 'heightAttrs',
+    key: string,
+    value: unknown
+  ) => {
+    const node = getNodeById(id)
+    if (node) {
+      node[type][key] = value
+    }
+  }
+
   return {
     currentPage,
     getNodeById,
@@ -106,6 +119,7 @@ export function usePageNode() {
     bodyNode,
     getNodePaths,
     checkIsSubNodeId,
-    currentNode
+    currentNode,
+    setNodeAttrs
   }
 }

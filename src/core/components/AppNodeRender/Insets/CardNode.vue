@@ -38,7 +38,7 @@ const footerNode = useSlot('footer')
 const showHeader = computed<boolean>(() => props.node.baseAttrs.showHeader)
 const showContent = computed<boolean>(() => props.node.baseAttrs.showContent)
 const showFooter = computed<boolean>(() => props.node.baseAttrs.showFooter)
-const showDivider = computed<boolean>(() => props.node.baseAttrs.showDivider)
+const showDivider = computed<boolean>(() => props.node.heightAttrs.showDivider)
 </script>
 
 <template>

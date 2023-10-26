@@ -2,6 +2,10 @@ import { createAppComponent } from 'core/data/component'
 import { Constants } from './constant'
 import { cloneDeep } from 'lodash'
 import { genId } from '../utils/common'
+import {
+  AutoFromControlsEnum,
+  autoFormColumn
+} from '../components/AutoForm/types'
 
 // 内置组件
 export const resetComponents = {
@@ -47,9 +51,35 @@ export const resetComponents = {
       baseAttrs: {
         showHeader: true,
         showContent: true,
-        showFooter: false,
+        showFooter: false
+      },
+      heightAttrs: {
         showDivider: true
-      }
+      },
+      baseAttrsForm: [
+        autoFormColumn(
+          AutoFromControlsEnum.BoolSwitch,
+          'showHeader',
+          '显示卡片顶部'
+        ),
+        autoFormColumn(
+          AutoFromControlsEnum.BoolSwitch,
+          'showContent',
+          '显示卡片内容'
+        ),
+        autoFormColumn(
+          AutoFromControlsEnum.BoolSwitch,
+          'showFooter',
+          '显示卡片底部'
+        )
+      ],
+      heightAttrsForm: [
+        autoFormColumn(
+          AutoFromControlsEnum.BoolSwitch,
+          'showDivider',
+          '显示分割线'
+        )
+      ]
     }
   ),
 

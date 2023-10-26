@@ -1,3 +1,5 @@
+import { AutoFormColumn } from '../components/AutoForm/types'
+
 /**
  * 组件基础信息
  */
@@ -25,6 +27,13 @@ export type AppComponent = {
   // 基础属性
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   baseAttrs: Record<string, any>
+  // 基础属性表单
+  baseAttrsForm: AutoFormColumn[]
+  // 高级属性
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  heightAttrs: Record<string, any>
+  // 高级属性表单
+  heightAttrsForm: AutoFormColumn[]
   // 创建实例自定义逻辑
   onCreateInstance?: (node: AppComponent) => AppComponent
   // 插槽名称
@@ -41,6 +50,9 @@ export function createAppComponent(
     instanceID: '',
     instanceName: '',
     baseAttrs: {},
+    baseAttrsForm: [],
+    heightAttrs: {},
+    heightAttrsForm: [],
     nodes: [],
     slot: 'default',
     ...(opts || {})
