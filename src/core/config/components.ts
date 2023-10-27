@@ -294,26 +294,26 @@ export const resetComponentGroups: AppComponentGroup[] = [
     components: [
       'NOMAL_CONTAINER',
       'GRID_LAYOUT',
-      'CARD',
-      'SWIPER_CONTAINER',
-      'LAYOUT',
-      'SCROLL_CONTAINER',
-      'DIALOG'
-    ]
-  },
-  {
-    id: 'navs',
-    icon: 'material-common',
-    title: '导航',
-    components: [
-      'TAB_BAR',
-      'MENU_NAVS',
-      'GRID_NAVS',
-      'TOP_NAVS',
-      'TOP_TABS',
-      'SIDE_TABS'
+      'CARD'
+      // ,'SWIPER_CONTAINER',
+      // 'LAYOUT',
+      // 'SCROLL_CONTAINER',
+      // 'DIALOG'
     ]
   }
+  // ,{
+  //   id: 'navs',
+  //   icon: 'material-common',
+  //   title: '导航',
+  //   components: [
+  //     'TAB_BAR',
+  //     'MENU_NAVS',
+  //     'GRID_NAVS',
+  //     'TOP_NAVS',
+  //     'TOP_TABS',
+  //     'SIDE_TABS'
+  //   ]
+  // }
 ]
 
 /** 查询组件 */
