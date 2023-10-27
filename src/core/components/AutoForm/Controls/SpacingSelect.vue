@@ -14,6 +14,18 @@ const props = defineProps<{
 const { toPx } = useCanvasData()
 
 const emits = defineEmits(['update:modelValue'])
+
+const hasParent = computed(() => !!props.parentName)
+const computedOptions = computed(() => {
+  return spacingOptions.filter(item => {
+    if (!hasParent.value && item.value === Constants.CSS_INHERIT) {
+      return false
+    }
+    return true
+  })
+})
+const defaultValue = computed(() => computedOptions.value[0].value)
+
 const innerValue = computed({
   get: () => {
     let value = props.modelValue
@@ -25,9 +37,9 @@ const innerValue = computed({
       return value
     }
 
-    emits('update:modelValue', Constants.CSS_INHERIT)
+    emits('update:modelValue', defaultValue.value)
 
-    return Constants.CSS_INHERIT
+    return defaultValue.value
   },
   set: val => emits('update:modelValue', val)
 })
@@ -41,7 +53,7 @@ const labelFormat = (item: SelectOption) => {
 
 <template>
   <CommonSelect
-    :options="spacingOptions"
+    :options="computedOptions"
     :label-format="labelFormat"
     v-model="innerValue"
   />

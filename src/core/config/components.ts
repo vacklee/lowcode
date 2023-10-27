@@ -49,7 +49,14 @@ export const resetComponents = {
               bottomText: '向下添加行'
             }
           }
-        )
+        ),
+        autoFormColumn(
+          AutoFromControlsEnum.SpacingSelect,
+          'colGap',
+          '列间距',
+          '默认对所有列生效，若某行单独配置了列间距，此属性将被覆盖。'
+        ),
+        autoFormColumn(AutoFromControlsEnum.SpacingSelect, 'rowGap', '行间距')
       ]
     }
   ),
