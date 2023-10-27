@@ -4,7 +4,12 @@ import { usePageNode } from '@/core/hooks/use-page-node'
 import AppIcon from '../AppIcon.vue'
 import { AppComponent } from '@/core/data/component'
 import { useAppData } from '@/core/hooks/use-app-data'
-import { ElTree } from 'element-plus'
+import { ElTree, ElScrollbar } from 'element-plus'
+import { delay } from '@/core/utils/common'
+
+const props = defineProps<{
+  scrollRef?: InstanceType<typeof ElScrollbar>
+}>()
 
 const { getCurrentSelectedNodeId, setCurrentSelectedNodeId } = useAppData()
 const { bodyNode, getNodePaths } = usePageNode()
@@ -37,8 +42,32 @@ const currentNodeKey = computed({
   set: val => setCurrentSelectedNodeId(val || '')
 })
 
-const onCurrentChange = (node: AppComponent) => {
+/** 节点选中时滚动到可视范围 */
+const scrollToNode = (instanceID: string) => {
+  if (!props.scrollRef) return
+  const { wrapRef, setScrollTop } = props.scrollRef
+  if (!wrapRef) return
+  const node = wrapRef.querySelector(`[data-node-tree="${instanceID}"]`)
+  if (!node) return
+  const wrapRect = wrapRef.getBoundingClientRect()
+  const nodeRect = node.getBoundingClientRect()
+  const relativeTop = nodeRect.top - wrapRect.top
+  // 是否完整在屏幕内
+  const isFullShow =
+    relativeTop >= 0 && wrapRect.height >= relativeTop + nodeRect.height
+
+  if (!isFullShow) {
+    setScrollTop(relativeTop + wrapRef.scrollTop)
+  }
+}
+
+const onCurrentChange = (node?: AppComponent) => {
   currentNodeKey.value = node?.instanceID || ''
+  if (node?.instanceID) {
+    delay(100).then(() => {
+      scrollToNode(node.instanceID)
+    })
+  }
 }
 
 watch(
@@ -79,7 +108,7 @@ watch(
       @current-change="onCurrentChange"
     >
       <template #default="{ data }">
-        <div :class="$style.info">
+        <div :class="$style.info" :data-node-tree="_(data).instanceID">
           <AppIcon :class="$style.info_icon" :icon="_(data).basicInfo.icon" />
           <span>{{ _(data).instanceName }}</span>
         </div>

@@ -7,7 +7,7 @@ import { usePageNode } from '@/core/hooks/use-page-node'
 import { createComponentInstance } from '@/core/config/components'
 import { cloneDeep } from 'lodash'
 
-const { insertNode, watchNode, getParentNode } = usePageNode()
+const { insertNode, watchNode, getParentNode, spliceNode } = usePageNode()
 
 const props = defineProps<{
   node: AppComponent
@@ -22,6 +22,11 @@ const rowStyles = computed(() => ({
 const nodes = computed(() => {
   const _nodes = props.node.nodes
   const cols = props.node.baseAttrs.cols
+
+  if (_nodes.length > cols) {
+    spliceNode(props.node, cols)
+  }
+
   while (_nodes.length < cols) {
     insertNode(props.node.instanceID, 'GRID_LAYOUT_COL')
   }

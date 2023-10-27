@@ -13,6 +13,7 @@ export type { AppTab }
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
+import { ElScrollbar } from 'element-plus'
 
 const props = withDefaults(
   defineProps<{
@@ -27,6 +28,7 @@ const props = withDefaults(
 )
 
 const emits = defineEmits(['update:modelValue'])
+const scrollRef = ref<InstanceType<typeof ElScrollbar>>(null!)
 const activeId = ref(props.modelValue || props.tabs[0]?.id || '')
 const setActiveId = (id: string) => {
   activeId.value = id
@@ -59,8 +61,12 @@ const currentComponent = computed(
     </div>
 
     <div :class="$style.box_content">
-      <el-scrollbar>
-        <component v-if="currentComponent" :is="currentComponent" />
+      <el-scrollbar ref="scrollRef">
+        <component
+          v-if="currentComponent"
+          :is="currentComponent"
+          :scrollRef="scrollRef"
+        />
       </el-scrollbar>
     </div>
   </div>

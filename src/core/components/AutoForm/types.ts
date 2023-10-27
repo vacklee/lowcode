@@ -12,7 +12,9 @@ export enum AutoFromControlsEnum {
   // 列宽调节器单个
   CellWidthItem = 'CellWidthItem',
   // 垂直两方向按钮
-  VDirectBtn = 'VDirectBtn'
+  VDirectBtn = 'VDirectBtn',
+  // 数字选择器
+  NumberSelect = 'NumberSelect'
 }
 
 export type AutoFormControl<T extends Component = Component> = {
@@ -68,6 +70,11 @@ export const AutoFromControls = {
   // 垂直两方向按钮
   [AutoFromControlsEnum.VDirectBtn]: _({
     component: defineAsyncComponent(() => import('./Controls/VDirectBtn.vue'))
+  }),
+
+  // 数字选择器
+  [AutoFromControlsEnum.NumberSelect]: _({
+    component: defineAsyncComponent(() => import('./Controls/NumberSelect.vue'))
   })
 }
 

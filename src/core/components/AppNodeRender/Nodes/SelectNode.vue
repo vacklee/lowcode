@@ -34,7 +34,7 @@ const onClick = () => {
       selected && $style.selected,
       isEmpty && $style.empty
     ]"
-    @click="onClick"
+    @click.stop="onClick"
   >
     <slot />
   </div>

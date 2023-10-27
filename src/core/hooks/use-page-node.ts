@@ -75,6 +75,35 @@ export function usePageNode() {
     return newComp
   }
 
+  /** 删除节点 */
+  const deleteNode = (nodeId: string) => {
+    const parentNode = getParentNode(nodeId)
+    if (!parentNode) return false
+    const index = parentNode.nodes.findIndex(item => item.instanceID === nodeId)
+    if (index > -1) {
+      parentNode.nodes.splice(index, 1)
+      return true
+    }
+    return false
+  }
+
+  /** 删除节点 */
+  const spliceNode = (
+    parentId: string | AppComponent,
+    startIndex: number,
+    deleteNum?: number,
+    ...newNodes: AppComponent[]
+  ) => {
+    const parentNode =
+      typeof parentId === 'string' ? getNodeById(parentId) : parentId
+    if (!parentNode) return
+    parentNode.nodes.splice(
+      startIndex,
+      deleteNum ?? parentNode.nodes.length,
+      ...newNodes
+    )
+  }
+
   /** 获取节点路径 */
   const getNodePaths = (id: string | AppComponent) => {
     if (!bodyNode.value) return []
@@ -147,6 +176,8 @@ export function usePageNode() {
     currentNode,
     setNodeAttrs,
     watchNode,
-    emitNode
+    emitNode,
+    deleteNode,
+    spliceNode
   }
 }

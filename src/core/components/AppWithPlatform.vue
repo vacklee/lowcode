@@ -54,7 +54,7 @@ const platformClasses = computed(() => {
 </script>
 
 <template>
-  <div :class="$style.platform_outer" :style="outerStyle" @click.stop>
+  <div :class="$style.platform_outer" :style="outerStyle">
     <div :class="$style.platform" :style="wrapStyle">
       <div
         :class="[$style.platform_inner, platformClasses]"

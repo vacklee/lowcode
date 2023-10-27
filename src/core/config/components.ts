@@ -65,6 +65,19 @@ export const resetComponents = {
               bottomText: '向下添加行'
             }
           }
+        ),
+        autoFormColumn(
+          AutoFromControlsEnum.NumberSelect,
+          'cols',
+          '列数量',
+          '',
+          {
+            controlProps: {
+              min: 1,
+              max: 12,
+              step: 1
+            }
+          }
         )
       ]
     }
