@@ -5,7 +5,7 @@ import { computed } from 'vue'
 import RenderNode from '../Nodes/RenderNode.vue'
 import SelectNode from '../Nodes/SelectNode.vue'
 
-const { insertNode } = usePageNode()
+const { insertNode, watchNode, emitNode } = usePageNode()
 
 const props = defineProps<{
   node: AppComponent
@@ -24,6 +24,15 @@ const nodes = computed(() => {
     insertNode(props.node.instanceID, 'GRID_LAYOUT_ROW')
   }
   return _nodes
+})
+
+/** 添加行 */
+watchNode<'top' | 'bottom'>(props.node, 'row', ({ value }) => {
+  const targetNode =
+    value === 'top' ? nodes.value[0] : nodes.value[nodes.value.length - 1]
+  if (targetNode) {
+    emitNode(targetNode, 'row', value)
+  }
 })
 </script>
 

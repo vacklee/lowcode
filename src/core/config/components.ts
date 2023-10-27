@@ -36,7 +36,21 @@ export const resetComponents = {
         rows: 1,
         rowGap: '8px',
         colGap: '8px'
-      }
+      },
+      baseAttrsForm: [
+        autoFormColumn(
+          AutoFromControlsEnum.VDirectBtn,
+          'emit:row',
+          '添加行',
+          '',
+          {
+            controlProps: {
+              topText: '向上添加行',
+              bottomText: '向下添加行'
+            }
+          }
+        )
+      ]
     }
   ),
 
