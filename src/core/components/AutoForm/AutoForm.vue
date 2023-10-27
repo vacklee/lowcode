@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { type Component } from 'vue'
-import { AutoFormColumn, AutoFromControls } from './types'
+import { AutoFormColumn, AutoFromControls, AutoFromControlsEnum } from './types'
 import { FormProps } from 'element-plus'
 
 withDefaults(
@@ -21,7 +21,9 @@ withDefaults(
   }
 )
 
-const getControl = (column: AutoFormColumn) => {
+const getControl = <T extends AutoFromControlsEnum>(
+  column: AutoFormColumn<T>
+) => {
   const res = AutoFromControls[column.type](column.controlProps)
   return {
     component: res.component as Component,

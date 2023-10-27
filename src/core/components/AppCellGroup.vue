@@ -10,11 +10,13 @@ withDefaults(
     options: () => []
   }
 )
+
+const _ = (item: any) => item
 </script>
 
 <template>
   <div :class="$style.group">
-    <AppCell v-for="(item, index) in options" :key="index" v-bind="item" />
+    <AppCell v-for="(item, index) in options" :key="index" v-bind="_(item)" />
   </div>
   <el-divider :class="$style.divider" v-if="divider" />
 </template>

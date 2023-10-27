@@ -1,10 +1,18 @@
+<script lang="ts">
+import { type Component } from 'vue'
+
+type IconProp = string | Component
+
+export type { IconProp }
+</script>
+
 <script lang="ts" setup>
-import { computed, type Component } from 'vue'
+import { computed } from 'vue'
 import AppCIcon from './AppCIcon.vue'
 
 const props = withDefaults(
   defineProps<{
-    icon: string | Component
+    icon: IconProp
     size?: number
   }>(),
   {

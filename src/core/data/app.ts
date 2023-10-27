@@ -1,6 +1,7 @@
 import { getCanvasConfigs } from 'core/config/canvas'
 import { AppPlatform } from 'core/config/enum'
 import { AppComponent } from './component'
+import { InsetStyle } from '../config/styles'
 
 export { AppPlatform }
 
@@ -54,6 +55,8 @@ export type AppPage = {
   title: string
   // 页面节点树
   nodeTree: AppComponent[]
+  // 根节点样式
+  bodyVisualCss: Partial<InsetStyle>
 }
 
 // 应用基础信息
@@ -80,6 +83,23 @@ export type AppData = {
   state: AppState
 }
 
+/** 创建页面 */
+export function createAppPage(
+  id: string,
+  title: string,
+  opts?: Partial<AppPage>
+) {
+  const page: AppPage = {
+    id,
+    title,
+    groupdId: '',
+    nodeTree: [],
+    bodyVisualCss: {},
+    ...(opts || {})
+  }
+  return page
+}
+
 export default function createAppData(): AppData {
   return {
     basicInfo: {
@@ -89,14 +109,7 @@ export default function createAppData(): AppData {
       description: ''
     },
     pageGroups: [],
-    pages: [
-      {
-        id: 'page-1',
-        title: '测试',
-        groupdId: '',
-        nodeTree: []
-      }
-    ],
+    pages: [createAppPage('page-1', '测试')],
     state: {
       indexPage: '',
       currentPage: 'page-1',

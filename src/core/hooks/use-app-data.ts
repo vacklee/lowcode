@@ -1,6 +1,12 @@
 import { computed, defineAsyncComponent, getCurrentInstance, h } from 'vue'
 import { FormInstance, ElMessageBox } from 'element-plus'
-import { AppData, AppPage, AppPlatform, AppState } from '../data/app'
+import {
+  AppData,
+  AppPage,
+  AppPlatform,
+  AppState,
+  createAppPage
+} from '../data/app'
 import { DialogEvents, useDialog } from './use-dialog'
 import { genId } from 'core/utils/common'
 import commonStyle from 'core/styles/common.module.scss'
@@ -8,7 +14,7 @@ import { heightlight } from 'core/utils/h'
 import { useDialogX } from './use-dialog-x'
 import { cloneDeep } from 'lodash'
 import { canvasConfigMap } from 'core/config/canvas'
-import { isPixel } from '../utils/unit'
+import { isPixel, parsePixel } from '../utils/unit'
 
 export type DialogCallback<T = unknown> = (action: 'cancel' | 'confirm') => T
 
@@ -203,12 +209,7 @@ export function usePageData() {
 
   // 新建页面数据
   const addPage = (id: string, title: string) => {
-    appData.value.pages.push({
-      id,
-      title,
-      groupdId: '',
-      nodeTree: []
-    })
+    appData.value.pages.push(createAppPage(id, title))
   }
 
   // 新建页面弹窗
@@ -373,14 +374,14 @@ export function useCanvasData() {
   // 像素换算
   const toPx = (pixel: unknown) => {
     if (!isPixel(pixel)) return '0px'
-    const [, numStr, uniStr] = pixel.match(/^(\d+)(px|rem|rpx)$/)!
+    const { value: numStr, unit: uniStr } = parsePixel(pixel)
     let num = +numStr
     if (uniStr === 'rem') {
       num *= 10
     } else if (uniStr === 'rpx' && canvasAttrs.value) {
       num = canvasAttrs.value.width * (num / 750)
     }
-    return `${num}px`
+    return `${num}${uniStr}`
   }
 
   return {

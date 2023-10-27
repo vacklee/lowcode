@@ -5,6 +5,11 @@ import { Constants } from '../config/constant'
 import { deepFind } from '../utils/common'
 import { AppComponent } from '../data/component'
 import { useEvents } from './use-events'
+import {
+  InsetStyle,
+  InsetStyleKey,
+  transformInsetStyle
+} from '../config/styles'
 
 /** 页面节点相关 */
 export function usePageNode() {
@@ -33,6 +38,7 @@ export function usePageNode() {
     )
     node.nodes = currentPage.value.nodeTree
     node.instanceName = `页面：${currentPage.value.title}`
+    node.visualCss = currentPage.value.bodyVisualCss
     return node
   })
 
@@ -165,6 +171,33 @@ export function usePageNode() {
     }
   }
 
+  /** 设置CSS属性 */
+  const setVirsualCss = <K extends InsetStyleKey>(
+    node: AppComponent,
+    key: K,
+    val: InsetStyle[K] | null
+  ) => {
+    if (val === null) {
+      delete node.visualCss[key]
+    } else {
+      node.visualCss[key] = val
+    }
+  }
+
+  /** 获取CSS属性 */
+  const useVirsualCss = <K extends InsetStyleKey>(
+    node: () => AppComponent,
+    key: K
+  ) =>
+    computed({
+      get: () => node().visualCss[key],
+      set: val => setVirsualCss(node(), key, val ?? null)
+    })
+
+  /** 计算内联样式 */
+  const computedInsetStyles = (node: AppComponent) =>
+    transformInsetStyle(node.visualCss)
+
   return {
     currentPage,
     getNodeById,
@@ -178,6 +211,9 @@ export function usePageNode() {
     watchNode,
     emitNode,
     deleteNode,
-    spliceNode
+    spliceNode,
+    useVirsualCss,
+    setVirsualCss,
+    computedInsetStyles
   }
 }

@@ -1,3 +1,5 @@
+import { CSSProperties } from 'vue'
+
 // 颜色
 export type Color = string
 
@@ -191,4 +193,56 @@ export type InsetStyle = {
   opacity: string
   // 定位
   position: Position
+}
+
+export type InsetStyleKey = keyof InsetStyle
+
+// 背景转换
+export function transformBackground(
+  value: Background
+): Partial<CSSStyleDeclaration> {
+  if (value === BackgroundType.DEFAULT) {
+    return {}
+  }
+  if (value === BackgroundType.NONE) {
+    return {
+      background: 'none'
+    }
+  }
+  if (value.type === BackgroundType.COLOR) {
+    return {
+      backgroundColor: value.color
+    }
+  }
+
+  const cssStyles: Partial<CSSStyleDeclaration> = {}
+  if (value.url) {
+    cssStyles.backgroundImage = `url("${value.url}")`
+  }
+  if (value.size) {
+    cssStyles.backgroundSize = `${value.size.x} ${value.size.y}`
+  }
+  if (value.repeat) {
+    cssStyles.backgroundRepeat = value.repeat
+  }
+  if (value.position) {
+    cssStyles.backgroundPosition = `${value.position.x} ${value.position.y}`
+  }
+
+  return cssStyles
+}
+
+// 样式转换
+export function transformInsetStyle(styles: Partial<InsetStyle>) {
+  const cssStyles: Partial<CSSProperties> = {}
+  // 直接赋值
+  const copyValue = (key: InsetStyleKey) => {
+    if (styles[key]) {
+      Object.assign(cssStyles, { [key]: styles[key] })
+    }
+  }
+
+  copyValue('fontSize')
+
+  return cssStyles
 }

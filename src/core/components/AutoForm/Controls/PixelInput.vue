@@ -1,23 +1,46 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { parsePixel } from '@/core/utils/unit'
+import { parsePixel, Unit } from '@/core/utils/unit'
 
-const props = defineProps<{
-  modelValue?: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string
+    size?: 'small' | 'large' | 'default'
+    // 允许空值
+    allowEmpty?: boolean
+    // 固定单位
+    fixedUnit?: Unit
+    placeholder?: string
+  }>(),
+  {
+    size: 'small'
+  }
+)
 
 const emits = defineEmits(['update:modelValue'])
 
 const pixelValue = computed({
-  get: () => parsePixel(props.modelValue).value,
+  get: () => (props.modelValue ? parsePixel(props.modelValue).value : ''),
   set: val => {
-    emits('update:modelValue', `${val || 0}${pixelUnit.value}`)
+    if (!val && props.allowEmpty) {
+      emits('update:modelValue', void 0)
+    } else {
+      emits('update:modelValue', `${val || 0}${pixelUnit.value}`)
+    }
   }
 })
 
 const pixelUnit = computed({
-  get: () => parsePixel(props.modelValue).unit,
+  get: () => {
+    if (props.fixedUnit) {
+      return props.fixedUnit
+    }
+    return parsePixel(props.modelValue).unit
+  },
   set: val => {
+    if (props.fixedUnit) {
+      return
+    }
     emits('update:modelValue', `${pixelValue.value}${val}`)
   }
 })
@@ -27,18 +50,24 @@ const pixelUnit = computed({
   <el-input
     :class="$style.input"
     type="number"
-    size="small"
+    :size="size"
     v-model="pixelValue"
     :min="0"
+    :placeholder="placeholder"
   >
-    <template #append>
+    <template #prefix>
+      <slot name="prefix" />
+    </template>
+
+    <template #append v-if="!fixedUnit">
       <el-select
         style="width: 60px"
         v-model="pixelUnit"
-        size="small"
+        :size="size"
         placement="bottom-end"
       >
         <el-option label="px" value="px" />
+        <el-option label="%" value="%" />
         <el-option label="rpx" value="rpx" />
         <el-option label="rem" value="rem" />
       </el-select>
@@ -54,6 +83,10 @@ const pixelUnit = computed({
       -webkit-appearance: none !important;
       display: none;
     }
+  }
+
+  & :global(.el-select__icon) {
+    font-size: 12px !important;
   }
 }
 </style>

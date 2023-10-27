@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useAppData } from 'core/hooks/use-app-data'
+import { usePageNode } from '@/core/hooks/use-page-node'
 
 const props = defineProps<{
   id: string
@@ -8,6 +9,7 @@ const props = defineProps<{
 }>()
 
 const { getCurrentSelectedNodeId, setCurrentSelectedNodeId } = useAppData()
+const { getNodeById, computedInsetStyles } = usePageNode()
 
 const selected = computed({
   get: () => getCurrentSelectedNodeId() === props.id,
@@ -25,10 +27,39 @@ const onClick = () => {
     selected.value = true
   }
 }
+
+/** 给父元素赋予内联样式 */
+const elRef = ref<HTMLElement>(null!)
+const parentInlineStyle = computed(() => {
+  const node = getNodeById(props.id)!
+  return computedInsetStyles(node)
+})
+
+onMounted(() => {
+  watch(
+    parentInlineStyle,
+    (newVal, oldVal) => {
+      const parentNode = elRef.value.parentNode
+      if (parentNode instanceof HTMLElement) {
+        if (oldVal) {
+          Object.keys(oldVal).forEach(key => {
+            Object.assign(parentNode.style, { [key]: null })
+          })
+        }
+        Object.assign(parentNode.style, newVal)
+      }
+    },
+    {
+      immediate: true,
+      deep: true
+    }
+  )
+})
 </script>
 
 <template>
   <div
+    ref="elRef"
     :class="[
       $style.select,
       selected && $style.selected,
