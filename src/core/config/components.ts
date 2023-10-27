@@ -6,6 +6,7 @@ import {
   AutoFromControlsEnum,
   autoFormColumn
 } from '../components/AutoForm/types'
+import { verticalAligns } from './select'
 
 // 内置组件
 export const resetComponents = {
@@ -51,7 +52,7 @@ export const resetComponents = {
       baseAttrs: {
         cols: 3,
         colGap: Constants.CSS_INHERIT,
-        alignItems: 'flex-start'
+        alignItems: Constants.CSS_FLEX_START
       },
       baseAttrsForm: [
         autoFormColumn(
@@ -87,6 +88,17 @@ export const resetComponents = {
           {
             controlProps: {
               parentName: '网格布局'
+            }
+          }
+        ),
+        autoFormColumn(
+          AutoFromControlsEnum.IconSelect,
+          'alignItems',
+          '垂直对齐',
+          '',
+          {
+            controlProps: {
+              options: verticalAligns
             }
           }
         )

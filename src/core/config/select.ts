@@ -1,9 +1,14 @@
+import { type Component } from 'vue'
 import { Constants } from './constant'
 
 export type SelectOption = {
   value: number | string
   label: string
   default?: boolean
+}
+
+export type IconSelectOption = SelectOption & {
+  icon: string | Component
 }
 
 /** 间距 */
@@ -19,4 +24,23 @@ export const spacingOptions: SelectOption[] = [
   { value: '80px', label: '80px(超大)' },
   { value: '100px', label: '100px(超大)' },
   { value: '128px', label: '128px(超大)' }
+]
+
+/** 垂直对齐 */
+export const verticalAligns: IconSelectOption[] = [
+  {
+    value: Constants.CSS_FLEX_START,
+    label: '上对齐',
+    icon: 't-icon-style-align-top'
+  },
+  {
+    value: Constants.CSS_CENTER,
+    label: '垂直居中',
+    icon: 't-icon-style-align-vertical-center'
+  },
+  {
+    value: Constants.CSS_FLEX_END,
+    label: '下对齐',
+    icon: 't-icon-style-align-bottom'
+  }
 ]

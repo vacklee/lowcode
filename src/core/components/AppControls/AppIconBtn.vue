@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { type Component } from 'vue'
+import AppIcon from '../AppIcon.vue'
 
 defineProps<{
   icon: string | Component
@@ -13,10 +14,7 @@ const emits = defineEmits(['click'])
 <template>
   <el-tooltip :content="title" :show-after="1000">
     <div :class="[$style.btn, active && $style.active]" @click="emits('click')">
-      <i :class="icon" v-if="typeof icon === 'string'"></i>
-      <el-icon v-else>
-        <component :is="icon" />
-      </el-icon>
+      <AppIcon :icon="icon" :size="16" />
     </div>
   </el-tooltip>
 </template>
