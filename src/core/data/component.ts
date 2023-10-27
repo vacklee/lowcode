@@ -1,4 +1,5 @@
 import { AutoFormColumn } from '../components/AutoForm/types'
+import { InsetStyle } from '../config/styles'
 
 /**
  * 组件基础信息
@@ -40,6 +41,8 @@ export type AppComponent = {
   slot: string
   // 继承自
   extends: string[]
+  // 可视化配置CSS
+  visualCss: Partial<InsetStyle>
 }
 
 /** 创建组件 */
@@ -58,6 +61,7 @@ export function createAppComponent(
     nodes: [],
     slot: 'default',
     extends: [],
+    visualCss: {},
     ...(opts || {})
   }
 }
