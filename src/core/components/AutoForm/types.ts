@@ -14,7 +14,9 @@ export enum AutoFromControlsEnum {
   // 垂直两方向按钮
   VDirectBtn = 'VDirectBtn',
   // 数字选择器
-  NumberSelect = 'NumberSelect'
+  NumberSelect = 'NumberSelect',
+  // 间距选择器
+  SpacingSelect = 'SpacingSelect'
 }
 
 export type AutoFormControl<T extends Component = Component> = {
@@ -75,6 +77,13 @@ export const AutoFromControls = {
   // 数字选择器
   [AutoFromControlsEnum.NumberSelect]: _({
     component: defineAsyncComponent(() => import('./Controls/NumberSelect.vue'))
+  }),
+
+  // 间距选择器
+  [AutoFromControlsEnum.SpacingSelect]: _({
+    component: defineAsyncComponent(
+      () => import('./Controls/SpacingSelect.vue')
+    )
   })
 }
 

@@ -32,7 +32,7 @@ export const resetComponents = {
     },
     {
       baseAttrs: {
-        rows: 2,
+        rows: 1,
         rowGap: '8px',
         colGap: '8px'
       }
@@ -50,7 +50,7 @@ export const resetComponents = {
       extends: ['NOMAL_CONTAINER'],
       baseAttrs: {
         cols: 3,
-        colGap: 'inherit',
+        colGap: Constants.CSS_INHERIT,
         alignItems: 'flex-start'
       },
       baseAttrsForm: [
@@ -76,6 +76,17 @@ export const resetComponents = {
               min: 1,
               max: 12,
               step: 1
+            }
+          }
+        ),
+        autoFormColumn(
+          AutoFromControlsEnum.SpacingSelect,
+          'colGap',
+          '列间距',
+          '',
+          {
+            controlProps: {
+              parentName: '网格布局'
             }
           }
         )
