@@ -10,7 +10,9 @@ export enum AutoFromControlsEnum {
   // 列宽调节器
   CellWidth = 'CellWidth',
   // 列宽调节器单个
-  CellWidthItem = 'CellWidthItem'
+  CellWidthItem = 'CellWidthItem',
+  // 垂直两方向按钮
+  VDirectBtn = 'VDirectBtn'
 }
 
 export type AutoFormControl<T extends Component = Component> = {
@@ -61,12 +63,26 @@ export const AutoFromControls = {
     component: defineAsyncComponent(
       () => import('./Controls/CellWidthItem.vue')
     )
+  }),
+
+  // 垂直两方向按钮
+  [AutoFromControlsEnum.VDirectBtn]: _({
+    component: defineAsyncComponent(() => import('./Controls/VDirectBtn.vue'))
   })
 }
 
-export type AutoFormControlType = keyof typeof AutoFromControls
+export type AutoFormControlRaws = typeof AutoFromControls
+export type AutoFormControlType = keyof AutoFormControlRaws
+export type AutoFormControlItem<K extends AutoFormControlType> =
+  AutoFormControlRaws[K]
+export type AutoFormControlComponent<K extends AutoFormControlType> =
+  ReturnType<AutoFormControlItem<K>> extends { component: infer P }
+    ? P extends Component
+      ? P
+      : never
+    : never
 
-export type AutoFormColumn = {
+export type AutoFormColumn<T extends AutoFormControlType = any> = {
   // 数据标识
   name: string
   // 标题
@@ -74,20 +90,20 @@ export type AutoFormColumn = {
   // 描述
   description: string
   // 类型
-  type: AutoFormControlType
+  type: T
   // 其他配置
   elFormItemProps?: Partial<FormItemProps>
   // 控件配置
-  controlProps?: Record<string, unknown>
+  controlProps?: Partial<PropsOf<AutoFormControlComponent<T>>>
 }
 
-export function autoFormColumn(
-  type: AutoFormControlType,
+export function autoFormColumn<T extends AutoFormControlType>(
+  type: T,
   name: string,
   label: string,
   description = '',
-  others?: Partial<AutoFormColumn>
-): AutoFormColumn {
+  others?: Partial<AutoFormColumn<T>>
+): AutoFormColumn<T> {
   return {
     type,
     name,

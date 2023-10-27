@@ -52,7 +52,21 @@ export const resetComponents = {
         cols: 3,
         colGap: 'inherit',
         alignItems: 'flex-start'
-      }
+      },
+      baseAttrsForm: [
+        autoFormColumn(
+          AutoFromControlsEnum.VDirectBtn,
+          'emit:row',
+          '添加行',
+          '',
+          {
+            controlProps: {
+              topText: '向上添加行',
+              bottomText: '向下添加行'
+            }
+          }
+        )
+      ]
     }
   ),
 

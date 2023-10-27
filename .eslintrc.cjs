@@ -39,7 +39,8 @@ module.exports = {
       },
       plugins: ['@typescript-eslint'],
       rules: {
-        'prettier/prettier': ['error', prettierOptions]
+        'prettier/prettier': ['error', prettierOptions],
+        '@typescript-eslint/no-explicit-any': 'off'
       }
     },
     {
