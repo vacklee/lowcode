@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import AppCollapse from '../AppCollapse.vue'
 import { AppTab } from '../AppTabs.vue'
+import AppVisualStylesLayout from './AppVisualStylesLayout.vue'
 import AppVisualStylesText from './AppVisualStylesText.vue'
 
 const tabs: AppTab[] = [
@@ -11,7 +12,8 @@ const tabs: AppTab[] = [
   },
   {
     id: 'layout',
-    title: '布局'
+    title: '布局',
+    component: AppVisualStylesLayout
   },
   {
     id: 'fill',

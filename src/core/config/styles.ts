@@ -234,18 +234,29 @@ export function transformBackground(
 }
 
 // 样式转换
-export function transformInsetStyle(styles: Partial<InsetStyle>) {
+export function transformInsetStyle(
+  styles: Partial<InsetStyle>,
+  opts: {
+    toPx: (pixel: unknown) => string
+  }
+) {
   const cssStyles: Partial<CSSProperties> = {}
   // 直接赋值
-  const copyValue = <K extends InsetStyleKey>(
+  const copyValue = <K extends InsetStyleKey, T>(
     key: K,
-    validate?: (value: InsetStyle[K]) => boolean
+    validate?: (value: InsetStyle[K]) => boolean,
+    transform?: (value: InsetStyle[K]) => T
   ) => {
     if (styles[key]) {
       if (validate && !validate(styles[key] as InsetStyle[K])) {
         return
       }
-      Object.assign(cssStyles, { [key]: styles[key] })
+
+      let val: any = styles[key]
+      if (transform) {
+        val = transform(val as InsetStyle[K])
+      }
+      Object.assign(cssStyles, { [key]: val })
     }
   }
 
@@ -254,6 +265,7 @@ export function transformInsetStyle(styles: Partial<InsetStyle>) {
   copyValue('fontWeight')
   copyValue('lineHeight')
   copyValue('textAlign')
+  copyValue('width', void 0, opts.toPx)
 
   return cssStyles
 }

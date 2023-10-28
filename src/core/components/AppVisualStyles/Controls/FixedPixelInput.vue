@@ -1,11 +1,19 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import PixelInput from 'core/components/AutoForm/Controls/PixelInput.vue'
+import { Unit } from '@/core/utils/unit'
 
-const props = defineProps<{
-  modelValue?: string
-  title: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string
+    title: string
+    hidePlaceholder?: boolean
+    fixedUnit?: Unit | 'none'
+  }>(),
+  {
+    fixedUnit: 'px'
+  }
+)
 
 const emits = defineEmits(['update:modelValue'])
 const innerValue = computed({
@@ -22,9 +30,10 @@ const innerValue = computed({
       <PixelInput
         size="default"
         :allow-empty="true"
-        fixed-unit="px"
-        :placeholder="title"
+        :fixed-unit="fixedUnit === 'none' ? void 0 : fixedUnit"
+        :placeholder="hidePlaceholder ? '' : title"
         v-model="innerValue"
+        :class="$style.input"
       >
         <template #prefix>
           <slot />
@@ -33,3 +42,27 @@ const innerValue = computed({
     </el-tooltip>
   </div>
 </template>
+
+<style lang="scss" module>
+.input {
+  & :global(.el-select) {
+    width: 50px !important;
+
+    & :global(.el-input__wrapper) {
+      padding: 0 $spacing-mini !important;
+    }
+
+    &:global(.el-select--default) :global(.el-input__wrapper) {
+      height: 34px;
+    }
+
+    & :global(.el-select__icon) {
+      margin: 0 !important;
+    }
+  }
+
+  & :global(.el-input-group__append) {
+    box-shadow: none !important;
+  }
+}
+</style>

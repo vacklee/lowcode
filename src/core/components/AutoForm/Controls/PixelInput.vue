@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { parsePixel, Unit } from '@/core/utils/unit'
 
 const props = withDefaults(
@@ -30,15 +30,20 @@ const pixelValue = computed({
   }
 })
 
+const defaultUnit = ref(parsePixel(props.modelValue).unit || 'px')
 const pixelUnit = computed({
   get: () => {
     if (props.fixedUnit) {
       return props.fixedUnit
     }
-    return parsePixel(props.modelValue).unit
+    return parsePixel(props.modelValue, defaultUnit.value).unit
   },
   set: val => {
     if (props.fixedUnit) {
+      return
+    }
+    defaultUnit.value = val
+    if (!pixelValue.value && props.allowEmpty) {
       return
     }
     emits('update:modelValue', `${pixelValue.value}${val}`)

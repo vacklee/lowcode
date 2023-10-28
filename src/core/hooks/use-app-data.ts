@@ -393,12 +393,15 @@ export function useCanvasData() {
   // 像素换算
   const toPx = (pixel: unknown) => {
     if (!isPixel(pixel)) return '0px'
-    const { value: numStr, unit: uniStr } = parsePixel(pixel)
+    const { value: numStr, unit: _uniStr } = parsePixel(pixel)
     let num = +numStr
+    let uniStr = _uniStr
     if (uniStr === 'rem') {
       num *= 10
+      uniStr = 'px'
     } else if (uniStr === 'rpx' && canvasAttrs.value) {
       num = canvasAttrs.value.width * (num / 750)
+      uniStr = 'px'
     }
     return `${num}${uniStr}`
   }

@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useAppData } from './use-app-data'
+import { useAppData, useCanvasData } from './use-app-data'
 import { AllComponentIds, createComponentInstance } from '../config/components'
 import { Constants } from '../config/constant'
 import { deepFind } from '../utils/common'
@@ -19,6 +19,8 @@ export function usePageNode() {
     setCurrentSelectedNodeId,
     getCurrentSelectedNodeId
   } = useAppData()
+
+  const { toPx } = useCanvasData()
 
   const { on, emit } = useEvents()
 
@@ -196,7 +198,7 @@ export function usePageNode() {
 
   /** 计算内联样式 */
   const computedInsetStyles = (node: AppComponent) =>
-    transformInsetStyle(node.visualCss)
+    transformInsetStyle(node.visualCss, { toPx })
 
   return {
     currentPage,

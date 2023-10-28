@@ -12,10 +12,10 @@ export function isPixel(s: unknown): s is string {
   return typeof s === 'string' && /^\d+(px|rpx|rem|%)$/.test(s)
 }
 
-export function parsePixel(s: unknown) {
+export function parsePixel(s: unknown, defaultUnit = 'px') {
   const obj = {
     value: 0,
-    unit: 'px'
+    unit: defaultUnit
   }
 
   if (isPixel(s)) {
