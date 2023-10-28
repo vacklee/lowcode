@@ -4,6 +4,7 @@ import PixelInput from 'core/components/AutoForm/Controls/PixelInput.vue'
 
 const props = defineProps<{
   modelValue?: string
+  title: string
 }>()
 
 const emits = defineEmits(['update:modelValue'])
@@ -16,25 +17,19 @@ const innerValue = computed({
 </script>
 
 <template>
-  <div :class="$style.box">
-    <el-tooltip content="字号" :show-after="1000" placement="bottom">
+  <div>
+    <el-tooltip :content="title" :show-after="1000" placement="bottom">
       <PixelInput
         size="default"
         :allow-empty="true"
         fixed-unit="px"
-        placeholder="字号"
+        :placeholder="title"
         v-model="innerValue"
       >
         <template #prefix>
-          <span>A</span>
+          <slot />
         </template>
       </PixelInput>
     </el-tooltip>
   </div>
 </template>
-
-<style lang="scss" module>
-.box {
-  grid-area: font-size;
-}
-</style>

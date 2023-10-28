@@ -171,7 +171,7 @@ export type InsetStyle = {
   // 字重
   fontWeight: FontWeight
   // 行高
-  lightHeight: number | string
+  lineHeight: string
   // 文字对齐
   textAlign: TextAlign
   // 宽
@@ -252,6 +252,7 @@ export function transformInsetStyle(styles: Partial<InsetStyle>) {
   copyValue('fontSize')
   copyValue('color', isColor)
   copyValue('fontWeight')
+  copyValue('lineHeight')
 
   return cssStyles
 }
