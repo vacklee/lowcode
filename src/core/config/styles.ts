@@ -251,6 +251,7 @@ export function transformInsetStyle(styles: Partial<InsetStyle>) {
 
   copyValue('fontSize')
   copyValue('color', isColor)
+  copyValue('fontWeight')
 
   return cssStyles
 }
