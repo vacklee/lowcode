@@ -253,6 +253,7 @@ export function transformInsetStyle(styles: Partial<InsetStyle>) {
   copyValue('color', isColor)
   copyValue('fontWeight')
   copyValue('lineHeight')
+  copyValue('textAlign')
 
   return cssStyles
 }

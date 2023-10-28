@@ -1,6 +1,6 @@
 import { type Component } from 'vue'
 import { Constants } from './constant'
-import { FontWeight } from './styles'
+import { FontWeight, TextAlign } from './styles'
 
 export type SelectOption = {
   value: number | string
@@ -51,4 +51,28 @@ export const fontWeightOptions: SelectOption[] = [
   { value: FontWeight.LIGHTER, label: '细' },
   { value: FontWeight.NORMAL, label: '正常' },
   { value: FontWeight.BOLDER, label: '粗' }
+]
+
+/** 文字对齐 */
+export const textAlignOptions: IconSelectOption[] = [
+  {
+    value: TextAlign.LEFT,
+    label: '左对齐',
+    icon: 't-icon-style-align-left'
+  },
+  {
+    value: TextAlign.CENTER,
+    label: '居中对齐',
+    icon: 't-icon-style-text-align-center'
+  },
+  {
+    value: TextAlign.RIGHT,
+    label: '右对齐',
+    icon: 't-icon-style-align-right'
+  },
+  {
+    value: TextAlign.JUSTIFY,
+    label: '两端对齐',
+    icon: 't-icon-style-text-align-spacing'
+  }
 ]

@@ -3,13 +3,16 @@ import { usePageNode } from '@/core/hooks/use-page-node'
 import FixedPixelInput from './Controls/FixedPixelInput.vue'
 import ColorInput from './Controls/ColorInput.vue'
 import FontWeightSelect from './Controls/FontWeightSelect.vue'
+import AppCauselRadio from '../AppCauselRadio.vue'
 import AppIcon from '../AppIcon.vue'
+import { textAlignOptions } from '@/core/config/select'
 
 const { useVirsualCss, currentNode } = usePageNode()
 const fontSize = useVirsualCss(() => currentNode.value!, 'fontSize')
 const color = useVirsualCss(() => currentNode.value!, 'color')
 const fontWeight = useVirsualCss(() => currentNode.value!, 'fontWeight')
 const lineHeight = useVirsualCss(() => currentNode.value!, 'lineHeight')
+const textAlign = useVirsualCss(() => currentNode.value!, 'textAlign')
 </script>
 
 <template>
@@ -32,6 +35,12 @@ const lineHeight = useVirsualCss(() => currentNode.value!, 'lineHeight')
     >
       <AppIcon icon="t-icon-style-line-height" />
     </FixedPixelInput>
+
+    <AppCauselRadio
+      v-model="textAlign"
+      :options="textAlignOptions"
+      style="grid-area: text-align"
+    />
   </div>
 </template>
 
