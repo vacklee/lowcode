@@ -35,6 +35,8 @@ export type AppState = {
   showRightPanel: boolean
   // 当前右侧面板选中
   rightPanelTab: 'components' | 'settings'
+  // 常用颜色
+  commonUseColors: string[]
 }
 
 // 分组
@@ -123,7 +125,8 @@ export default function createAppData(): AppData {
       currentSelectNodeId: '',
       showLeftPanel: true,
       showRightPanel: true,
-      rightPanelTab: 'components'
+      rightPanelTab: 'components',
+      commonUseColors: []
     }
   }
 }

@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { toRGBColor } from 'core/utils/color'
+import { computed, watch } from 'vue'
+import { useAppData } from 'core/hooks/use-app-data'
+import { toRGBColor, isColor } from 'core/utils/color'
 
 const props = defineProps<{
   modelValue?: string
 }>()
 
+const { getCommonUseColors, setCommonUseColors } = useAppData()
 const emits = defineEmits(['update:modelValue'])
 
 const inputValue = computed({
@@ -17,6 +19,18 @@ const colorValue = computed({
   get: () => toRGBColor(props.modelValue),
   set: val => emits('update:modelValue', val)
 })
+
+// 预设颜色
+const predefine = computed(() => getCommonUseColors())
+
+watch(
+  () => props.modelValue,
+  color => {
+    if (isColor(color)) {
+      setCommonUseColors(color)
+    }
+  }
+)
 </script>
 
 <template>
@@ -27,10 +41,11 @@ const colorValue = computed({
       :trigger-keys="[]"
       placement="bottom"
     >
-      <el-input type="text" v-model="inputValue">
+      <el-input placeholder="#色值" type="text" v-model="inputValue">
         <template #prepend>
           <el-color-picker
             :show-alpha="true"
+            :predefine="predefine"
             color-format="rgb"
             v-model="colorValue"
           />

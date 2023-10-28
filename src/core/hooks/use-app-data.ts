@@ -63,6 +63,23 @@ export function useAppData() {
     }
   }
 
+  /** 获取常用颜色 */
+  const getCommonUseColors = () => {
+    return getAppState('commonUseColors').slice(0, 20)
+  }
+  /** 设置常用颜色 */
+  const setCommonUseColors = (color: string) => {
+    const commonUseColors = getAppState('commonUseColors')
+    const colorIndex = commonUseColors.indexOf(color)
+    if (colorIndex > -1) {
+      commonUseColors.splice(colorIndex, 1)
+    }
+    commonUseColors.unshift(color)
+    if (commonUseColors.length > 20) {
+      commonUseColors.splice(20)
+    }
+  }
+
   return {
     appData,
     isIndexPage,
@@ -71,7 +88,9 @@ export function useAppData() {
     setPlatfrom,
     setCanvasConfigName,
     getCurrentSelectedNodeId,
-    setCurrentSelectedNodeId
+    setCurrentSelectedNodeId,
+    getCommonUseColors,
+    setCommonUseColors
   }
 }
 
