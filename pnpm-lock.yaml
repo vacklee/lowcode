@@ -2,6 +2,8 @@ lockfileVersion: 5.3
 
 specifiers:
   '@element-plus/icons-vue': ^2.1.0
+  '@types/color-convert': ^2.0.2
+  '@types/color-string': ^1.5.4
   '@types/lodash': ^4.14.200
   '@types/node': ^20.8.7
   '@typescript-eslint/eslint-plugin': ^6.8.0
@@ -9,6 +11,8 @@ specifiers:
   '@vitejs/plugin-vue': ^4.2.3
   '@vueuse/components': ^10.5.0
   clipboard: ^2.0.11
+  color-convert: ^2.0.1
+  color-string: ^1.9.1
   element-plus: ^2.4.1
   eslint: ^8.52.0
   eslint-config-prettier: ^9.0.0
@@ -28,6 +32,8 @@ dependencies:
   '@element-plus/icons-vue': 2.1.0_vue@3.3.6
   '@vueuse/components': 10.5.0_vue@3.3.6
   clipboard: 2.0.11
+  color-convert: 2.0.1
+  color-string: 1.9.1
   element-plus: 2.4.1_vue@3.3.6
   lodash: 4.17.21
   sass: 1.69.4
@@ -35,6 +41,8 @@ dependencies:
   vue: 3.3.6_typescript@5.2.2
 
 devDependencies:
+  '@types/color-convert': 2.0.2
+  '@types/color-string': 1.5.4
   '@types/lodash': 4.14.200
   '@types/node': 20.8.7
   '@typescript-eslint/eslint-plugin': 6.8.0_bb176f890107067ad43269db0649d807
@@ -391,6 +399,20 @@ packages:
   /@trysound/sax/0.2.0:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
+    dev: true
+
+  /@types/color-convert/2.0.2:
+    resolution: {integrity: sha512-KGRIgCxwcgazts4MXRCikPbIMzBpjfdgEZSy8TRHU/gtg+f9sOfHdtK8unPfxIoBtyd2aTTwINVLSNENlC8U8A==}
+    dependencies:
+      '@types/color-name': 1.1.2
+    dev: true
+
+  /@types/color-name/1.1.2:
+    resolution: {integrity: sha512-JWO/ZyxTKk0bLuOhAavGjnwLR73rUE7qzACnU7gMeyA/gdrSHm2xJwqNPipw2MtaZUaqQ2UG/q7pP6AQiZ8mqw==}
+    dev: true
+
+  /@types/color-string/1.5.4:
+    resolution: {integrity: sha512-FfRPJbKtmmfczTbMgU1pO3dSHUhfmH8HJb/AffvU4WgzmM3RnHp4uT95BS+9PJNpZNJQcDyLnxusFPjzQ0sl7w==}
     dev: true
 
   /@types/json-schema/7.0.14:
@@ -1037,11 +1059,16 @@ packages:
     engines: {node: '>=7.0.0'}
     dependencies:
       color-name: 1.1.4
-    dev: true
 
   /color-name/1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
-    dev: true
+
+  /color-string/1.9.1:
+    resolution: {integrity: sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==}
+    dependencies:
+      color-name: 1.1.4
+      simple-swizzle: 0.2.2
+    dev: false
 
   /commander/7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
@@ -1872,6 +1899,10 @@ packages:
     dependencies:
       kind-of: 6.0.3
     dev: true
+
+  /is-arrayish/0.3.2:
+    resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
+    dev: false
 
   /is-binary-path/2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
@@ -2707,6 +2738,12 @@ packages:
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
+
+  /simple-swizzle/0.2.2:
+    resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
+    dependencies:
+      is-arrayish: 0.3.2
+    dev: false
 
   /slash/3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}

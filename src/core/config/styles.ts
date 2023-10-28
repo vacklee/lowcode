@@ -1,4 +1,5 @@
 import { CSSProperties } from 'vue'
+import { isColor } from '../utils/color'
 
 // 颜色
 export type Color = string
@@ -236,13 +237,20 @@ export function transformBackground(
 export function transformInsetStyle(styles: Partial<InsetStyle>) {
   const cssStyles: Partial<CSSProperties> = {}
   // 直接赋值
-  const copyValue = (key: InsetStyleKey) => {
+  const copyValue = <K extends InsetStyleKey>(
+    key: K,
+    validate?: (value: InsetStyle[K]) => boolean
+  ) => {
     if (styles[key]) {
+      if (validate && !validate(styles[key] as InsetStyle[K])) {
+        return
+      }
       Object.assign(cssStyles, { [key]: styles[key] })
     }
   }
 
   copyValue('fontSize')
+  copyValue('color', isColor)
 
   return cssStyles
 }
