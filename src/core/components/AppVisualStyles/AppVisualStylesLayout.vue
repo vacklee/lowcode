@@ -4,6 +4,7 @@ import FixedPixelInput from './Controls/FixedPixelInput.vue'
 
 const { useVirsualCss, currentNode } = usePageNode()
 const width = useVirsualCss(() => currentNode.value!, 'width')
+const height = useVirsualCss(() => currentNode.value!, 'height')
 </script>
 
 <template>
@@ -16,6 +17,16 @@ const width = useVirsualCss(() => currentNode.value!, 'width')
       style="grid-area: width"
     >
       <span>宽</span>
+    </FixedPixelInput>
+
+    <FixedPixelInput
+      v-model="height"
+      title="高度"
+      :hide-placeholder="true"
+      fixed-unit="none"
+      style="grid-area: height"
+    >
+      <span>高</span>
     </FixedPixelInput>
   </div>
 </template>

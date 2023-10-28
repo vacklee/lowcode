@@ -266,6 +266,7 @@ export function transformInsetStyle(
   copyValue('lineHeight')
   copyValue('textAlign')
   copyValue('width', void 0, opts.toPx)
+  copyValue('height', void 0, opts.toPx)
 
   return cssStyles
 }
