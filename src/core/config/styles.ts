@@ -24,10 +24,10 @@ export enum TextAlign {
 
 // 四方向单位
 export type FourDirect = {
-  top: string
-  left: string
-  right: string
-  bottom: string
+  top?: string
+  left?: string
+  right?: string
+  bottom?: string
 }
 
 // 坐标方向
@@ -233,6 +233,24 @@ export function transformBackground(
   return cssStyles
 }
 
+// 四方向转换
+export function transformFourDirect(
+  data: FourDirect,
+  toPx: (pixel: unknown) => string,
+  prefix = '',
+  translate?: Partial<Record<keyof FourDirect, string>>
+) {
+  const css: Partial<CSSProperties> = {}
+  Object.keys(data).forEach(_key => {
+    const key = _key as keyof FourDirect
+    const cssKey = `${prefix}${translate?.[key] || key}` as any
+    if (data[key]) {
+      css[cssKey] = toPx(data[key])
+    }
+  })
+  return css
+}
+
 // 样式转换
 export function transformInsetStyle(
   styles: Partial<InsetStyle>,
@@ -241,6 +259,7 @@ export function transformInsetStyle(
   }
 ) {
   const cssStyles: Partial<CSSProperties> = {}
+
   // 直接赋值
   const copyValue = <K extends InsetStyleKey, T>(
     key: K,
@@ -267,6 +286,20 @@ export function transformInsetStyle(
   copyValue('textAlign')
   copyValue('width', void 0, opts.toPx)
   copyValue('height', void 0, opts.toPx)
+
+  if (styles.margin) {
+    Object.assign(
+      cssStyles,
+      transformFourDirect(styles.margin, opts.toPx, 'margin-')
+    )
+  }
+
+  if (styles.padding) {
+    Object.assign(
+      cssStyles,
+      transformFourDirect(styles.padding, opts.toPx, 'padding-')
+    )
+  }
 
   return cssStyles
 }

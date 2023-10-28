@@ -6,6 +6,7 @@ import { usePageNode } from '@/core/hooks/use-page-node'
 const props = defineProps<{
   id: string
   isEmpty?: boolean
+  isBody?: boolean
 }>()
 
 const { getCurrentSelectedNodeId, setCurrentSelectedNodeId } = useAppData()
@@ -63,7 +64,8 @@ onMounted(() => {
     :class="[
       $style.select,
       selected && $style.selected,
-      isEmpty && $style.empty
+      isEmpty && $style.empty,
+      isBody && $style.is_body
     ]"
     @click.stop="onClick"
   >
@@ -85,6 +87,10 @@ onMounted(() => {
     height: auto;
     min-height: 100%;
     position: relative;
+  }
+
+  &.is_body {
+    position: absolute;
   }
 
   &::before {

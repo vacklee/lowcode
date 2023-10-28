@@ -9,7 +9,7 @@ export type CellSpan = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 export type CellWidth = CellWidthEnum | CellSpan | string
 
 export function isPixel(s: unknown): s is string {
-  return typeof s === 'string' && /^\d+(px|rpx|rem|%)$/.test(s)
+  return typeof s === 'string' && /^-?\d+(\.\d+)?(px|rpx|rem|%)$/.test(s)
 }
 
 export function parsePixel(s: unknown, defaultUnit = 'px') {
@@ -19,7 +19,7 @@ export function parsePixel(s: unknown, defaultUnit = 'px') {
   }
 
   if (isPixel(s)) {
-    const [, numStr, uniStr] = s.match(/^(\d+)(px|rem|rpx|%)$/)!
+    const [, numStr, , uniStr] = s.match(/^(-?\d+(\.\d+)?)(px|rem|rpx|%)$/)!
     obj.value = +numStr
     obj.unit = uniStr
   }

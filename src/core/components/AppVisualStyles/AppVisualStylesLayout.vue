@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { usePageNode } from '@/core/hooks/use-page-node'
 import FixedPixelInput from './Controls/FixedPixelInput.vue'
+import MarginPadding from './Controls/MarginPadding.vue'
 
 const { useVirsualCss, currentNode } = usePageNode()
 const width = useVirsualCss(() => currentNode.value!, 'width')
 const height = useVirsualCss(() => currentNode.value!, 'height')
+const margin = useVirsualCss(() => currentNode.value!, 'margin')
+const padding = useVirsualCss(() => currentNode.value!, 'padding')
 </script>
 
 <template>
@@ -28,6 +31,12 @@ const height = useVirsualCss(() => currentNode.value!, 'height')
     >
       <span>高</span>
     </FixedPixelInput>
+
+    <MarginPadding
+      v-model:margin="margin"
+      v-model:padding="padding"
+      style="grid-area: margin-padding"
+    />
   </div>
 </template>
 
@@ -39,6 +48,6 @@ const height = useVirsualCss(() => currentNode.value!, 'height')
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas:
     'width height'
-    'padding-margin padding-margin';
+    'margin-padding margin-padding';
 }
 </style>
