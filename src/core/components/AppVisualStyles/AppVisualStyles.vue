@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import AppCollapse from '../AppCollapse.vue'
 import { AppTab } from '../AppTabs.vue'
+import AppVisualStylesFill from './AppVisualStylesFill.vue'
 import AppVisualStylesLayout from './AppVisualStylesLayout.vue'
 import AppVisualStylesText from './AppVisualStylesText.vue'
 
@@ -17,7 +18,8 @@ const tabs: AppTab[] = [
   },
   {
     id: 'fill',
-    title: '填充'
+    title: '填充',
+    component: AppVisualStylesFill
   },
   {
     id: 'height-level',

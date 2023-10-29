@@ -2,18 +2,37 @@
 import { type Component } from 'vue'
 import AppIcon from '../AppIcon.vue'
 
-defineProps<{
-  icon: string | Component
-  title: string
-  active?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    icon: string | Component
+    title?: string
+    active?: boolean
+    size?: number
+    clickCancel?: boolean
+  }>(),
+  {
+    size: 28
+  }
+)
 
-const emits = defineEmits(['click'])
+const emits = defineEmits(['click', 'update:active'])
+const onClick = () => {
+  emits('click')
+  if (props.active && props.clickCancel) {
+    emits('update:active', false)
+  } else {
+    emits('update:active', true)
+  }
+}
 </script>
 
 <template>
-  <el-tooltip :content="title" :show-after="1000">
-    <div :class="[$style.btn, active && $style.active]" @click="emits('click')">
+  <el-tooltip :content="title" :show-after="1000" :disabled="!title">
+    <div
+      :class="[$style.btn, active && $style.active]"
+      :style="`--size: ${size}px`"
+      @click="onClick"
+    >
       <AppIcon :icon="icon" :size="16" />
     </div>
   </el-tooltip>
@@ -21,8 +40,8 @@ const emits = defineEmits(['click'])
 
 <style lang="scss" module>
 .btn {
-  width: 28px;
-  height: 28px;
+  width: var(--size);
+  height: var(--size);
   display: inline-flex;
   align-items: center;
   justify-content: center;

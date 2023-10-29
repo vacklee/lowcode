@@ -1,24 +1,35 @@
+<script lang="ts">
+import { IconSelectOption, SelectOption } from '../config/select'
+
+type Option = IconSelectOption | SelectOption
+
+export type { Option }
+</script>
+
 <script lang="ts" setup>
-import { IconSelectOption } from '../config/select'
 import AppIcon from './AppIcon.vue'
 
 const props = withDefaults(
   defineProps<{
-    options?: IconSelectOption[]
+    options?: Option[]
     modelValue?: string | number
+    // 点击取消当前选中
+    clickCancel?: boolean
   }>(),
   {
-    options: () => []
+    options: () => [],
+    clickCancel: true
   }
 )
 
 const emits = defineEmits(['update:modelValue'])
-const isActive = (item: IconSelectOption) => item.value === props.modelValue
-const setActive = (item: IconSelectOption) => {
-  emits(
-    'update:modelValue',
-    item.value === props.modelValue ? void 0 : item.value
-  )
+const isActive = (item: Option) => item.value === props.modelValue
+const setActive = (item: Option) => {
+  if (item.value === props.modelValue && props.clickCancel) {
+    emits('update:modelValue', void 0)
+    return
+  }
+  emits('update:modelValue', item.value)
 }
 </script>
 
@@ -27,14 +38,15 @@ const setActive = (item: IconSelectOption) => {
     <el-tooltip
       v-for="item in options"
       :key="item.value"
-      :content="item.label"
+      :content="item.tooltip || item.label"
       :show-after="1000"
     >
       <div
         :class="[$style.causel_item, isActive(item) && $style.active]"
         @click="setActive(item)"
       >
-        <AppIcon :icon="item.icon" :size="14" />
+        <AppIcon :icon="item.icon" :size="14" v-if="item.icon" />
+        <span v-else>{{ item.label }}</span>
       </div>
     </el-tooltip>
   </div>

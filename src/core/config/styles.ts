@@ -1,5 +1,5 @@
 import { CSSProperties } from 'vue'
-import { isColor } from '../utils/color'
+import { isColor, toRGBColor } from '../utils/color'
 
 // 颜色
 export type Color = string
@@ -198,6 +198,14 @@ export type InsetStyle = {
 
 export type InsetStyleKey = keyof InsetStyle
 
+// 判断四方向全相等
+export const checkFourDirectAllEqual = (
+  val: FourDirect
+): val is Required<FourDirect> => {
+  const { top, left, right, bottom } = val
+  return top === left && left === right && right === bottom
+}
+
 // 背景转换
 export function transformBackground(
   value: Background
@@ -279,6 +287,24 @@ export function transformInsetStyle(
     }
   }
 
+  // 通用处理
+  const handle = <K extends InsetStyleKey>(
+    key: K,
+    func: (
+      val: InsetStyle[K],
+      expose: (k: keyof CSSProperties, val: any) => void
+    ) => Partial<CSSProperties> | void
+  ) => {
+    const styleVal = styles[key]
+    if (!styleVal) return
+    const _css: any = {}
+    const _returnCss = func(styleVal, (k: keyof CSSProperties, val: any) => {
+      _css[k] = val
+    })
+
+    Object.assign(cssStyles, _css, _returnCss)
+  }
+
   copyValue('fontSize')
   copyValue('color', isColor)
   copyValue('fontWeight')
@@ -300,6 +326,45 @@ export function transformInsetStyle(
       transformFourDirect(styles.padding, opts.toPx, 'padding-')
     )
   }
+
+  /** 边框 */
+  handle('border', (border, expose) => {
+    if (border.type === BorderType.DEFAULT) {
+      return
+    }
+
+    if (border.type === BorderType.NONE) {
+      expose('border', 'none')
+      return
+    }
+
+    expose('border-style', border.type)
+
+    if (isColor(border.color)) {
+      expose('border-color', toRGBColor(border.color))
+    }
+
+    if (!border.width) {
+      return
+    }
+
+    if (checkFourDirectAllEqual(border.width)) {
+      expose('border-width', opts.toPx(border.width.top))
+    } else {
+      if (border.width.top) {
+        expose('border-top-width', opts.toPx(border.width.top))
+      }
+      if (border.width.left) {
+        expose('border-left-width', opts.toPx(border.width.left))
+      }
+      if (border.width.right) {
+        expose('border-right-width', opts.toPx(border.width.right))
+      }
+      if (border.width.bottom) {
+        expose('border-bottom-width', opts.toPx(border.width.bottom))
+      }
+    }
+  })
 
   return cssStyles
 }

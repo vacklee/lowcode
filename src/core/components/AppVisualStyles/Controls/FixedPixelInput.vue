@@ -7,8 +7,10 @@ const props = withDefaults(
   defineProps<{
     modelValue?: string
     title: string
+    placeholder?: string
     hidePlaceholder?: boolean
     fixedUnit?: Unit | 'none'
+    disabled?: boolean
   }>(),
   {
     fixedUnit: 'px'
@@ -31,9 +33,10 @@ const innerValue = computed({
         size="default"
         :allow-empty="true"
         :fixed-unit="fixedUnit === 'none' ? void 0 : fixedUnit"
-        :placeholder="hidePlaceholder ? '' : title"
+        :placeholder="hidePlaceholder ? '' : placeholder || title"
         v-model="innerValue"
         :class="$style.input"
+        :disabled="disabled"
       >
         <template #prefix>
           <slot />

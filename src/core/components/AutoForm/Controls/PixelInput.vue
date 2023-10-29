@@ -11,6 +11,7 @@ const props = withDefaults(
     // 固定单位
     fixedUnit?: Unit
     placeholder?: string
+    disabled?: boolean
   }>(),
   {
     size: 'small'
@@ -59,6 +60,7 @@ const pixelUnit = computed({
     v-model="pixelValue"
     :min="0"
     :placeholder="placeholder"
+    :disabled="disabled"
   >
     <template #prefix>
       <slot name="prefix" />

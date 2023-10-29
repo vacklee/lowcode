@@ -1,11 +1,14 @@
 import { type Component } from 'vue'
 import { Constants } from './constant'
-import { FontWeight, TextAlign } from './styles'
+import { BorderType, FontWeight, TextAlign } from './styles'
 
 export type SelectOption = {
   value: number | string
   label: string
   default?: boolean
+  detailLabel?: string
+  icon?: string | Component
+  tooltip?: string
 }
 
 export type IconSelectOption = SelectOption & {
@@ -74,5 +77,28 @@ export const textAlignOptions: IconSelectOption[] = [
     value: TextAlign.JUSTIFY,
     label: '两端对齐',
     icon: 't-icon-style-text-align-spacing'
+  }
+]
+
+/** 边框类型 */
+export const borderTypes: SelectOption[] = [
+  {
+    value: BorderType.DEFAULT,
+    label: '默认',
+    detailLabel: '默认边框',
+    tooltip: '默认边框（缺省）'
+  },
+  { value: BorderType.NONE, label: '无边框', tooltip: '无边框（none）' },
+  {
+    value: BorderType.SOLID,
+    label: '实线',
+    detailLabel: '实线框',
+    tooltip: '实线边框（solid）'
+  },
+  {
+    value: BorderType.DASHED,
+    label: '虚线',
+    detailLabel: '虚线框',
+    tooltip: '虚线边框（dashed）'
   }
 ]

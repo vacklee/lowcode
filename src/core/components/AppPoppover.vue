@@ -1,17 +1,20 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { debounce } from 'lodash'
+import { Placement } from 'element-plus'
 
 withDefaults(
   defineProps<{
     popperWidth?: number | string
     maxContentHeight?: number | string
-    placement?: string
+    placement?: Placement
+    showArrow?: boolean
   }>(),
   {
     popperWidth: 320,
     maxContentHeight: 630,
-    placement: 'bottom-start'
+    placement: 'bottom-start',
+    showArrow: true
   }
 )
 
@@ -44,6 +47,7 @@ const popoverVisibleStopResume = debounce(() => {
 }, 500)
 
 defineExpose({
+  popoverVisible,
   popoverVisibleStopPause,
   popoverVisibleStopResume
 })
@@ -55,6 +59,7 @@ defineExpose({
     :placement="placement"
     :width="popperWidth"
     :popper-class="$style.popper"
+    :show-arrow="showArrow"
     v-model:visible="popoverVisible"
   >
     <template #reference>

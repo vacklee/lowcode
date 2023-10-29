@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const { getCommonUseColors, setCommonUseColors } = useAppData()
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'picker-focus', 'picker-blur'])
 
 const inputValue = computed({
   get: () => props.modelValue ?? '',
@@ -36,7 +36,7 @@ watch(
 <template>
   <div :class="$style.box">
     <el-tooltip
-      content="色值"
+      :content="inputValue || '选择颜色'"
       :show-after="1000"
       :trigger-keys="[]"
       placement="bottom"
@@ -48,6 +48,8 @@ watch(
             :predefine="predefine"
             color-format="rgb"
             v-model="colorValue"
+            @focus="emits('picker-focus')"
+            @blur="emits('picker-blur')"
           />
         </template>
       </el-input>
