@@ -1,6 +1,8 @@
 import ShortUniqueId from 'short-unique-id'
 import ClipBoard from 'clipboard'
 import { ElMessage } from 'element-plus'
+import mime from 'mime'
+import bytes from 'bytes'
 
 // 生成唯一ID
 export function genId() {
@@ -63,4 +65,52 @@ export function deepFind<D>(
 /** 延迟 */
 export function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+/** 选择文件 */
+export function chooseFile(opts?: {
+  limitType?: string[]
+  multiple?: boolean
+  limitSize?: string
+  onTypeError?: () => unknown
+  onSizeError?: () => unknown
+}): Promise<File[]> {
+  return new Promise((resolve, reject) => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.multiple = opts?.multiple || false
+    input.accept = [
+      ...new Set(
+        opts?.limitType?.map(item => mime.getType(item)).filter(Boolean) || []
+      )
+    ].join(',')
+
+    const sizeLimit = opts?.limitSize ? bytes(opts.limitSize) : 0
+
+    input.onchange = () => {
+      const files = [...(input.files || [])]
+      try {
+        files.forEach(item => {
+          if (
+            input.accept &&
+            (!item.type || input.accept.indexOf(item.type) < 0)
+          ) {
+            opts?.onTypeError?.()
+            throw new Error('不支持该文件类型')
+          }
+
+          if (sizeLimit && item.size > sizeLimit) {
+            opts?.onSizeError?.()
+            throw new Error('超出大小限制')
+          }
+        })
+      } catch (err) {
+        reject(err)
+        return
+      }
+
+      resolve(files)
+    }
+    input.click()
+  })
 }

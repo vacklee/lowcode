@@ -4,7 +4,8 @@ import { Upload, Search } from '@element-plus/icons-vue'
 import { useImageResource, SearchNext, FileUpload } from '@/core/hooks/use-file'
 import { useSearchNext } from '@/core/hooks/use-search-next'
 import AppImageCard from './AppImageCard.vue'
-import { ElScrollbar } from 'element-plus'
+import { ElMessage, ElScrollbar } from 'element-plus'
+import { chooseFile } from '@/core/utils/common'
 
 const props = withDefaults(
   defineProps<{
@@ -16,13 +17,13 @@ const props = withDefaults(
     }
   }>(),
   {
-    sizeLimit: '2M',
+    sizeLimit: '2MB',
     typeLimit: () => ['png', 'jpg', 'gif', 'svg'],
     hooks: useImageResource
   }
 )
 
-const { searchNext } = props.hooks()
+const { searchNext, upload } = props.hooks()
 const scrollRef = ref<InstanceType<typeof ElScrollbar>>(null!)
 const { data, initLoading, initLoad } = useSearchNext(
   searchNext,
@@ -39,6 +40,31 @@ const actionTip = computed(() => {
 onMounted(async () => {
   await initLoad()
 })
+
+/** 上传图片 */
+const uploading = ref(false)
+const handleUpload = async () => {
+  chooseFile({
+    multiple: true,
+    limitSize: props.sizeLimit,
+    limitType: props.typeLimit,
+    onTypeError: () => ElMessage.error('不支持该类型'),
+    onSizeError: () => ElMessage.error(`图片大小超出${props.sizeLimit}`)
+  })
+    .then(async files => {
+      uploading.value = true
+      try {
+        return await files.reduce(async (_, file) => {
+          await _
+          const node = await upload(file)
+          data.value.unshift(node)
+        }, Promise.resolve())
+      } finally {
+        uploading.value = false
+      }
+    })
+    .catch(() => 0)
+}
 </script>
 
 <template>
@@ -46,7 +72,9 @@ onMounted(async () => {
     <div :class="$style.panel_header">
       <!-- 上传按钮 -->
       <div :class="$style.panel_action">
-        <el-button type="primary" :icon="Upload">上传图片</el-button>
+        <el-button type="primary" :icon="Upload" @click="handleUpload">
+          上传图片
+        </el-button>
         <span :class="$style.panel_action_tip">{{ actionTip }}</span>
       </div>
 
@@ -57,8 +85,8 @@ onMounted(async () => {
     </div>
     <div :class="$style.panel_content">
       <div
-        :class="$style.panel_content_mask"
-        v-if="initLoading"
+        :class="[$style.panel_content_mask, $style.is_uploading]"
+        v-if="initLoading || uploading"
         v-loading="true"
       ></div>
 
@@ -107,6 +135,10 @@ onMounted(async () => {
     &_mask {
       background: #fff;
       z-index: 10;
+
+      &.is_uploading {
+        background: rgba(#fff, 0.6);
+      }
     }
   }
 
