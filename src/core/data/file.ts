@@ -3,4 +3,5 @@ export type FileBaseInfo = {
   fileId: string
   fileName: string
   filePath: string
+  createDate: number
 }

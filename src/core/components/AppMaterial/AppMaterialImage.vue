@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { Upload, Search } from '@element-plus/icons-vue'
 import { useImageResource, SearchNext, FileUpload } from '@/core/hooks/use-file'
 import { useSearchNext } from '@/core/hooks/use-search-next'
@@ -23,12 +23,15 @@ const props = withDefaults(
   }
 )
 
+/** 搜索 */
+const keyword = ref('')
 const { searchNext, upload } = props.hooks()
 const scrollRef = ref<InstanceType<typeof ElScrollbar>>(null!)
-const { data, initLoading, initLoad } = useSearchNext(
+const { data, initLoading, initLoad, resetStates } = useSearchNext(
   searchNext,
   10,
-  () => scrollRef.value.wrapRef!
+  () => scrollRef.value.wrapRef!,
+  () => ({ keyword: keyword.value })
 )
 
 const actionTip = computed(() => {
@@ -39,6 +42,11 @@ const actionTip = computed(() => {
 
 onMounted(async () => {
   await initLoad()
+})
+
+watch(keyword, () => {
+  resetStates()
+  initLoad()
 })
 
 /** 上传图片 */
@@ -80,7 +88,11 @@ const handleUpload = async () => {
 
       <!-- 搜索框 -->
       <div :class="$style.panel_search">
-        <el-input :prefix-icon="Search" placeholder="输入关键词搜索"></el-input>
+        <el-input
+          :prefix-icon="Search"
+          placeholder="输入关键词搜索"
+          v-model="keyword"
+        ></el-input>
       </div>
     </div>
     <div :class="$style.panel_content">

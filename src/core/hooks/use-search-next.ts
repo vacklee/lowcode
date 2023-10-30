@@ -43,11 +43,13 @@ export function useSearchNext<T, O>(
   }
 
   const initLoad = async () => {
+    initLoading.value = true
+
     const wrapEl = _getWrap()
     while (true) {
       await loadNext()
       await nextTick()
-      if (wrapEl.scrollHeight > wrapEl.offsetHeight) {
+      if (loadEnd.value || wrapEl.scrollHeight > wrapEl.offsetHeight) {
         break
       }
     }
@@ -71,5 +73,14 @@ export function useSearchNext<T, O>(
     wrapEl.removeEventListener('scroll', _onScroll)
   })
 
-  return { nextId, data, loadNext, loading, initLoad, initLoading }
+  /** 重置 */
+  const resetStates = () => {
+    nextId.value = ''
+    data.value = []
+    loading.value = false
+    initLoading.value = false
+    loadEnd.value = false
+  }
+
+  return { nextId, data, loadNext, loading, initLoad, initLoading, resetStates }
 }

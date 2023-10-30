@@ -26,9 +26,10 @@ export function useImageResource() {
     const fileDescribe: FileBaseInfo = {
       fileId: genId(),
       fileName: file.name,
-      filePath: URL.createObjectURL(file)
+      filePath: URL.createObjectURL(file),
+      createDate: Date.now()
     }
-    appData.value.imageResources.push(fileDescribe)
+    appData.value.imageResources.unshift(fileDescribe)
     return fileDescribe
   }
 
