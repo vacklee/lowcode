@@ -20,8 +20,10 @@ const props = withDefaults(
   }
 )
 
-const isTIcon = computed(
-  () => typeof props.icon === 'string' && /^t\-icon/.test(props.icon)
+const isStringIcon = computed(
+  () =>
+    typeof props.icon === 'string' &&
+    (/^t\-icon/.test(props.icon) || /^icon-/.test(props.icon))
 )
 
 const isElIcon = computed(() => typeof props.icon !== 'string')
@@ -30,7 +32,7 @@ const isElIcon = computed(() => typeof props.icon !== 'string')
 <template>
   <el-icon :size="size">
     <component :is="icon" v-if="isElIcon" />
-    <i :class="icon" v-else-if="isTIcon"></i>
+    <i :class="icon" v-else-if="isStringIcon"></i>
     <AppCIcon :name="icon" v-else-if="typeof icon === 'string'" />
   </el-icon>
 </template>

@@ -9,9 +9,13 @@ const props = withDefaults(
     active?: boolean
     size?: number
     clickCancel?: boolean
+    hoverActive?: boolean
+    placement?: string
+    theme?: 'default' | 'danger'
   }>(),
   {
-    size: 28
+    size: 28,
+    theme: 'default'
   }
 )
 
@@ -27,9 +31,19 @@ const onClick = () => {
 </script>
 
 <template>
-  <el-tooltip :content="title" :show-after="1000" :disabled="!title">
+  <el-tooltip
+    :content="title"
+    :show-after="1000"
+    :disabled="!title"
+    :placement="placement"
+  >
     <div
-      :class="[$style.btn, active && $style.active]"
+      :class="[
+        $style.btn,
+        active && $style.active,
+        hoverActive && $style.hover_active,
+        $style[`btn_theme_${theme}`]
+      ]"
       :style="`--size: ${size}px`"
       @click="onClick"
     >
@@ -54,9 +68,15 @@ const onClick = () => {
     background: #f1f2f5;
   }
 
-  &.active {
+  &.active,
+  &.hover_active:hover {
     background: rgba($color-primary, 0.2);
     color: $color-primary;
+
+    &.btn_theme_danger {
+      background: rgba($color-danger, 0.2);
+      color: $color-danger;
+    }
   }
 }
 </style>

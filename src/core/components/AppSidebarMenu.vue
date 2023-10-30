@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { Component } from 'vue'
+import AppIcon from './AppIcon.vue'
 
 type MenuItem = {
   id: string
@@ -53,7 +54,10 @@ const toggle = (item: MenuItem) => {
         :class="[$style.menu_item, isSelected(item) && $style.active]"
         @click="toggle(item)"
       >
-        <i :class="isSelected(item) ? item.selectedIcon : item.icon"></i>
+        <AppIcon
+          :icon="isSelected(item) ? item.selectedIcon : item.icon"
+          :size="20"
+        />
       </div>
     </el-tooltip>
   </div>

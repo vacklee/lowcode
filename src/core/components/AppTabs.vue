@@ -20,6 +20,8 @@ const props = withDefaults(
     tabs?: AppTab[]
     modelValue?: string
     tabTheme?: 'normal' | 'capsual'
+    contentClass?: string
+    viewClass?: string
   }>(),
   {
     tabs: () => [],
@@ -60,8 +62,8 @@ const currentComponent = computed(
       </div>
     </div>
 
-    <div :class="$style.box_content">
-      <el-scrollbar ref="scrollRef">
+    <div :class="[$style.box_content, contentClass]">
+      <el-scrollbar ref="scrollRef" :view-class="[viewClass]">
         <component
           v-if="currentComponent"
           :is="currentComponent"

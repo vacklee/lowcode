@@ -2,6 +2,8 @@ import { getCanvasConfigs } from 'core/config/canvas'
 import { AppPlatform } from 'core/config/enum'
 import { AppComponent } from './component'
 import { InsetStyle } from '../config/styles'
+import { FileBaseInfo } from './file'
+import { genId } from '../utils/common'
 
 export { AppPlatform }
 
@@ -83,6 +85,8 @@ export type AppData = {
   pages: AppPage[]
   // 数据
   state: AppState
+  // 图片素材
+  imageResources: FileBaseInfo[]
 }
 
 /** 创建页面 */
@@ -112,6 +116,14 @@ export default function createAppData(): AppData {
     },
     pageGroups: [],
     pages: [createAppPage('page-1', '测试')],
+    imageResources: Array(100)
+      .fill(0)
+      .map(() => ({
+        fileId: genId(),
+        fileName: '钢琴.jpg',
+        filePath:
+          'https://lowcode-4g0ae50nefd96adb-1254542412.tcloudbaseapp.com/resources/2023-10/lowcode-1453786'
+      })),
     state: {
       indexPage: '',
       currentPage: 'page-1',

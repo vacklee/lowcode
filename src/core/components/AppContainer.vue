@@ -15,6 +15,7 @@ import { computed, ref } from 'vue'
 import AppPageDesign from './AppPageDesign/AppPageDesign.vue'
 import AppSettings from './AppSettings.vue'
 import AppSidebarMenu, { MenuItem } from './AppSidebarMenu.vue'
+import AppMaterial from './AppMaterial/AppMaterial.vue'
 
 const sidebarMenu: MenuItem[] = [
   {
@@ -25,6 +26,13 @@ const sidebarMenu: MenuItem[] = [
     component: AppPageDesign
   },
   {
+    id: 'material',
+    title: '素材',
+    icon: 'material-outline',
+    selectedIcon: 'material-fill',
+    component: AppMaterial
+  },
+  {
     id: 'settings',
     title: '应用设置',
     icon: 'icon-settings-outline',
@@ -33,7 +41,7 @@ const sidebarMenu: MenuItem[] = [
   }
 ]
 
-const sidebarMenuSelected = ref('page-design')
+const sidebarMenuSelected = ref('material')
 const selectedMenu = computed(() =>
   sidebarMenu.find(item => item.id === sidebarMenuSelected.value)
 )
