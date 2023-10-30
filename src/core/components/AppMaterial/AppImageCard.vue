@@ -7,12 +7,19 @@ const props = defineProps<{
   data: FileBaseInfo
 }>()
 
+const emits = defineEmits(['delete'])
+
 /** 复制图片链接 */
 const handleCopy = () => {
   tipPromise(copyText(props.data.filePath), {
     successMsg: '复制成功',
     errorMsg: '复制失败：{e}'
   })
+}
+
+/** 删除图片 */
+const handleDelete = () => {
+  emits('delete')
 }
 </script>
 
@@ -36,6 +43,7 @@ const handleCopy = () => {
           :hover-active="true"
           placement="top"
           theme="danger"
+          @click="handleDelete"
         />
       </div>
     </div>

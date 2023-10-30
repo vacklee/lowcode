@@ -27,17 +27,22 @@ export function copyText(text: string) {
 export function tipPromise(
   promise: Promise<unknown>,
   opts: {
-    successMsg: string
-    errorMsg: string
+    successMsg?: string
+    errorMsg?: string
   }
 ) {
   return promise
     .then(() => {
-      ElMessage.success(opts.successMsg)
+      if (opts.successMsg) {
+        ElMessage.success(opts.successMsg)
+      }
     })
     .catch(err => {
-      const msg = opts.errorMsg.replace(/\{e\}/g, err.message)
-      ElMessage.error(msg)
+      if (opts.errorMsg) {
+        const msg = opts.errorMsg.replace(/\{e\}/g, err.message)
+        ElMessage.error(msg)
+      }
+      throw err
     })
 }
 

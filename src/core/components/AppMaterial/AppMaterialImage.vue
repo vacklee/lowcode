@@ -1,11 +1,17 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { Upload, Search } from '@element-plus/icons-vue'
-import { useImageResource, SearchNext, FileUpload } from '@/core/hooks/use-file'
+import {
+  useImageResource,
+  SearchNext,
+  FileUpload,
+  RemoveFile
+} from '@/core/hooks/use-file'
 import { useSearchNext } from '@/core/hooks/use-search-next'
 import AppImageCard from './AppImageCard.vue'
-import { ElMessage, ElScrollbar } from 'element-plus'
-import { chooseFile } from '@/core/utils/common'
+import { ElMessage, ElMessageBox, ElScrollbar } from 'element-plus'
+import { chooseFile, tipPromise } from '@/core/utils/common'
+import { FileBaseInfo } from '@/core/data/file'
 
 const props = withDefaults(
   defineProps<{
@@ -13,6 +19,7 @@ const props = withDefaults(
     typeLimit?: string[]
     hooks?: () => {
       upload: FileUpload
+      remove: RemoveFile
       searchNext: SearchNext
     }
   }>(),
@@ -25,7 +32,7 @@ const props = withDefaults(
 
 /** 搜索 */
 const keyword = ref('')
-const { searchNext, upload } = props.hooks()
+const { searchNext, upload, remove } = props.hooks()
 const scrollRef = ref<InstanceType<typeof ElScrollbar>>(null!)
 const { data, initLoading, initLoad, resetStates } = useSearchNext(
   searchNext,
@@ -73,6 +80,30 @@ const handleUpload = async () => {
     })
     .catch(() => 0)
 }
+
+/** 删除图片 */
+const handleDelete = (item: FileBaseInfo) => {
+  ElMessageBox.confirm('删除后，所有使用该素材的组件将显示异常', {
+    title: '确定要删除素材？',
+    type: 'warning',
+    beforeClose: async (action, instance, done) => {
+      if (action === 'confirm') {
+        instance.confirmButtonLoading = true
+        await tipPromise(remove(item.fileId), {
+          errorMsg: '删除失败：{e}'
+        }).then(() => {
+          const index = data.value.findIndex(
+            node => node.fileId === item.fileId
+          )
+          if (index > -1) {
+            data.value.splice(index, 1)
+          }
+        })
+      }
+      done()
+    }
+  })
+}
 </script>
 
 <template>
@@ -104,7 +135,12 @@ const handleUpload = async () => {
 
       <el-scrollbar :class="$style.panel_content_scroll" ref="scrollRef">
         <div :class="$style.panel_images">
-          <AppImageCard v-for="item in data" :key="item.fileId" :data="item" />
+          <AppImageCard
+            v-for="item in data"
+            :key="item.fileId"
+            :data="item"
+            @delete="handleDelete(item)"
+          />
         </div>
       </el-scrollbar>
     </div>

@@ -7,6 +7,7 @@ export type SearchOptions = {
 }
 
 export type FileUpload = (file: File) => Promise<FileBaseInfo>
+export type RemoveFile = (id: string) => Promise<void>
 
 export type SearchNext = (
   limit: number,
@@ -31,6 +32,15 @@ export function useImageResource() {
     }
     appData.value.imageResources.unshift(fileDescribe)
     return fileDescribe
+  }
+
+  /** 删除图片 */
+  const remove: RemoveFile = async id => {
+    const files = appData.value.imageResources
+    const index = files.findIndex(item => item.fileId === id)
+    if (index > -1) {
+      files.splice(index, 1)
+    }
   }
 
   /** 分页查询图片 */
@@ -69,5 +79,5 @@ export function useImageResource() {
     }
   }
 
-  return { upload, search, searchNext }
+  return { upload, search, searchNext, remove }
 }
