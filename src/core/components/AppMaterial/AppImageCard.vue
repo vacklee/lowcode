@@ -1,10 +1,19 @@
 <script lang="ts" setup>
 import { FileBaseInfo } from '@/core/data/file'
 import AppIconBtn from '../AppControls/AppIconBtn.vue'
+import { copyText, tipPromise } from '@/core/utils/common'
 
-defineProps<{
+const props = defineProps<{
   data: FileBaseInfo
 }>()
+
+/** 复制图片链接 */
+const handleCopy = () => {
+  tipPromise(copyText(props.data.filePath), {
+    successMsg: '复制成功',
+    errorMsg: '复制失败：{e}'
+  })
+}
 </script>
 
 <template>
@@ -18,6 +27,7 @@ defineProps<{
           title="点击复制图片链接"
           :hover-active="true"
           placement="top"
+          @click="handleCopy"
         />
 
         <AppIconBtn
