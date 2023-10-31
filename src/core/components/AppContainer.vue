@@ -41,7 +41,7 @@ const sidebarMenu: MenuItem[] = [
   }
 ]
 
-const sidebarMenuSelected = ref('material')
+const sidebarMenuSelected = ref('page-design')
 const selectedMenu = computed(() =>
   sidebarMenu.find(item => item.id === sidebarMenuSelected.value)
 )

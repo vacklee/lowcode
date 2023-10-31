@@ -1,6 +1,6 @@
 import { type Component } from 'vue'
 import { Constants } from './constant'
-import { BorderType, FontWeight, TextAlign } from './styles'
+import { BackgroundType, BorderType, FontWeight, TextAlign } from './styles'
 
 export type SelectOption = {
   value: number | string
@@ -100,5 +100,30 @@ export const borderTypes: SelectOption[] = [
     label: '虚线',
     detailLabel: '虚线框',
     tooltip: '虚线边框（dashed）'
+  }
+]
+
+/** 背景类型 */
+export const backgroundTypes: SelectOption[] = [
+  {
+    value: BackgroundType.DEFAULT,
+    label: '默认',
+    detailLabel: '默认背景',
+    tooltip: '默认背景（缺省）'
+  },
+  {
+    value: BackgroundType.NONE,
+    label: '无背景',
+    tooltip: 'background: none'
+  },
+  {
+    value: BackgroundType.COLOR,
+    label: '颜色背景',
+    tooltip: 'background: color'
+  },
+  {
+    value: BackgroundType.IMAGE,
+    label: '图片背景',
+    tooltip: 'background: image'
   }
 ]

@@ -78,7 +78,7 @@ export enum BackgroundType {
 // 颜色背景
 export type ColorBackground = {
   type: BackgroundType.COLOR
-  color: Color
+  color?: Color
 }
 
 // 背景图片重复方式
@@ -97,13 +97,13 @@ export enum ImageBackgroundRepeat {
 export type ImageBackground = {
   type: BackgroundType.IMAGE
   // 图片地址
-  url: string
+  url?: string
   // 背景尺寸
-  size: CoordDirect
+  size?: CoordDirect
   // 图片位置
-  position: CoordDirect
+  position?: CoordDirect
   // 重复方式
-  repeat: ImageBackgroundRepeat
+  repeat?: ImageBackgroundRepeat
 }
 
 // 背景
