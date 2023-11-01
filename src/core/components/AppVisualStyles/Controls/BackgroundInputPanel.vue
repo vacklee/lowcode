@@ -12,6 +12,7 @@ import ColorInput from './ColorInput.vue'
 import ImagePicker from './ImagePicker.vue'
 import CommonSelect from '../../AutoForm/Controls/CommonSelect.vue'
 import AppIcon from '../../AppIcon.vue'
+import ImagePositionPicker from './ImagePositionPicker.vue'
 
 type SetValueOptions<T extends BackgroundType> = T extends BackgroundType.COLOR
   ? Partial<ColorBackground>
@@ -114,6 +115,17 @@ const backgroundSize = computed({
     setValue(BackgroundType.IMAGE, { size: { x, y } })
   }
 })
+
+/** 图片位置 */
+const imagePosition = computed({
+  get: () => {
+    if (!isImageBackground.value) {
+      return void 0
+    }
+    return (props.modelValue as ImageBackground).position
+  },
+  set: position => setValue(BackgroundType.IMAGE, { position })
+})
 </script>
 
 <template>
@@ -152,6 +164,10 @@ const backgroundSize = computed({
           <AppIcon icon="t-icon-style-img-cover" />
         </template>
       </CommonSelect>
+
+      <!-- 图片位置 -->
+      <span>图片位置</span>
+      <ImagePositionPicker v-model="imagePosition" />
     </div>
   </div>
 </template>
@@ -167,6 +183,6 @@ const backgroundSize = computed({
 .flex {
   display: flex;
   flex-direction: column;
-  gap: $spacing-mini;
+  gap: $spacing-small;
 }
 </style>

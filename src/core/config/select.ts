@@ -2,8 +2,8 @@ import { type Component } from 'vue'
 import { Constants } from './constant'
 import { BackgroundType, BorderType, FontWeight, TextAlign } from './styles'
 
-export type SelectOption = {
-  value: number | string
+export type SelectOption<T extends number | string = number | string> = {
+  value: T
   label: string
   default?: boolean
   detailLabel?: string
@@ -11,9 +11,10 @@ export type SelectOption = {
   tooltip?: string
 }
 
-export type IconSelectOption = SelectOption & {
-  icon: string | Component
-}
+export type IconSelectOption<T extends number | string = number | string> =
+  SelectOption<T> & {
+    icon: string | Component
+  }
 
 /** 间距 */
 export const spacingOptions: SelectOption[] = [
@@ -150,4 +151,17 @@ export const backgroundSizeOptions: SelectOption[] = [
     label: '100% 100%',
     tooltip: '宽度高度均拉伸'
   }
+]
+
+/** 图片位置 */
+export const imagePositionOptions: IconSelectOption<string>[] = [
+  { value: '0% 0%', label: '左上', icon: 'position-left-top' },
+  { value: '50% 0%', label: '中上', icon: 'position-center-top' },
+  { value: '100% 0%', label: '右上', icon: 'position-right-top' },
+  { value: '0% 50%', label: '左中', icon: 'position-left-center' },
+  { value: '50% 50%', label: '中间', icon: 'position-center' },
+  { value: '100% 50%', label: '右中', icon: 'position-right-center' },
+  { value: '0% 100%', label: '左下', icon: 'position-left-bottom' },
+  { value: '50% 100%', label: '中下', icon: 'position-center-bottom' },
+  { value: '100% 100%', label: '右下', icon: 'position-right-bottom' }
 ]
