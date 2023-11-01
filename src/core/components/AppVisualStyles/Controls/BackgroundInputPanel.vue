@@ -9,6 +9,7 @@ import { computed } from 'vue'
 import AppCauselRadio from '../../AppCauselRadio.vue'
 import { backgroundTypes } from '@/core/config/select'
 import ColorInput from './ColorInput.vue'
+import ImagePicker from './ImagePicker.vue'
 
 type SetValueOptions<T extends BackgroundType> = T extends BackgroundType.COLOR
   ? Partial<ColorBackground>
@@ -68,6 +69,22 @@ const colorValue = computed({
   },
   set: color => setValue(BackgroundType.COLOR, { color })
 })
+
+/** 图片背景 */
+const isImageBackground = computed(
+  () => backgroundType.value === BackgroundType.IMAGE
+)
+
+// 图片路径
+const imageURL = computed({
+  get: () => {
+    if (!isImageBackground.value) {
+      return ''
+    }
+    return (props.modelValue as ImageBackground).url || ''
+  },
+  set: url => setValue(BackgroundType.IMAGE, { url })
+})
 </script>
 
 <template>
@@ -84,6 +101,10 @@ const colorValue = computed({
       @picker-blur="emits('other-hide')"
       v-if="isColorBackground"
     />
+
+    <div v-else-if="isImageBackground">
+      <ImagePicker v-model="imageURL" />
+    </div>
   </div>
 </template>
 

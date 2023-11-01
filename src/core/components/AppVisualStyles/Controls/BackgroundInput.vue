@@ -76,8 +76,9 @@ const onOtherHide = () => {
   >
     <template #prefix>
       <div
+        :class="$style.image_prefix"
         :style="`background-image: url(${imageURL})`"
-        v-if="isImagePrefix"
+        v-if="imageURL"
       ></div>
       <AppReadonlyColorPicker :color="colorValue" v-else />
     </template>
@@ -93,3 +94,11 @@ const onOtherHide = () => {
     </template>
   </AppPopperIconControl>
 </template>
+
+<style lang="scss" module>
+.image_prefix {
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+}
+</style>
