@@ -4,6 +4,11 @@ export type ShortCutState = {
   $pageNode: ReturnType<typeof usePageNode>
 }
 
+export type ShortCutListenFilter = (
+  state: ShortCutState,
+  payload: KeyboardEvent
+) => boolean
+
 export type ShortCutListenHandle = (
   state: ShortCutState,
   payload: KeyboardEvent
@@ -11,7 +16,7 @@ export type ShortCutListenHandle = (
 
 export type ShortCutListenOptions = {
   keys: string[]
-  filter?: (state: ShortCutState) => boolean
+  filter?: ShortCutListenFilter
   handle: ShortCutListenHandle
 }
 
@@ -26,7 +31,11 @@ export function registListen(
 
 /** 删除选中节点 */
 registListen(['Backspace', 'Delete', 'Meta + Backspace'], {
-  filter(state) {
+  filter(state, payload) {
+    if (payload.target instanceof HTMLInputElement) {
+      return false
+    }
+
     const { currentNode } = state.$pageNode
     return !!currentNode.value?.deletable
   },

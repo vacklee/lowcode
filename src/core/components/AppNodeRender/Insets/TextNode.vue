@@ -12,31 +12,26 @@ const tag = computed(() => 'p')
 </script>
 
 <template>
-  <div :class="$style.text">
-    <component :class="$style.text_inner" :is="tag">{{ content }}</component>
+  <component :class="$style.text" :is="tag">
+    <span>{{ content }}</span>
     <SelectNode :id="node.instanceID" />
-  </div>
+  </component>
 </template>
 
 <style lang="scss" module>
 .text {
   position: relative;
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.5;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
 
-  &_inner {
-    margin: 0;
-    padding: 0;
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: 1.5;
-    word-wrap: break-word;
-    word-break: break-word;
-    white-space: pre-wrap;
-
-    &:empty::after {
-      content: ' ';
-      height: 1.5em;
-      display: block;
-    }
+  & > span:empty::after {
+    content: ' ';
   }
 }
 </style>

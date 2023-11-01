@@ -32,7 +32,7 @@ const onKeydown = (payload: KeyboardEvent) => {
     }
 
     if (item.filter) {
-      return item.filter(state.value)
+      return item.filter(state.value, payload)
     }
     return true
   })
