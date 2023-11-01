@@ -103,7 +103,11 @@ const imageURL = computed({
     />
 
     <div v-else-if="isImageBackground">
-      <ImagePicker v-model="imageURL" />
+      <ImagePicker
+        v-model="imageURL"
+        @dialog-open="emits('other-show')"
+        @dialog-closed="emits('other-hide')"
+      />
     </div>
   </div>
 </template>

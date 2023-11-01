@@ -2,6 +2,7 @@ import { defineAsyncComponent } from 'vue'
 import { DialogBtn, DialogEvents, useDialog } from './use-dialog'
 import { FormInstance } from 'element-plus'
 import { AppPage } from 'core/data/app'
+import { FileBaseInfo } from '../data/file'
 
 type WithDialogEvents<T> = T & { dialogEvents?: DialogEvents }
 
@@ -147,9 +148,34 @@ export function useDialogX() {
     return dialog
   }
 
+  /**
+   * 选择图片素材
+   */
+  const showChooseImageDialog = (
+    onSelect: (item: FileBaseInfo) => unknown,
+    opts?: DialogEvents
+  ) => {
+    const dialog = createDialog({
+      title: '素材管理',
+      width: '1052px',
+      nopadding: true,
+      component: defineAsyncComponent(
+        () => import('@/core/components/AppMaterial/AppMaterialImage.vue')
+      ),
+      componentProps: {
+        inDialog: true,
+        pickerMode: true,
+        onSelect
+      },
+      ...(opts || {})
+    })
+    return dialog
+  }
+
   return {
     showRenameDialog,
     showMoveToGroupDialog,
-    showCopyPageDialog
+    showCopyPageDialog,
+    showChooseImageDialog
   }
 }

@@ -32,4 +32,8 @@
   &_content {
     padding: $spacing-small;
   }
+
+  &.nopadding &_content {
+    padding: 0;
+  }
 }

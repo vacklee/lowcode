@@ -22,6 +22,11 @@ const props = withDefaults(
       remove: RemoveFile
       searchNext: SearchNext
     }
+    // 固定高度
+    inDialog?: boolean
+    // 选择模式
+    pickerMode?: boolean
+    onSelect?: (item: FileBaseInfo) => unknown
   }>(),
   {
     sizeLimit: '2MB',
@@ -29,6 +34,8 @@ const props = withDefaults(
     hooks: useImageResource
   }
 )
+
+const emits = defineEmits(['select'])
 
 /** 搜索 */
 const keyword = ref('')
@@ -104,10 +111,15 @@ const handleDelete = (item: FileBaseInfo) => {
     }
   })
 }
+
+/** 选择图片 */
+const handleSelect = (item: FileBaseInfo) => {
+  emits('select', item)
+}
 </script>
 
 <template>
-  <div :class="$style.panel">
+  <div :class="[$style.panel, inDialog && $style.in_dialog]">
     <div :class="$style.panel_header">
       <!-- 上传按钮 -->
       <div :class="$style.panel_action">
@@ -139,7 +151,9 @@ const handleDelete = (item: FileBaseInfo) => {
             v-for="item in data"
             :key="item.fileId"
             :data="item"
+            :picker-mode="pickerMode"
             @delete="handleDelete(item)"
+            @select="handleSelect(item)"
           />
         </div>
       </el-scrollbar>
@@ -155,6 +169,10 @@ const handleDelete = (item: FileBaseInfo) => {
   border-radius: $border-radius-base;
   display: flex;
   flex-direction: column;
+
+  &.in_dialog {
+    height: 580px;
+  }
 
   &_header {
     padding: $spacing-small;

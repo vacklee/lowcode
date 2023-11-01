@@ -30,6 +30,7 @@ export type DialogBtn = Partial<ButtonProps> & {
 export type UseDialogParams<C extends Component> = {
   title: string
   width?: string | number
+  nopadding?: boolean
   dialogProps?: Partial<DialogProps>
   component?: C
   componentProps?: PropsOf<C>
@@ -66,7 +67,7 @@ export function useDialog() {
             title: params.title,
             width: params.width,
             modelValue: state.visible,
-            class: style.dialog,
+            class: [style.dialog, params.nopadding ? style.nopadding : ''],
             modalClass: style.dialog_modal,
             modal: false,
             appendTobody: true,

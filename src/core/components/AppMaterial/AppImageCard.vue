@@ -2,12 +2,15 @@
 import { FileBaseInfo } from '@/core/data/file'
 import AppIconBtn from '../AppControls/AppIconBtn.vue'
 import { copyText, tipPromise } from '@/core/utils/common'
+import { Select } from '@element-plus/icons-vue'
 
 const props = defineProps<{
   data: FileBaseInfo
+  // 选择模式
+  pickerMode?: boolean
 }>()
 
-const emits = defineEmits(['delete'])
+const emits = defineEmits(['delete', 'select'])
 
 /** 复制图片链接 */
 const handleCopy = () => {
@@ -21,11 +24,28 @@ const handleCopy = () => {
 const handleDelete = () => {
   emits('delete')
 }
+
+/** 选择 */
+const handleSelect = () => {
+  emits('select')
+}
 </script>
 
 <template>
   <div :class="$style.card">
-    <img :class="$style.card_img" :src="data.filePath" />
+    <div :class="$style.card_img">
+      <img :src="data.filePath" />
+      <div :class="$style.card_pick" v-if="pickerMode">
+        <el-button
+          :class="$style.card_pick_action"
+          :icon="Select"
+          type="primary"
+          @click="handleSelect"
+        >
+          使用素材
+        </el-button>
+      </div>
+    </div>
     <div :class="$style.card_footer">
       <div :class="$style.card_name">{{ data.fileName }}</div>
       <div :class="$style.card_footer_right">
@@ -62,8 +82,14 @@ const handleDelete = () => {
     width: 100%;
     height: 139px;
     background: #eff0f3;
-    object-fit: scale-down;
-    cursor: zoom-in;
+    position: relative;
+
+    & > img {
+      width: 100%;
+      height: 100%;
+      object-fit: scale-down;
+      cursor: zoom-in;
+    }
   }
 
   &_footer {
@@ -86,6 +112,29 @@ const handleDelete = () => {
     width: 0;
     font-size: $font-size-normal;
     @include text-cut();
+  }
+
+  &_pick {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_action {
+      visibility: hidden;
+    }
+
+    &:hover {
+      background: rgba(#000, 0.4);
+
+      & > .card_pick_action {
+        visibility: visible;
+      }
+    }
   }
 }
 </style>

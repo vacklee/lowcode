@@ -1,22 +1,37 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import AppIcon from '../../AppIcon.vue'
+import { useDialogX } from '@/core/hooks/use-dialog-x'
 
 const props = defineProps<{
   modelValue?: string
 }>()
 
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'dialog-open', 'dialog-closed'])
 const innerValue = computed({
   get: () => props.modelValue,
   set: val => emits('update:modelValue', val)
 })
+
+const { showChooseImageDialog } = useDialogX()
+const handleChoose = () => {
+  const dialog = showChooseImageDialog(
+    item => {
+      innerValue.value = item.filePath
+      dialog.close()
+    },
+    {
+      onOpen: () => emits('dialog-open'),
+      onClosed: () => emits('dialog-closed')
+    }
+  )
+}
 </script>
 
 <template>
   <div :class="$style.box">
     <div :class="$style.box_picker">
-      <div :class="$style.box_picker_mask">
+      <div :class="$style.box_picker_mask" @click="handleChoose">
         <AppIcon icon="t-icon-img-l" :size="24" />
         <div :class="$style.box_picker_text">点击选择图像</div>
       </div>
