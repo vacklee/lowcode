@@ -8,19 +8,25 @@ import {
   TextAlign
 } from './styles'
 
-export type SelectOption<T extends number | string = number | string> = {
+export type SelectOption<
+  T extends number | string = number | string,
+  D = any
+> = {
   value: T
   label: string
   default?: boolean
   detailLabel?: string
   icon?: string | Component
   tooltip?: string
+  data?: D
 }
 
-export type IconSelectOption<T extends number | string = number | string> =
-  SelectOption<T> & {
-    icon: string | Component
-  }
+export type IconSelectOption<
+  T extends number | string = number | string,
+  D = any
+> = SelectOption<T, D> & {
+  icon: string | Component
+}
 
 /** 间距 */
 export const spacingOptions: SelectOption[] = [
@@ -201,3 +207,19 @@ export enum TextFormat {
   H8 = 'H8',
   H9 = 'H9'
 }
+
+export const textFormatOptions: SelectOption<TextFormat, string>[] = [
+  { value: TextFormat.CONTENT_DEFAULT, label: '正文(默认)', data: 'p' },
+  { value: TextFormat.CONTENT_SMALL, label: '正文(小)', data: 'p' },
+  { value: TextFormat.CONTENT_MIDDLE, label: '正文(中)', data: 'p' },
+  { value: TextFormat.CONTENT_LARGE, label: '正文(大)', data: 'p' },
+  { value: TextFormat.H1, label: '标题 H1', data: 'h1' },
+  { value: TextFormat.H2, label: '标题 H2', data: 'h2' },
+  { value: TextFormat.H3, label: '标题 H3', data: 'h3' },
+  { value: TextFormat.H4, label: '标题 H4', data: 'h4' },
+  { value: TextFormat.H5, label: '标题 H5', data: 'h5' },
+  { value: TextFormat.H6, label: '标题 H6', data: 'h6' },
+  { value: TextFormat.H7, label: '标题 H7', data: 'h6' },
+  { value: TextFormat.H8, label: '标题 H8', data: 'h6' },
+  { value: TextFormat.H9, label: '标题 H9', data: 'h6' }
+]

@@ -6,7 +6,7 @@ import {
   AutoFromControlsEnum,
   autoFormColumn
 } from '../components/AutoForm/types'
-import { TextFormat, verticalAligns } from './select'
+import { TextFormat, textFormatOptions, verticalAligns } from './select'
 
 // 内置组件
 export const resetComponents = {
@@ -280,7 +280,20 @@ export const resetComponents = {
       baseAttrs: {
         content: '文本内容',
         format: TextFormat.CONTENT_DEFAULT
-      }
+      },
+      baseAttrsForm: [
+        autoFormColumn(
+          AutoFromControlsEnum.CommonSelect,
+          'format',
+          '文本格式',
+          '',
+          {
+            controlProps: {
+              options: textFormatOptions
+            }
+          }
+        )
+      ]
     }
   )
 }

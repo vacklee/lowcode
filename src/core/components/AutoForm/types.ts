@@ -18,7 +18,9 @@ export enum AutoFromControlsEnum {
   // 间距选择器
   SpacingSelect = 'SpacingSelect',
   // 图标选择器
-  IconSelect = 'CommonIconSelect'
+  IconSelect = 'CommonIconSelect',
+  // 通用选择器
+  CommonSelect = 'CommonSelect'
 }
 
 export type AutoFormControl<T extends Component = Component> = {
@@ -93,6 +95,11 @@ export const AutoFromControls = {
     component: defineAsyncComponent(
       () => import('./Controls/CommonIconSelect.vue')
     )
+  }),
+
+  // 通用选择器
+  [AutoFromControlsEnum.CommonSelect]: _({
+    component: defineAsyncComponent(() => import('./Controls/CommonSelect.vue'))
   })
 }
 

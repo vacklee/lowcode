@@ -35,6 +35,10 @@ onMounted(() => {
 
 <style lang="scss" module>
 .body {
+  --fw-font-size-sm: 14px;
+  --fw-font-size-base: 16px;
+  --fw-font-size-lg: 18px;
+
   width: 100%;
   height: 100%;
   background: #fff;
