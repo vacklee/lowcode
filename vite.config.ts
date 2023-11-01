@@ -5,6 +5,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/lowcode/',
   plugins: [
     vue(),
     createSvgIconsPlugin({
