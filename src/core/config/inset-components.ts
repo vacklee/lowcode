@@ -1,11 +1,6 @@
-import { Component } from 'vue'
+import { Component, defineAsyncComponent } from 'vue'
 import { AllComponentIds } from './components'
 import { Constants } from './constant'
-import CardNodeVue from '../components/AppNodeRender/Insets/CardNode.vue'
-import GridLayoutNodeVue from '../components/AppNodeRender/Insets/GridLayoutNode.vue'
-import GridLayoutRowNodeVue from 'core/components/AppNodeRender/Insets/GridLayoutRowNode.vue'
-import GridLayoutColNodeVue from 'core/components/AppNodeRender/Insets/GridLayoutColNode.vue'
-import NomalContainerNodeVue from '../components/AppNodeRender/Insets/NomalContainerNode.vue'
 
 /**
  * 内置组件
@@ -14,25 +9,35 @@ export const insetComponents: Record<AllComponentIds, Component> = {
   [Constants.BODY_NODE_ID]: {},
 
   // 卡片
-  CARD: CardNodeVue,
+  CARD: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/CardNode.vue')
+  ),
 
   DIALOG: {},
 
   // 网格布局
-  GRID_LAYOUT: GridLayoutNodeVue,
+  GRID_LAYOUT: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/GridLayoutNode.vue')
+  ),
 
   // 网格布局 - 行
-  GRID_LAYOUT_ROW: GridLayoutRowNodeVue,
+  GRID_LAYOUT_ROW: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/GridLayoutRowNode.vue')
+  ),
 
   // 网格布局 - 列
-  GRID_LAYOUT_COL: GridLayoutColNodeVue,
+  GRID_LAYOUT_COL: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/GridLayoutColNode.vue')
+  ),
 
   GRID_NAVS: {},
   LAYOUT: {},
   MENU_NAVS: {},
 
   // 普通容器
-  NOMAL_CONTAINER: NomalContainerNodeVue,
+  NOMAL_CONTAINER: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/NomalContainerNode.vue')
+  ),
 
   SCROLL_CONTAINER: {},
   SIDE_TABS: {},

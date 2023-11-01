@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, h } from 'vue'
+import { computed, defineAsyncComponent, getCurrentInstance, h } from 'vue'
 import { FormInstance, ElMessageBox } from 'element-plus'
 import {
   AppData,
@@ -15,7 +15,6 @@ import { useDialogX } from './use-dialog-x'
 import { cloneDeep } from 'lodash'
 import { canvasConfigMap } from 'core/config/canvas'
 import { isPixel, parsePixel } from '../utils/unit'
-import AppFormCreatePageVue from '../components/AppForm/AppFormCreatePage.vue'
 
 export type DialogCallback<T = unknown> = (action: 'cancel' | 'confirm') => T
 
@@ -242,7 +241,9 @@ export function usePageData() {
       dialogProps: {
         width: 500
       },
-      component: AppFormCreatePageVue,
+      component: defineAsyncComponent(
+        () => import('core/components/AppForm/AppFormCreatePage.vue')
+      ),
       btns: [
         {
           content: '取消',
