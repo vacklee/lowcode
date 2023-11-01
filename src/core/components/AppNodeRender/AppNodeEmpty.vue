@@ -20,6 +20,7 @@
   position: absolute;
   pointer-events: none;
   background: #fff;
+  font-size: $font-size-base;
 
   &_wrap {
     top: 0;

@@ -6,7 +6,7 @@ import {
   AutoFromControlsEnum,
   autoFormColumn
 } from '../components/AutoForm/types'
-import { verticalAligns } from './select'
+import { TextFormat, verticalAligns } from './select'
 
 // 内置组件
 export const resetComponents = {
@@ -267,7 +267,22 @@ export const resetComponents = {
     id: 'SIDE_TABS',
     icon: 'c-side-tabs',
     title: '侧边选项卡'
-  })
+  }),
+
+  // 文本
+  TEXT: createAppComponent(
+    {
+      id: 'TEXT',
+      icon: 'c-text',
+      title: '文本'
+    },
+    {
+      baseAttrs: {
+        content: '文本内容',
+        format: TextFormat.CONTENT_DEFAULT
+      }
+    }
+  )
 }
 
 // 内置组件ID
@@ -303,7 +318,7 @@ export const resetComponentGroups: AppComponentGroup[] = [
       // 'SCROLL_CONTAINER',
       // 'DIALOG'
     ]
-  }
+  },
   // ,{
   //   id: 'navs',
   //   icon: 'material-common',
@@ -317,6 +332,12 @@ export const resetComponentGroups: AppComponentGroup[] = [
   //     'SIDE_TABS'
   //   ]
   // }
+  {
+    id: 'display',
+    icon: 'material-common',
+    title: '展示',
+    components: ['TEXT']
+  }
 ]
 
 /** 查询组件 */

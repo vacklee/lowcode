@@ -42,9 +42,12 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  font-size: 16px;
 
   &_inner {
     min-height: 100%;
+    box-sizing: border-box;
+
     &:not(.empty) {
       position: relative;
     }

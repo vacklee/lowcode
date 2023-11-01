@@ -44,5 +44,10 @@ export const insetComponents: Record<AllComponentIds, Component> = {
   SWIPER_CONTAINER: {},
   TAB_BAR: {},
   TOP_NAVS: {},
-  TOP_TABS: {}
+  TOP_TABS: {},
+
+  // 文本
+  TEXT: defineAsyncComponent(
+    () => import('core/components/AppNodeRender/Insets/TextNode.vue')
+  )
 }

@@ -179,3 +179,25 @@ export const backgroundRepeatOptions: SelectOption<ImageBackgroundRepeat>[] = [
   { value: ImageBackgroundRepeat.REPEAT_Y, label: '垂直重复' },
   { value: ImageBackgroundRepeat.REPEAT, label: '水平垂直重复' }
 ]
+
+/** 文本格式 */
+export enum TextFormat {
+  // 正文默认
+  CONTENT_DEFAULT = 'CONTENT_DEFAULT',
+  // 正文小
+  CONTENT_SMALL = 'CONTENT_SMALL',
+  // 正文中
+  CONTENT_MIDDLE = 'CONTENT_MIDDLE',
+  // 正文大
+  CONTENT_LARGE = 'CONTENT_LARGE',
+
+  H1 = 'H1',
+  H2 = 'H2',
+  H3 = 'H3',
+  H4 = 'H4',
+  H5 = 'H5',
+  H6 = 'H6',
+  H7 = 'H7',
+  H8 = 'H8',
+  H9 = 'H9'
+}
