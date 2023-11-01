@@ -1,13 +1,15 @@
 <template>
-  <div :class="$style.framework">
-    <div :class="$style.framework_sidebar">
-      <AppSidebarMenu :menu="sidebarMenu" v-model="sidebarMenuSelected" />
-    </div>
+  <AppShortCut>
+    <div :class="$style.framework">
+      <div :class="$style.framework_sidebar">
+        <AppSidebarMenu :menu="sidebarMenu" v-model="sidebarMenuSelected" />
+      </div>
 
-    <div :class="$style.framework_content">
-      <component v-if="selectedMenu" :is="selectedMenu.component" />
+      <div :class="$style.framework_content">
+        <component v-if="selectedMenu" :is="selectedMenu.component" />
+      </div>
     </div>
-  </div>
+  </AppShortCut>
 </template>
 
 <script lang="ts" setup>
@@ -16,6 +18,7 @@ import AppPageDesign from './AppPageDesign/AppPageDesign.vue'
 import AppSettings from './AppSettings.vue'
 import AppSidebarMenu, { MenuItem } from './AppSidebarMenu.vue'
 import AppMaterial from './AppMaterial/AppMaterial.vue'
+import AppShortCut from './AppShortCut.vue'
 
 const sidebarMenu: MenuItem[] = [
   {

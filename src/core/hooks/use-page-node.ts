@@ -89,6 +89,7 @@ export function usePageNode() {
     if (!parentNode) return false
     const index = parentNode.nodes.findIndex(item => item.instanceID === nodeId)
     if (index > -1) {
+      emitNode(parentNode, 'delete-node', parentNode.nodes[index])
       parentNode.nodes.splice(index, 1)
       return true
     }

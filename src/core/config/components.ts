@@ -11,11 +11,14 @@ import { verticalAligns } from './select'
 // 内置组件
 export const resetComponents = {
   // BODY容器
-  [Constants.BODY_NODE_ID]: createAppComponent({
-    id: Constants.BODY_NODE_ID,
-    icon: 't-icon-docs',
-    title: Constants.BODY_NODE_ID
-  }),
+  [Constants.BODY_NODE_ID]: createAppComponent(
+    {
+      id: Constants.BODY_NODE_ID,
+      icon: 't-icon-docs',
+      title: Constants.BODY_NODE_ID
+    },
+    { deletable: false }
+  ),
 
   // 普通容器
   NOMAL_CONTAINER: createAppComponent({

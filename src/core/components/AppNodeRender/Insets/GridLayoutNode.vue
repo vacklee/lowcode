@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { AppComponent } from '@/core/data/component'
 import { usePageNode } from '@/core/hooks/use-page-node'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import RenderNode from '../Nodes/RenderNode.vue'
 import SelectNode from '../Nodes/SelectNode.vue'
+import { delay } from '@/core/utils/common'
 
-const { insertNode, watchNode, emitNode } = usePageNode()
+const { insertNode, watchNode, emitNode, setNodeAttrs } = usePageNode()
 
 const props = defineProps<{
   node: AppComponent
@@ -17,11 +18,14 @@ const wrapStyle = computed(() => ({
   '--col-gap': props.node.baseAttrs.colGap
 }))
 
+const autoNodeStop = ref(false)
 const nodes = computed(() => {
   const _nodes = props.node.nodes
-  const rows = props.node.baseAttrs.rows
-  while (_nodes.length < rows) {
-    insertNode(props.node.instanceID, 'GRID_LAYOUT_ROW')
+  if (!autoNodeStop.value) {
+    const rows = props.node.baseAttrs.rows
+    while (_nodes.length < rows) {
+      insertNode(props.node.instanceID, 'GRID_LAYOUT_ROW')
+    }
   }
   return _nodes
 })
@@ -32,7 +36,23 @@ watchNode<'top' | 'bottom'>(props.node, 'row', ({ value }) => {
     value === 'top' ? nodes.value[0] : nodes.value[nodes.value.length - 1]
   if (targetNode) {
     emitNode(targetNode, 'row', value)
+  } else {
+    setNodeAttrs(props.node.instanceID, 'baseAttrs', 'rows', 1)
   }
+})
+
+/** 删除了行 */
+watchNode(props.node, 'delete-node', () => {
+  autoNodeStop.value = true
+  setNodeAttrs(
+    props.node.instanceID,
+    'baseAttrs',
+    'rows',
+    props.node.baseAttrs.rows - 1
+  )
+  delay(0).then(() => {
+    autoNodeStop.value = false
+  })
 })
 </script>
 

@@ -26,6 +26,7 @@ const useSlot = (slot: keyof typeof slotName) => {
     const node = insertNode(props.node.instanceID, 'NOMAL_CONTAINER')
     node.slot = slot
     node.instanceName = slotName[slot]
+    node.deletable = false
   }
 
   return val

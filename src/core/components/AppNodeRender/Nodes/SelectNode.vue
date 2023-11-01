@@ -32,7 +32,10 @@ const onClick = () => {
 /** 给父元素赋予内联样式 */
 const elRef = ref<HTMLElement>(null!)
 const parentInlineStyle = computed(() => {
-  const node = getNodeById(props.id)!
+  const node = getNodeById(props.id)
+  if (!node) {
+    return {}
+  }
   return computedInsetStyles(node)
 })
 

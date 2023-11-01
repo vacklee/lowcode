@@ -43,6 +43,8 @@ export type AppComponent = {
   extends: string[]
   // 可视化配置CSS
   visualCss: Partial<InsetStyle>
+  // 是否可以删除
+  deletable: boolean
 }
 
 /** 创建组件 */
@@ -62,6 +64,7 @@ export function createAppComponent(
     slot: 'default',
     extends: [],
     visualCss: {},
+    deletable: true,
     ...(opts || {})
   }
 }

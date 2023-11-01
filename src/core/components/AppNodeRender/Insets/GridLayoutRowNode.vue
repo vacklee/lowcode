@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { AppComponent } from '@/core/data/component'
 import SelectNode from '../Nodes/SelectNode.vue'
 import RenderNode from '../Nodes/RenderNode.vue'
 import { usePageNode } from '@/core/hooks/use-page-node'
 import { createComponentInstance } from '@/core/config/components'
 import { cloneDeep } from 'lodash'
+import { delay } from '@/core/utils/common'
 
-const { insertNode, watchNode, getParentNode, spliceNode } = usePageNode()
+const { insertNode, watchNode, getParentNode, spliceNode, setNodeAttrs } =
+  usePageNode()
 
 const props = defineProps<{
   node: AppComponent
@@ -19,17 +21,21 @@ const rowStyles = computed(() => ({
   '--align-items': props.node.baseAttrs.alignItems
 }))
 
+const autoNodeStop = ref(false)
 const nodes = computed(() => {
   const _nodes = props.node.nodes
   const cols = props.node.baseAttrs.cols
 
-  if (_nodes.length > cols) {
-    spliceNode(props.node, cols)
+  if (!autoNodeStop.value) {
+    if (_nodes.length > cols) {
+      spliceNode(props.node, cols)
+    }
+
+    while (_nodes.length < cols) {
+      insertNode(props.node.instanceID, 'GRID_LAYOUT_COL')
+    }
   }
 
-  while (_nodes.length < cols) {
-    insertNode(props.node.instanceID, 'GRID_LAYOUT_COL')
-  }
   return _nodes
 })
 
@@ -44,6 +50,20 @@ watchNode<'top' | 'bottom'>(props.node, 'row', ({ value }) => {
     currentIndex += 1
   }
   parent.nodes.splice(currentIndex, 0, newNode)
+})
+
+// 删除了列
+watchNode<AppComponent>(props.node, 'delete-node', () => {
+  autoNodeStop.value = true
+  setNodeAttrs(
+    props.node.instanceID,
+    'baseAttrs',
+    'cols',
+    props.node.baseAttrs.cols - 1
+  )
+  delay(0).then(() => {
+    autoNodeStop.value = false
+  })
 })
 </script>
 
