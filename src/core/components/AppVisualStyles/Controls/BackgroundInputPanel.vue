@@ -7,9 +7,11 @@ import {
 } from '@/core/config/styles'
 import { computed } from 'vue'
 import AppCauselRadio from '../../AppCauselRadio.vue'
-import { backgroundTypes } from '@/core/config/select'
+import { backgroundTypes, backgroundSizeOptions } from '@/core/config/select'
 import ColorInput from './ColorInput.vue'
 import ImagePicker from './ImagePicker.vue'
+import CommonSelect from '../../AutoForm/Controls/CommonSelect.vue'
+import AppIcon from '../../AppIcon.vue'
 
 type SetValueOptions<T extends BackgroundType> = T extends BackgroundType.COLOR
   ? Partial<ColorBackground>
@@ -85,6 +87,33 @@ const imageURL = computed({
   },
   set: url => setValue(BackgroundType.IMAGE, { url })
 })
+
+// 背景尺寸
+const backgroundSize = computed({
+  get: () => {
+    if (!isImageBackground.value) {
+      return ''
+    }
+
+    const { size } = props.modelValue as ImageBackground
+    if (!size) return ''
+
+    const { x = 'auto', y = 'auto' } = size
+    if (x === 'auto' && y === 'auto') {
+      return 'auto'
+    }
+
+    return `${x} ${y}`
+  },
+  set: val => {
+    if (!val) {
+      setValue(BackgroundType.IMAGE, { size: void 0 })
+      return
+    }
+    const [x = 'auto', y = 'auto'] = val.split(' ')
+    setValue(BackgroundType.IMAGE, { size: { x, y } })
+  }
+})
 </script>
 
 <template>
@@ -102,12 +131,27 @@ const imageURL = computed({
       v-if="isColorBackground"
     />
 
-    <div v-else-if="isImageBackground">
+    <div :class="$style.flex" v-else-if="isImageBackground">
+      <!-- 图片路径 -->
       <ImagePicker
         v-model="imageURL"
         @dialog-open="emits('other-show')"
         @dialog-closed="emits('other-hide')"
       />
+
+      <!-- 背景尺寸 -->
+      <CommonSelect
+        placeholder="背景尺寸"
+        :options="backgroundSizeOptions"
+        :clearable="true"
+        v-model="backgroundSize"
+        @popper-show="emits('other-show')"
+        @popper-hide="emits('other-hide')"
+      >
+        <template #prefix>
+          <AppIcon icon="t-icon-style-img-cover" />
+        </template>
+      </CommonSelect>
     </div>
   </div>
 </template>
@@ -118,5 +162,11 @@ const imageURL = computed({
   display: flex;
   flex-direction: column;
   gap: $spacing-small;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-mini;
 }
 </style>

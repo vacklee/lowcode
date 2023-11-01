@@ -32,8 +32,8 @@ export type FourDirect = {
 
 // 坐标方向
 export type CoordDirect = {
-  x: string
-  y: string
+  x?: string
+  y?: string
 }
 
 // 顶点方向

@@ -127,3 +127,27 @@ export const backgroundTypes: SelectOption[] = [
     tooltip: 'background: image'
   }
 ]
+
+/** 背景尺寸 */
+export const backgroundSizeOptions: SelectOption[] = [
+  {
+    value: 'auto',
+    label: 'auto',
+    tooltip: '原图尺寸'
+  },
+  {
+    value: '100% auto',
+    label: '100% auto',
+    tooltip: '宽度拉伸，高度自适应'
+  },
+  {
+    value: 'auto 100%',
+    label: 'auto 100%',
+    tooltip: '宽度自适应，高度拉伸'
+  },
+  {
+    value: '100% 100%',
+    label: '100% 100%',
+    tooltip: '宽度高度均拉伸'
+  }
+]

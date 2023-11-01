@@ -1,19 +1,23 @@
 <script lang="ts" setup>
 import { SelectOption } from '@/core/config/select'
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 
 const props = withDefaults(
   defineProps<{
     options?: SelectOption[]
     modelValue?: unknown
     labelFormat?: (item: SelectOption) => string | undefined
+    placeholder?: string
+    clearable?: boolean
+    tooltip?: string
   }>(),
   {
     options: () => []
   }
 )
 
-const emits = defineEmits(['update:modelValue'])
+const slots = useSlots()
+const emits = defineEmits(['update:modelValue', 'popper-show', 'popper-hide'])
 const innerValue = computed({
   get: () => props.modelValue,
   set: val => emits('update:modelValue', val)
@@ -22,15 +26,38 @@ const innerValue = computed({
 const getLabel = (item: SelectOption) => {
   return props.labelFormat?.(item) || item.label
 }
+
+const onVisibleChange = (visible: boolean) => {
+  if (visible) {
+    emits('popper-show')
+  } else {
+    emits('popper-hide')
+  }
+}
 </script>
 
 <template>
-  <el-select v-model="innerValue" style="width: 100%">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :value="item.value"
-      :label="getLabel(item)"
-    />
-  </el-select>
+  <el-tooltip :content="tooltip" :disabled="!tooltip" :show-after="1000">
+    <el-select
+      v-model="innerValue"
+      style="width: 100%"
+      :placeholder="placeholder"
+      :clearable="clearable"
+      @visible-change="onVisibleChange"
+    >
+      <template v-for="item in options" :key="item.value">
+        <el-tooltip
+          :content="item.tooltip"
+          :disabled="!item.tooltip"
+          :show-after="1000"
+        >
+          <el-option :value="item.value" :label="getLabel(item)" />
+        </el-tooltip>
+      </template>
+
+      <template #prefix v-if="slots.prefix">
+        <slot name="prefix" />
+      </template>
+    </el-select>
+  </el-tooltip>
 </template>
