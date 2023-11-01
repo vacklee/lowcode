@@ -366,5 +366,51 @@ export function transformInsetStyle(
     }
   })
 
+  /** 背景 */
+  handle('background', (background, expose) => {
+    // 缺省
+    if (background === BackgroundType.DEFAULT) {
+      return
+    }
+
+    // 无背景
+    if (background === BackgroundType.NONE) {
+      expose('background', 'none')
+      return
+    }
+
+    // 颜色背景
+    if (background.type === BackgroundType.COLOR) {
+      if (background.color) {
+        expose('background-color', background.color)
+      }
+      return
+    }
+
+    // 图片背景
+    // 地址
+    if (background.url) {
+      expose('background-image', `url("${background.url}")`)
+    }
+    // 尺寸
+    if (background.size) {
+      const { x, y } = background.size
+      const value = [x, y].filter(Boolean).join(' ')
+      if (value) {
+        expose('background-size', value)
+      }
+    }
+    // 位置
+    if (background.position) {
+      const { x, y } = background.position
+      x && expose('background-position-x', x)
+      y && expose('background-position-y', y)
+    }
+    // 重复方式
+    if (background.repeat) {
+      expose('background-repeat', background.repeat)
+    }
+  })
+
   return cssStyles
 }

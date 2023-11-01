@@ -21,8 +21,9 @@ onMounted(() => {
 
 <template>
   <div ref="bodyRef" :class="$style.body">
-    <AppNodeEmpty v-if="isEmpty" />
     <div :class="[$style.body_inner, isEmpty && $style.empty]">
+      <AppNodeEmpty v-if="isEmpty" />
+
       <SelectNode :id="id" :is-empty="isEmpty" :is-body="true">
         <SlotNode ref="slotRef" :id="id" :is-empty="isEmpty" />
       </SelectNode>
@@ -43,6 +44,7 @@ onMounted(() => {
   overflow: auto;
 
   &_inner {
+    min-height: 100%;
     &:not(.empty) {
       position: relative;
     }
