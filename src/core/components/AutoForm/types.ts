@@ -1,6 +1,13 @@
-import { Component, defineAsyncComponent } from 'vue'
+import { Component } from 'vue'
 import { FormItemProps, ElSwitch } from 'element-plus'
 import { PropsOf } from '@/core/hooks/use-dialog'
+import FourDirectBtnVue from './Controls/FourDirectBtn.vue'
+import CellWidthVue from './Controls/CellWidth.vue'
+import CellWidthItemVue from './Controls/CellWidthItem.vue'
+import VDirectBtnVue from './Controls/VDirectBtn.vue'
+import NumberSelectVue from './Controls/NumberSelect.vue'
+import SpacingSelectVue from './Controls/SpacingSelect.vue'
+import CommonIconSelectVue from './Controls/CommonIconSelect.vue'
 
 export enum AutoFromControlsEnum {
   // 开关
@@ -48,9 +55,7 @@ export const AutoFromControls = {
 
   // 四方向按钮
   [AutoFromControlsEnum.FourDirectBtn]: _({
-    component: defineAsyncComponent(
-      () => import('./Controls/FourDirectBtn.vue')
-    ),
+    component: FourDirectBtnVue,
     componentProps: {
       topText: '向上添加行',
       leftText: '向左添加列',
@@ -61,38 +66,32 @@ export const AutoFromControls = {
 
   // 列宽调节器
   [AutoFromControlsEnum.CellWidth]: _({
-    component: defineAsyncComponent(() => import('./Controls/CellWidth.vue'))
+    component: CellWidthVue
   }),
 
   // 列宽调节器单个
   [AutoFromControlsEnum.CellWidthItem]: _({
-    component: defineAsyncComponent(
-      () => import('./Controls/CellWidthItem.vue')
-    )
+    component: CellWidthItemVue
   }),
 
   // 垂直两方向按钮
   [AutoFromControlsEnum.VDirectBtn]: _({
-    component: defineAsyncComponent(() => import('./Controls/VDirectBtn.vue'))
+    component: VDirectBtnVue
   }),
 
   // 数字选择器
   [AutoFromControlsEnum.NumberSelect]: _({
-    component: defineAsyncComponent(() => import('./Controls/NumberSelect.vue'))
+    component: NumberSelectVue
   }),
 
   // 间距选择器
   [AutoFromControlsEnum.SpacingSelect]: _({
-    component: defineAsyncComponent(
-      () => import('./Controls/SpacingSelect.vue')
-    )
+    component: SpacingSelectVue
   }),
 
   // 图标选择器
   [AutoFromControlsEnum.IconSelect]: _({
-    component: defineAsyncComponent(
-      () => import('./Controls/CommonIconSelect.vue')
-    )
+    component: CommonIconSelectVue
   })
 }
 

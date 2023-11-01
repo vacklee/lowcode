@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
 import AppTabs, { AppTab } from '../AppTabs.vue'
+import AppNodeTree from './AppNodeTree.vue'
 
 const tabs: AppTab[] = [
   {
     id: 'node-tree',
     title: '大纲树',
-    component: defineAsyncComponent(() => import('./AppNodeTree.vue'))
+    component: AppNodeTree
   },
   {
     id: 'states',

@@ -1,8 +1,11 @@
-import { defineAsyncComponent } from 'vue'
 import { DialogBtn, DialogEvents, useDialog } from './use-dialog'
 import { FormInstance } from 'element-plus'
 import { AppPage } from 'core/data/app'
 import { FileBaseInfo } from '../data/file'
+import AppFormRenameVue from '../components/AppForm/AppFormRename.vue'
+import AppFormMoveToGroupVue from '../components/AppForm/AppFormMoveToGroup.vue'
+import AppFormCopyPageVue from '../components/AppForm/AppFormCopyPage.vue'
+import AppMaterialImageVue from '../components/AppMaterial/AppMaterialImage.vue'
 
 type WithDialogEvents<T> = T & { dialogEvents?: DialogEvents }
 
@@ -50,9 +53,7 @@ export function useDialogX() {
     const dialog = createDialog({
       title: '重命名',
       width: 500,
-      component: defineAsyncComponent(
-        () => import('core/components/AppForm/AppFormRename.vue')
-      ),
+      component: AppFormRenameVue,
       componentProps: {
         label: opts.label,
         currentName: opts.currentName
@@ -86,9 +87,7 @@ export function useDialogX() {
   ) => {
     const dialog = createDialog({
       title: '移动到分组',
-      component: defineAsyncComponent(
-        () => import('core/components/AppForm/AppFormMoveToGroup.vue')
-      ),
+      component: AppFormMoveToGroupVue,
       componentProps: {
         currentGroup: opts.currentGroup
       },
@@ -122,9 +121,7 @@ export function useDialogX() {
   ) => {
     const dialog = createDialog({
       title: '复制页面',
-      component: defineAsyncComponent(
-        () => import('core/components/AppForm/AppFormCopyPage.vue')
-      ),
+      component: AppFormCopyPageVue,
       componentProps: { page },
       btns: cancelConfirmBtns({
         onCancel: () => {
@@ -159,9 +156,7 @@ export function useDialogX() {
       title: '素材管理',
       width: '1052px',
       nopadding: true,
-      component: defineAsyncComponent(
-        () => import('@/core/components/AppMaterial/AppMaterialImage.vue')
-      ),
+      component: AppMaterialImageVue,
       componentProps: {
         inDialog: true,
         pickerMode: true,

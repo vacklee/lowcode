@@ -1,17 +1,18 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
 import AppTabs, { AppTab } from '../AppTabs.vue'
+import AppAttrs from './AppAttrs.vue'
+import AppStyles from './AppStyles.vue'
 
 const tabs: AppTab[] = [
   {
     id: 'attrs',
     title: '属性',
-    component: defineAsyncComponent(() => import('./AppAttrs.vue'))
+    component: AppAttrs
   },
   {
     id: 'style',
     title: '样式',
-    component: defineAsyncComponent(() => import('./AppStyles.vue'))
+    component: AppStyles
   }
 ]
 </script>

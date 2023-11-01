@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
 import AppTabs, { AppTab } from '../AppTabs.vue'
+import AppMaterialImage from './AppMaterialImage.vue'
 
 const tabs: AppTab[] = [
   {
     id: 'image',
     title: '图片',
-    component: defineAsyncComponent(() => import('./AppMaterialImage.vue'))
+    component: AppMaterialImage
   },
   {
     id: 'components',
