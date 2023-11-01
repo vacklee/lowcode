@@ -1,6 +1,12 @@
 import { type Component } from 'vue'
 import { Constants } from './constant'
-import { BackgroundType, BorderType, FontWeight, TextAlign } from './styles'
+import {
+  BackgroundType,
+  BorderType,
+  FontWeight,
+  ImageBackgroundRepeat,
+  TextAlign
+} from './styles'
 
 export type SelectOption<T extends number | string = number | string> = {
   value: T
@@ -164,4 +170,12 @@ export const imagePositionOptions: IconSelectOption<string>[] = [
   { value: '0% 100%', label: '左下', icon: 'position-left-bottom' },
   { value: '50% 100%', label: '中下', icon: 'position-center-bottom' },
   { value: '100% 100%', label: '右下', icon: 'position-right-bottom' }
+]
+
+/** 背景重复方式 */
+export const backgroundRepeatOptions: SelectOption<ImageBackgroundRepeat>[] = [
+  { value: ImageBackgroundRepeat.NO_REPEAT, label: '不重复' },
+  { value: ImageBackgroundRepeat.REPEAT_X, label: '水平重复' },
+  { value: ImageBackgroundRepeat.REPEAT_Y, label: '垂直重复' },
+  { value: ImageBackgroundRepeat.REPEAT, label: '水平垂直重复' }
 ]

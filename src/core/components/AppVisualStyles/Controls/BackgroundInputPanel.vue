@@ -7,7 +7,11 @@ import {
 } from '@/core/config/styles'
 import { computed } from 'vue'
 import AppCauselRadio from '../../AppCauselRadio.vue'
-import { backgroundTypes, backgroundSizeOptions } from '@/core/config/select'
+import {
+  backgroundTypes,
+  backgroundSizeOptions,
+  backgroundRepeatOptions
+} from '@/core/config/select'
 import ColorInput from './ColorInput.vue'
 import ImagePicker from './ImagePicker.vue'
 import CommonSelect from '../../AutoForm/Controls/CommonSelect.vue'
@@ -126,6 +130,12 @@ const imagePosition = computed({
   },
   set: position => setValue(BackgroundType.IMAGE, { position })
 })
+
+/** 重复方式 */
+const imageRepeat = computed({
+  get: () => (props.modelValue as ImageBackground).repeat,
+  set: repeat => setValue(BackgroundType.IMAGE, { repeat })
+})
 </script>
 
 <template>
@@ -154,6 +164,7 @@ const imagePosition = computed({
       <!-- 背景尺寸 -->
       <CommonSelect
         placeholder="背景尺寸"
+        tooltip="背景尺寸 background-size"
         :options="backgroundSizeOptions"
         :clearable="true"
         v-model="backgroundSize"
@@ -168,6 +179,21 @@ const imagePosition = computed({
       <!-- 图片位置 -->
       <span>图片位置</span>
       <ImagePositionPicker v-model="imagePosition" />
+
+      <!-- 重复方式 -->
+      <CommonSelect
+        placeholder="重复方式"
+        tooltip="重复方式 background-repeat"
+        :options="backgroundRepeatOptions"
+        :clearable="true"
+        v-model="imageRepeat"
+        @popper-show="emits('other-show')"
+        @popper-hide="emits('other-hide')"
+      >
+        <template #prefix>
+          <AppIcon icon="t-icon-style-img-repeat" />
+        </template>
+      </CommonSelect>
     </div>
   </div>
 </template>
