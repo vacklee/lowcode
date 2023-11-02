@@ -79,13 +79,14 @@ defineExpose({
   width: 100%;
   height: 100%;
   position: relative;
-  border: 1px dashed $border-color-base;
+  border: 1px dashed transparent;
   box-sizing: border-box;
 
   &.empty {
     flex: 1;
     height: auto;
     min-height: 100%;
+    border-color: $border-color-base;
   }
 
   &_icon {

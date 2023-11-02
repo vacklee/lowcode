@@ -36,6 +36,10 @@ registListen(['Backspace', 'Delete', 'Meta + Backspace'], {
       return false
     }
 
+    if (payload.target instanceof HTMLTextAreaElement) {
+      return false
+    }
+
     const { currentNode } = state.$pageNode
     return !!currentNode.value?.deletable
   },

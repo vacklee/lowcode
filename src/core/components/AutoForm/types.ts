@@ -1,5 +1,5 @@
 import { Component, defineAsyncComponent } from 'vue'
-import { FormItemProps, ElSwitch } from 'element-plus'
+import { FormItemProps, ElSwitch, ElInput } from 'element-plus'
 import { PropsOf } from '@/core/hooks/use-dialog'
 
 export enum AutoFromControlsEnum {
@@ -20,7 +20,9 @@ export enum AutoFromControlsEnum {
   // 图标选择器
   IconSelect = 'CommonIconSelect',
   // 通用选择器
-  CommonSelect = 'CommonSelect'
+  CommonSelect = 'CommonSelect',
+  // 多行文本框
+  TextArea = 'TextArea'
 }
 
 export type AutoFormControl<T extends Component = Component> = {
@@ -100,6 +102,15 @@ export const AutoFromControls = {
   // 通用选择器
   [AutoFromControlsEnum.CommonSelect]: _({
     component: defineAsyncComponent(() => import('./Controls/CommonSelect.vue'))
+  }),
+
+  // 多行文本框
+  [AutoFromControlsEnum.TextArea]: _({
+    component: ElInput,
+    componentProps: {
+      type: 'textarea',
+      autosize: { minRows: 1.5, maxRows: 6 }
+    }
   })
 }
 

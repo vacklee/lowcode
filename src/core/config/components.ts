@@ -283,6 +283,12 @@ export const resetComponents = {
       },
       baseAttrsForm: [
         autoFormColumn(
+          AutoFromControlsEnum.TextArea,
+          'content',
+          '文本内容',
+          ''
+        ),
+        autoFormColumn(
           AutoFromControlsEnum.CommonSelect,
           'format',
           '文本格式',
