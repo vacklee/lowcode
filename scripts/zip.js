@@ -1,7 +1,8 @@
 import fs from 'node:fs'
-import { resolve } from 'node:path'
+import { resolve, relative } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
 import JSZip from 'jszip'
+import { minimatch } from 'minimatch'
 
 const _ = process.argv[2]
 const templateFolder = fileURLToPath(new URL('../templates', import.meta.url))
@@ -17,11 +18,41 @@ entries.reduce(async (_, entry) => {
 }, Promise.resolve())
 
 async function zipItem(item) {
+  const rootPath = resolve(templateFolder, item)
+  const rootIgnoreFile = resolve(rootPath, '.gitignore')
+  const ignoreRules = { not: [], normal: [] }
+  if (rootIgnoreFile) {
+    const ignoreContent = fs.readFileSync(rootIgnoreFile, 'utf-8')
+    ignoreContent.split(/\n+/).forEach(item => {
+      if (!item) return
+      if (/^#/.test(item)) return
+      if (/^!/.test(item)) {
+        ignoreRules.not.push(item)
+      } else {
+        ignoreRules.normal.push(item)
+      }
+    })
+  }
+
+  const checkIsIgnore = item => {
+    if (ignoreRules.not.some(rule => minimatch(item, rule) === false)) {
+      return false
+    }
+    return ignoreRules.normal.some(rule => minimatch(item, rule))
+  }
+
   /** @param {JSZip} zip */
   const _ = (zip, root) => {
     const entries = fs.readdirSync(root)
     entries.forEach(entry => {
       const entryPath = resolve(root, entry)
+      const relativeEntry = relative(rootPath, entryPath)
+      const isIgnore = checkIsIgnore(relativeEntry)
+
+      if (isIgnore) {
+        return
+      }
+
       const entryStat = fs.statSync(entryPath)
       if (entryStat.isFile()) {
         zip.file(entry, fs.readFileSync(entryPath))
