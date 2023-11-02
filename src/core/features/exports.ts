@@ -1,3 +1,5 @@
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 import { AppData } from '../data/app'
 import { ExporterVue } from '../exporters/exporter-vue'
 import { Exporter } from '../exporters/types'
@@ -41,10 +43,24 @@ export async function exports(
   configs: Array<{ type: ExportType }>,
   appData: AppData
 ) {
+  const files: File[] = []
   await configs.reduce(async (_, config) => {
     await _
-    await exportItem(config.type, appData)
+    const file = await exportItem(config.type, appData)
+    if (file instanceof File) {
+      files.push(file)
+    }
   }, Promise.resolve())
+
+  let downloadFile = files[0]
+  if (files.length > 1) {
+    const zip = new JSZip()
+    files.forEach(item => zip.file(item.name, item))
+    const blob = await zip.generateAsync({ type: 'blob' })
+    downloadFile = new File([blob], `${appData.basicInfo.name}.zip`)
+  }
+
+  saveAs(downloadFile)
 }
 
 export async function exportItem(type: ExportType, appData: AppData) {
@@ -55,5 +71,5 @@ export async function exportItem(type: ExportType, appData: AppData) {
     return
   }
 
-  await exporter(appData)
+  return exporter(appData)
 }

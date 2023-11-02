@@ -17,10 +17,7 @@ module.exports = {
       },
       parserOptions: {
         sourceType: 'module',
-        ecmaVersion: 6
-      },
-      global: {
-        import: 'readonly'
+        ecmaVersion: 12
       },
       rules: {
         'prettier/prettier': ['error', prettierOptions]

@@ -5,7 +5,9 @@ import JSZip from 'jszip'
 
 const _ = process.argv[2]
 const templateFolder = fileURLToPath(new URL('../templates', import.meta.url))
-const outputFolder = fileURLToPath(new URL('../public/templates', import.meta.url))
+const outputFolder = fileURLToPath(
+  new URL('../public/templates', import.meta.url)
+)
 const items = fs.readdirSync(templateFolder)
 
 const entries = _ ? _.split(',').filter(i => items.includes(i)) : items
@@ -18,7 +20,7 @@ async function zipItem(item) {
   /** @param {JSZip} zip */
   const _ = (zip, root) => {
     const entries = fs.readdirSync(root)
-    entries.forEach((entry) => {
+    entries.forEach(entry => {
       const entryPath = resolve(root, entry)
       const entryStat = fs.statSync(entryPath)
       if (entryStat.isFile()) {
