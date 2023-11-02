@@ -19,6 +19,9 @@ module.exports = {
         sourceType: 'module',
         ecmaVersion: 6
       },
+      global: {
+        import: 'readonly'
+      },
       rules: {
         'prettier/prettier': ['error', prettierOptions]
       }
