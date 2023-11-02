@@ -19,20 +19,24 @@ entries.reduce(async (_, entry) => {
 
 async function zipItem(item) {
   const rootPath = resolve(templateFolder, item)
-  const rootIgnoreFile = resolve(rootPath, '.gitignore')
   const ignoreRules = { not: [], normal: [] }
-  if (rootIgnoreFile) {
-    const ignoreContent = fs.readFileSync(rootIgnoreFile, 'utf-8')
-    ignoreContent.split(/\n+/).forEach(item => {
-      if (!item) return
-      if (/^#/.test(item)) return
-      if (/^!/.test(item)) {
-        ignoreRules.not.push(item)
-      } else {
-        ignoreRules.normal.push(item)
-      }
-    })
+  const addIgnoreFile = ignoreFile => {
+    if (ignoreFile) {
+      const ignoreContent = fs.readFileSync(ignoreFile, 'utf-8')
+      ignoreContent.split(/\n+/).forEach(item => {
+        if (!item) return
+        if (/^#/.test(item)) return
+        if (/^!/.test(item)) {
+          ignoreRules.not.push(item)
+        } else {
+          ignoreRules.normal.push(item)
+        }
+      })
+    }
   }
+
+  addIgnoreFile(resolve(rootPath, '.gitignore'))
+  addIgnoreFile(resolve(rootPath, '.zipignore'))
 
   const checkIsIgnore = item => {
     if (ignoreRules.not.some(rule => minimatch(item, rule) === false)) {
