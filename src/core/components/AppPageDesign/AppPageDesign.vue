@@ -10,6 +10,7 @@ import AppRightPanel from '../AppRightPanel/AppRightPanel.vue'
 import { usePageNode } from 'core/hooks/use-page-node'
 import AppCollapseBtn from '../AppCollapseBtn.vue'
 import AppLeftPanel from '../AppLeftPanel/AppLeftPanel.vue'
+import AppExportBtn from './AppExportBtn.vue'
 
 const { getAppState, setPlatfrom, setAppState, setCurrentSelectedNodeId } =
   useAppData()
@@ -46,6 +47,10 @@ const onClickBody = () => {
         <AppPlatformSelect v-model="currentPlatform" />
         <el-divider direction="vertical" />
         <AppCanvasSelect v-if="canvasAttrs" />
+      </div>
+
+      <div :class="$style.editor_header_right">
+        <AppExportBtn />
       </div>
     </div>
 
@@ -87,9 +92,11 @@ const onClickBody = () => {
     border-bottom: 1px solid $border-color-base;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 $spacing-medium;
 
-    &_left {
+    &_left,
+    &_right {
       display: flex;
       align-items: center;
       gap: $spacing-mini;
