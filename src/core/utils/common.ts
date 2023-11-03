@@ -3,6 +3,7 @@ import ClipBoard from 'clipboard'
 import { ElMessage } from 'element-plus'
 import mime from 'mime'
 import bytes from 'bytes'
+import { camelCase } from 'lodash'
 
 // 生成唯一ID
 export function genId() {
@@ -118,4 +119,9 @@ export function chooseFile(opts?: {
     }
     input.click()
   })
+}
+
+/** 驼峰化首字母大写 */
+export function upperCamelCase(str: string) {
+  return camelCase(str).replace(/^./, $ => $.toUpperCase())
 }

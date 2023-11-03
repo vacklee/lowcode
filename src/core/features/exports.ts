@@ -1,8 +1,8 @@
 import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
+// import { saveAs } from 'file-saver'
 import { AppData } from '../data/app'
 import { ExporterVue } from '../exporters/exporter-vue'
-import { Exporter } from '../exporters/types'
+import { defineExporter } from '../exporters/exporter'
 
 export enum ExportType {
   VUE = 'VUE',
@@ -14,7 +14,7 @@ export enum ExportType {
 export type ExportOption = {
   id: ExportType
   title: string
-  exporter?: Exporter
+  exporter?: ReturnType<typeof defineExporter>
   default?: boolean
 }
 
@@ -61,7 +61,7 @@ export async function exports(
   }
 
   if (downloadFile) {
-    saveAs(downloadFile)
+    // saveAs(downloadFile)
   }
 }
 

@@ -1,6 +1,6 @@
 <%
-  const indexPageId = appData.state.indexPage
-  const indexPage = appData.pages.find(item => item.id === indexPageId)
+  const indexPageId = $appData.state.indexPage
+  const indexPage = $appData.pages.find(item => item.id === indexPageId)
   const genPath = (page) => `/${[page.groupdId, page.id].filter(Boolean).join('/')}`
 -%>
 
