@@ -1,0 +1,27 @@
+<%
+  const indexPageId = appData.state.indexPage
+  const indexPage = appData.pages.find(item => item.id === indexPageId)
+  const genPath = (page) => `/${[page.groupdId, page.id].filter(Boolean).join('/')}`
+-%>
+
+import { defineAsyncComponent } from 'vue'
+
+export const routes = [
+  <% for (const item of $pages) { -%>
+  {
+    name: '<%= item.pageId %>',
+    path: '<%= genPath(item.$) %>',
+    components: defineAsyncComponent(() => import('../pages/<%= item.outputPath %>.vue')),
+    meta: {
+      title: '<%= item.$.title %>'
+    }
+  },
+  <% } -%>
+  <% if (indexPage && genPath(indexPage) !== '/') { -%>
+  {
+    name: 'index',
+    path: '/',
+    redirect: '<%= genPath(indexPage) %>'
+  },
+  <% } -%>
+]

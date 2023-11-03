@@ -33,6 +33,24 @@ export const ExporterVue = defineExporter(async appData => {
   )
 
   const outputZip = new JSZip()
+  const renderData = {
+    $pages: appData.pages.map(page => {
+      const pageName = _upCamelCase(page.id)
+      const groupName = _upCamelCase(page.groupdId)
+
+      return {
+        $: page,
+        pageId: page.id,
+        pageName,
+        groupId: page.groupdId,
+        groupName,
+        node: generatNode(createBodyNode(page))!,
+        outputPath: groupName
+          ? `${groupName}/${pageName}/${pageName}`
+          : `${pageName}/${pageName}`
+      }
+    })
+  }
 
   /** 直接复制 */
   await Object.keys(zip.files).reduce(async (_, fileKey) => {
@@ -49,7 +67,7 @@ export const ExporterVue = defineExporter(async appData => {
 
     if (/\.ejs$/.test(fileKey)) {
       const content = await fileInfo.async('text')
-      const renderContent = await renderEJS(content, appData)
+      const renderContent = await renderEJS(content, appData, renderData)
       outputZip.file(fileKey.replace(/\.ejs$/, ''), renderContent)
       return
     }
@@ -63,24 +81,20 @@ export const ExporterVue = defineExporter(async appData => {
     .file(configs.pageFileTemplate)!
     .async('text')
 
-  await appData.pages.reduce(async (_, page) => {
+  await renderData.$pages.reduce(async (_, page) => {
     await _
-    const genResult = generatNode(createBodyNode(page))
-    if (!genResult) return
-
     const result = await renderEJS(pageTemplateContent, appData, {
-      ...genResult,
-      pageId: page.id
+      ...renderData,
+      ...page
     })
 
-    const pageName = _upCamelCase(page.id)
-    const outputPath = page.groupdId
-      ? `${_upCamelCase(page.groupdId)}/${pageName}/${pageName}`
-      : `${pageName}/${pageName}`
-    const outputFileKey = configs.pageFileName.replace(/\{name\}/g, outputPath)
+    const outputFileKey = configs.pageFileName.replace(
+      /\{name\}/g,
+      page.outputPath
+    )
 
     outputZip.file(outputFileKey, result)
-    console.log({ result, genResult })
+    console.log({ result, page })
   }, Promise.resolve())
 
   const outputBlob = await outputZip.generateAsync({ type: 'blob' })

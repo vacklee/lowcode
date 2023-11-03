@@ -6,7 +6,7 @@
     ]
 
     _node.children.forEach((child) => {
-      const childContent = renderNode(child.node, tabLevel)
+      const childContent = renderNode(child, tabLevel)
       contents.splice(contents.length - 1, 0, childContent)
     })
 

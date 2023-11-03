@@ -35,9 +35,7 @@ export function generatNode(appNode: AppComponent) {
     children: appNode.nodes.map(sub => generatNode(sub)).filter(Boolean)
   }
 
-  return {
-    node
-  }
+  return node
 }
 
 function toRawValue(value: unknown): string {
