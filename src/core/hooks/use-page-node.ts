@@ -10,6 +10,18 @@ import {
   InsetStyleKey,
   transformInsetStyle
 } from '../config/styles'
+import { AppPage } from '../data/app'
+
+export function createBodyNode(page: AppPage) {
+  const node = createComponentInstance(
+    Constants.BODY_NODE_ID,
+    Constants.BODY_NODE_ID
+  )
+  node.nodes = page.nodeTree
+  node.instanceName = `页面：${page.title}`
+  node.visualCss = page.bodyVisualCss
+  return node
+}
 
 /** 页面节点相关 */
 export function usePageNode() {
@@ -34,14 +46,7 @@ export function usePageNode() {
   // body节点
   const bodyNode = computed<AppComponent | null>(() => {
     if (!currentPage.value) return null
-    const node = createComponentInstance(
-      Constants.BODY_NODE_ID,
-      Constants.BODY_NODE_ID
-    )
-    node.nodes = currentPage.value.nodeTree
-    node.instanceName = `页面：${currentPage.value.title}`
-    node.visualCss = currentPage.value.bodyVisualCss
-    return node
+    return createBodyNode(currentPage.value)
   })
 
   // 获取节点

@@ -1,11 +1,12 @@
 import { render } from 'ejs'
 import { AppData } from '../data/app'
 
-export async function renderEJS(content: string, appData: AppData) {
+export async function renderEJS(content: string, appData: AppData, data?: any) {
   const result = await render(
     content,
     {
-      appData
+      appData,
+      ...(data || {})
     },
     {
       client: true,

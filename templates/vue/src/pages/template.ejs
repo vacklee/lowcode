@@ -1,0 +1,36 @@
+<%
+  function renderNode(_node, tabLevel = 1) {
+    const contents = [
+      `<${_node.elementType}>`,
+      `</${_node.elementType}>`
+    ]
+
+    _node.children.forEach((child) => {
+      const childContent = renderNode(child.node, tabLevel)
+      contents.splice(contents.length - 1, 0, childContent)
+    })
+
+    const attrs = Object.entries(_node.attrs).map(([key, val]) => {
+      return `${key}="${val}"`
+    }).join(' ')
+    if (attrs) {
+      contents[0] = contents[0].replace(/>$/, ` ${attrs}>`)
+    }
+
+    if (contents.length === 2) {
+      contents.pop()
+      contents[0] = contents[0].replace(/>$/, ' />')
+    }
+
+    contents.forEach((str, index) => {
+      contents[index] = `${' '.repeat(tabLevel * 2)}${str}`
+    })
+
+    return contents.join('\n')
+  }
+_%>
+<script setup></script>
+
+<template>
+<%- renderNode(node) %>
+</template>

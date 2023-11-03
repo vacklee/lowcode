@@ -60,7 +60,9 @@ export async function exports(
     downloadFile = new File([blob], `${appData.basicInfo.name}.zip`)
   }
 
-  saveAs(downloadFile)
+  if (downloadFile) {
+    saveAs(downloadFile)
+  }
 }
 
 export async function exportItem(type: ExportType, appData: AppData) {

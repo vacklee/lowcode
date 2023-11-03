@@ -15,7 +15,8 @@ export const resetComponents = {
     {
       id: Constants.BODY_NODE_ID,
       icon: 't-icon-docs',
-      title: Constants.BODY_NODE_ID
+      title: Constants.BODY_NODE_ID,
+      name: 'Page'
     },
     { deletable: false }
   ),
@@ -24,7 +25,8 @@ export const resetComponents = {
   NOMAL_CONTAINER: createAppComponent({
     id: 'NOMAL_CONTAINER',
     icon: 'c-nomal-container',
-    title: '普通容器'
+    title: '普通容器',
+    name: 'View'
   }),
 
   // 网格布局
@@ -32,7 +34,8 @@ export const resetComponents = {
     {
       id: 'GRID_LAYOUT',
       icon: 'c-grid-container',
-      title: '网格布局'
+      title: '网格布局',
+      name: 'Grid'
     },
     {
       baseAttrs: {
@@ -69,7 +72,8 @@ export const resetComponents = {
     {
       id: 'GRID_LAYOUT_ROW',
       icon: '',
-      title: '行'
+      title: '行',
+      name: 'GridRow'
     },
     {
       extends: ['NOMAL_CONTAINER'],
@@ -135,7 +139,8 @@ export const resetComponents = {
     {
       id: 'GRID_LAYOUT_COL',
       icon: '',
-      title: '列'
+      title: '列',
+      name: 'GridCol'
     },
     {
       extends: ['NOMAL_CONTAINER'],
@@ -161,7 +166,8 @@ export const resetComponents = {
     {
       id: 'CARD',
       icon: 'c-card',
-      title: '卡片'
+      title: '卡片',
+      name: 'Card'
     },
     {
       baseAttrs: {
@@ -274,7 +280,8 @@ export const resetComponents = {
     {
       id: 'TEXT',
       icon: 'c-text',
-      title: '文本'
+      title: '文本',
+      name: 'Text'
     },
     {
       baseAttrs: {

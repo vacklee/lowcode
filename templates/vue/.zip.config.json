@@ -1,0 +1,8 @@
+{
+  "pageFileName": "src/pages/{name}.vue",
+  "pageFileTemplate": "src/pages/template.ejs",
+  "ignores": [
+    "src/pages/template.ejs",
+    ".zip.config.json"
+  ]
+}

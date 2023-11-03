@@ -11,6 +11,8 @@ export type AppComponentInfo = {
   icon: string
   // 组件标题
   title: string
+  // 组件名称
+  name?: string
 }
 
 /**
