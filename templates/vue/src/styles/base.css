@@ -4,4 +4,9 @@ body {
   --font-size-lg: 18px;
   
   margin: 0;
+  font-size: var(--font-size-base);
+}
+
+[class^="app-"] {
+  box-sizing: border-box;
 }

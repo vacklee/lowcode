@@ -46,7 +46,7 @@ function toRawValue(value: unknown): string {
   if (value && typeof value === 'object') {
     return `{${Object.keys(value)
       .map(key => {
-        const _key = /[\dA-Za-z_]+/.test(key) ? key : `'${key}'`
+        const _key = /^[\dA-Za-z_]+$/.test(key) ? key : `'${key}'`
         return `${_key}: ${toRawValue(value[key as keyof typeof value])}`
       })
       .join(', ')}}`
