@@ -1,5 +1,5 @@
 import JSZip from 'jszip'
-// import { saveAs } from 'file-saver'
+import { saveAs } from 'file-saver'
 import { AppData } from '../data/app'
 import { ExporterVue } from '../exporters/exporter-vue'
 import { defineExporter } from '../exporters/exporter'
@@ -61,7 +61,7 @@ export async function exports(
   }
 
   if (downloadFile) {
-    // saveAs(downloadFile)
+    saveAs(downloadFile)
   }
 }
 
