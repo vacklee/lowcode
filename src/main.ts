@@ -5,8 +5,9 @@ import './styles/iconfont/style.css'
 import './styles/ticon/style.css'
 import 'virtual:svg-icons-register'
 import './styles/element/index.scss'
+import { getStorage } from './core/features/storage'
 
 createContainer({
   el: document.querySelector('#app')!,
-  appData: createAppData()
+  appData: getStorage('testData') || createAppData()
 })
