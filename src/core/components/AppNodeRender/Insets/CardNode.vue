@@ -27,6 +27,7 @@ const useSlot = (slot: keyof typeof slotName) => {
     node.slot = slot
     node.instanceName = slotName[slot]
     node.deletable = false
+    node.allowDrag = false
   }
 
   return val

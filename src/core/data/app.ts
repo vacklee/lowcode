@@ -76,6 +76,8 @@ export type AppBasicInfo = {
 
 // 应用数据
 export type AppData = {
+  // 数据版本
+  version: string
   // 应用基础信息
   basicInfo: AppBasicInfo
   // 页面分组
@@ -105,8 +107,11 @@ export function createAppPage(
   return page
 }
 
+export const DATA_VERSION = '*'
+
 export default function createAppData(): AppData {
   return {
+    version: DATA_VERSION,
     basicInfo: {
       name: '未命名应用',
       iconURL: '',

@@ -18,7 +18,10 @@ export const resetComponents = {
       title: Constants.BODY_NODE_ID,
       name: 'Page'
     },
-    { deletable: false }
+    {
+      deletable: false,
+      allowDrag: false
+    }
   ),
 
   // 普通容器
@@ -63,7 +66,9 @@ export const resetComponents = {
           '默认对所有列生效，若某行单独配置了列间距，此属性将被覆盖。'
         ),
         autoFormColumn(AutoFromControlsEnum.SpacingSelect, 'rowGap', '行间距')
-      ]
+      ],
+      allowDropInner: ['GRID_LAYOUT_ROW'],
+      disabledDrop: true
     }
   ),
 
@@ -130,7 +135,10 @@ export const resetComponents = {
             }
           }
         )
-      ]
+      ],
+      allowDropInner: ['GRID_LAYOUT_COL'],
+      allowLeaveParent: false,
+      disabledDrop: true
     }
   ),
 
@@ -157,7 +165,8 @@ export const resetComponents = {
           '行和列'
         ),
         autoFormColumn(AutoFromControlsEnum.CellWidth, 'colWidth', '列宽')
-      ]
+      ],
+      allowLeaveParent: false
     }
   ),
 
@@ -201,7 +210,8 @@ export const resetComponents = {
           'showDivider',
           '显示分割线'
         )
-      ]
+      ],
+      disabledDrop: true
     }
   ),
 
@@ -306,7 +316,8 @@ export const resetComponents = {
             }
           }
         )
-      ]
+      ],
+      disabledDrop: true
     }
   )
 }
@@ -381,10 +392,12 @@ export function extendsComponent(name: string, target: AppComponent) {
   }
 
   const cloneSource = cloneDeep(source)
+  const isEmpty = (val: any) => [void 0, ''].includes(val)
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const assign = (obj1: any, obj2: any) => {
     for (const k in obj2) {
-      if (!obj1[k]) {
+      if (isEmpty(obj1[k]) || (Array.isArray(obj1[k]) && !obj1[k].length)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         obj1[k] = obj2[k]
       }

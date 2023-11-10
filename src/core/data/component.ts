@@ -47,6 +47,16 @@ export type AppComponent = {
   visualCss: Partial<InsetStyle>
   // 是否可以删除
   deletable: boolean
+  // 是否可以拖动
+  allowDrag: boolean
+  // 限制允许放入的节点类型
+  allowDropInner: string[]
+  // 禁止放入的节点类型
+  disabledDropInner: string[]
+  // 是否允许离开父节点
+  allowLeaveParent: boolean
+  // 禁止插入
+  disabledDrop: boolean
 }
 
 /** 创建组件 */
@@ -67,6 +77,11 @@ export function createAppComponent(
     extends: [],
     visualCss: {},
     deletable: true,
+    allowDrag: true,
+    allowDropInner: [],
+    disabledDropInner: [],
+    allowLeaveParent: true,
+    disabledDrop: false,
     ...(opts || {})
   }
 }

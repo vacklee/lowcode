@@ -12,7 +12,13 @@ const props = defineProps<{
 }>()
 
 const { getCurrentSelectedNodeId, setCurrentSelectedNodeId } = useAppData()
-const { bodyNode, getNodePaths } = usePageNode()
+const {
+  bodyNode,
+  getNodePaths,
+  checkAllowInsert,
+  checkAllowInsertPrev,
+  checkAllowInsertNext
+} = usePageNode()
 
 const treeRef = ref<InstanceType<typeof ElTree>>(null!)
 const treeData = computed(() => (bodyNode.value ? [bodyNode.value] : []))
@@ -85,6 +91,32 @@ watch(
   },
   { immediate: true }
 )
+
+/** 判断节点是否可以拖动 */
+const checkAllowDrag = (node: { data: AppComponent }) => {
+  return node.data.allowDrag
+}
+
+/** 判断节点是否可以放入 */
+const checkAllowDrop = (
+  draggingNode: { data: AppComponent },
+  dropNode: { data: AppComponent },
+  type: 'prev' | 'next' | 'inner'
+) => {
+  if (type === 'inner') {
+    return checkAllowInsert(draggingNode.data, dropNode.data)
+  }
+
+  if (type === 'next') {
+    return checkAllowInsertNext(draggingNode.data, dropNode.data)
+  }
+
+  if (type === 'prev') {
+    return checkAllowInsertPrev(draggingNode.data, dropNode.data)
+  }
+
+  return false
+}
 </script>
 
 <template>
@@ -102,6 +134,9 @@ watch(
       :check-on-click-node="true"
       :highlight-current="true"
       :current-node-key="currentNodeKey"
+      :draggable="true"
+      :allow-drag="checkAllowDrag"
+      :allow-drop="checkAllowDrop"
       node-key="instanceID"
       @node-expand="onNodeExpand"
       @node-collapse="onNodeCollapse"

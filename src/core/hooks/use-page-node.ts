@@ -206,6 +206,63 @@ export function usePageNode() {
   const computedInsetStyles = (node: AppComponent) =>
     transformInsetStyle(node.visualCss, { toPx })
 
+  /** 判断节点是否可以插入 */
+  const checkAllowInsert = (node: AppComponent, parentNode: AppComponent) => {
+    // 被插入的节点不能是自己
+    if (node.instanceID === parentNode.instanceID) {
+      return false
+    }
+
+    // 被插入的节点不能是当前节点的子孙节点
+    if (checkIsSubNodeId(node.instanceID, parentNode.instanceID)) {
+      return false
+    }
+
+    // 不在允许插入的限制内
+    if (
+      parentNode.allowDropInner.length &&
+      !parentNode.allowDropInner.some(key => key === node.basicInfo.id)
+    ) {
+      return false
+    }
+
+    // 在禁止插入的限制内
+    if (
+      parentNode.disabledDropInner.length &&
+      parentNode.disabledDropInner.some(key => key === node.basicInfo.id)
+    ) {
+      return false
+    }
+
+    // 限制不能离开自身父节点
+    if (!node.allowLeaveParent && !parentNode.nodes.includes(node)) {
+      return false
+    }
+
+    // 禁止插入，自身子节点除外
+    if (parentNode.disabledDrop) {
+      return parentNode.nodes.includes(node)
+    }
+
+    return true
+  }
+
+  const checkAllowInsertPrev: typeof checkAllowInsert = (node, nextNode) => {
+    const parentNode = getParentNode(nextNode)
+    if (!parentNode) {
+      return false
+    }
+    return checkAllowInsert(node, parentNode)
+  }
+
+  const checkAllowInsertNext: typeof checkAllowInsert = (node, prevNode) => {
+    const parentNode = getParentNode(prevNode)
+    if (!parentNode) {
+      return false
+    }
+    return checkAllowInsert(node, parentNode)
+  }
+
   return {
     currentPage,
     getNodeById,
@@ -222,6 +279,9 @@ export function usePageNode() {
     spliceNode,
     useVirsualCss,
     setVirsualCss,
-    computedInsetStyles
+    computedInsetStyles,
+    checkAllowInsert,
+    checkAllowInsertPrev,
+    checkAllowInsertNext
   }
 }
