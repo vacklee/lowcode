@@ -30,7 +30,8 @@ export function parsePixel(s: unknown, defaultUnit = 'px') {
 export function computedCellWidth(
   cellwidth: CellWidth,
   prefix = '',
-  format?: (s: string) => string
+  format?: (s: string) => string,
+  colGap = ''
 ) {
   let flex = cellwidth === CellWidthEnum.FILL ? '1' : 'none'
   let width = 'auto'
@@ -45,7 +46,11 @@ export function computedCellWidth(
     }
   } else if (typeof cellwidth === 'number') {
     flex = 'none'
-    width = `${100 * (cellwidth / 12)}%`
+    if (colGap) {
+      width = `calc((100% - var(${colGap})) * ${cellwidth} / 12)`
+    } else {
+      width = `${100 * (cellwidth / 12)}%`
+    }
   }
 
   return {

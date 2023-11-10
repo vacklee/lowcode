@@ -15,8 +15,18 @@ const props = defineProps<{
 }>()
 
 const colStyle = computed(() => ({
-  ...computedCellWidth(props.node.baseAttrs.colWidth.mobile, '--mobile-', toPx),
-  ...computedCellWidth(props.node.baseAttrs.colWidth.pc, '--pc-', toPx)
+  ...computedCellWidth(
+    props.node.baseAttrs.colWidth.mobile,
+    '--mobile-',
+    toPx,
+    '--space'
+  ),
+  ...computedCellWidth(
+    props.node.baseAttrs.colWidth.pc,
+    '--pc-',
+    toPx,
+    '--space'
+  )
 }))
 
 /** 添加删除行和列 */
@@ -51,6 +61,8 @@ watchNode<'top' | 'left' | 'right' | 'bottom'>(
 
 <style lang="scss" module>
 .col {
+  --space: calc((var(--cols) - 1) * var(--col-gap));
+
   :global(.platform-is-pc) & {
     --flex: var(--pc-flex);
     --width: var(--pc-width);
