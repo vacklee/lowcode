@@ -31,6 +31,8 @@ export type UseDialogParams<C extends Component> = {
   title: string
   width?: string | number
   nopadding?: boolean
+  fullHeight?: boolean
+  noScroll?: boolean
   dialogProps?: Partial<DialogProps>
   component?: C
   componentProps?: PropsOf<C>
@@ -56,6 +58,19 @@ export function useDialog() {
       state.visible = false
     }
 
+    const renderContent = () =>
+      h('div', { class: style.dialog_content }, [
+        params.component
+          ? h(params.component, {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ref: (instance: any) => {
+                state.contentRef = instance
+              },
+              ...(params.componentProps || {})
+            })
+          : null
+      ])
+
     const app = createApp({
       render: () =>
         h(
@@ -67,7 +82,11 @@ export function useDialog() {
             title: params.title,
             width: params.width,
             modelValue: state.visible,
-            class: [style.dialog, params.nopadding ? style.nopadding : ''],
+            class: [
+              style.dialog,
+              params.nopadding ? style.nopadding : '',
+              params.fullHeight ? style.fullheight : ''
+            ],
             modalClass: style.dialog_modal,
             modal: false,
             appendTobody: true,
@@ -85,24 +104,15 @@ export function useDialog() {
           },
           {
             default: () =>
-              h(
-                ElScrollbar,
-                {},
-                {
-                  default: () =>
-                    h('div', { class: style.dialog_content }, [
-                      params.component
-                        ? h(params.component, {
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            ref: (instance: any) => {
-                              state.contentRef = instance
-                            },
-                            ...(params.componentProps || {})
-                          })
-                        : null
-                    ])
-                }
-              ),
+              params.noScroll
+                ? renderContent()
+                : h(
+                    ElScrollbar,
+                    {},
+                    {
+                      default: renderContent
+                    }
+                  ),
             footer: params.btns?.length
               ? () =>
                   params.btns?.map(item =>

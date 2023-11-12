@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { type Component } from 'vue'
-import { AutoFormColumn, AutoFromControls, AutoFromControlsEnum } from './types'
+import { AutoFormColumn } from './types'
 import { FormProps } from 'element-plus'
+import AutoFormItem from './AutoFormItem.vue'
 
 withDefaults(
   defineProps<{
@@ -20,38 +20,16 @@ withDefaults(
     columns: () => []
   }
 )
-
-const getControl = <T extends AutoFromControlsEnum>(
-  column: AutoFormColumn<T>
-) => {
-  const res = AutoFromControls[column.type](column.controlProps)
-  return {
-    component: res.component as Component,
-    componentProps: res.componentProps
-  }
-}
 </script>
 
 <template>
   <el-form :class="$style.form" :model="model" v-bind="elFormProps">
-    <el-form-item
+    <AutoFormItem
       v-for="item in columns"
       :key="item.name"
-      :prop="item.name"
-      :label="item.label"
-      v-bind="item.elFormItemProps"
-    >
-      <template #label>
-        <span>{{ item.label }}</span>
-      </template>
-
-      <component
-        :is="getControl(item).component"
-        v-bind="getControl(item).componentProps"
-        :model-value="model.getValue(item.name)"
-        @update:modelValue="model.setValue(item.name, $event)"
-      />
-    </el-form-item>
+      :column="item"
+      :model="model"
+    />
   </el-form>
 </template>
 
@@ -62,6 +40,16 @@ const getControl = <T extends AutoFromControlsEnum>(
     &:not(:last-child) {
       margin-bottom: $spacing-mini;
     }
+  }
+
+  & :global(.el-form-item__label) {
+    padding-right: 0;
+  }
+
+  &_label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 </style>

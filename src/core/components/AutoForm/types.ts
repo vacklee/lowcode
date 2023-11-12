@@ -138,6 +138,8 @@ export type AutoFormColumn<T extends AutoFormControlType = any> = {
   elFormItemProps?: Partial<FormItemProps>
   // 控件配置
   controlProps?: Partial<PropsOf<AutoFormControlComponent<T>>>
+  // 允许使用代码表达式
+  allowExpression?: boolean
 }
 
 export function autoFormColumn<T extends AutoFormControlType>(

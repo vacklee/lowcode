@@ -303,7 +303,10 @@ export const resetComponents = {
           AutoFromControlsEnum.TextArea,
           'content',
           '文本内容',
-          ''
+          '',
+          {
+            allowExpression: true
+          }
         ),
         autoFormColumn(
           AutoFromControlsEnum.CommonSelect,

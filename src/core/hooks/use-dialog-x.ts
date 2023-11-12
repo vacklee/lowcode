@@ -1,8 +1,9 @@
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import { DialogBtn, DialogEvents, useDialog } from './use-dialog'
 import { FormInstance } from 'element-plus'
 import { AppPage } from 'core/data/app'
 import { FileBaseInfo } from '../data/file'
+import { Expression } from '../data/code'
 
 type WithDialogEvents<T> = T & { dialogEvents?: DialogEvents }
 
@@ -172,10 +173,55 @@ export function useDialogX() {
     return dialog
   }
 
+  /**
+   * 代码编辑器
+   */
+  const showCodeEditorDialog = (opts?: {
+    value?: Expression
+    onSubmit?: (val?: Expression) => unknown
+  }) => {
+    const innerValue = ref(opts?.value)
+
+    const dialog = createDialog({
+      title: '代码编辑',
+      width: '1000px',
+      nopadding: true,
+      fullHeight: true,
+      noScroll: true,
+      component: defineAsyncComponent(
+        () => import('@/core/components/AppCodeEditor/AppCodeEditor.vue')
+      ),
+      componentProps: {
+        modelValue: innerValue.value,
+        onChange: val => {
+          innerValue.value = val
+        }
+      },
+      btns: [
+        {
+          content: '取消',
+          onClick: () => {
+            dialog.close()
+          }
+        },
+        {
+          content: '完成',
+          type: 'primary',
+          onClick: () => {
+            opts?.onSubmit?.(innerValue.value)
+            dialog.close()
+          }
+        }
+      ]
+    })
+    return dialog
+  }
+
   return {
     showRenameDialog,
     showMoveToGroupDialog,
     showCopyPageDialog,
-    showChooseImageDialog
+    showChooseImageDialog,
+    showCodeEditorDialog
   }
 }

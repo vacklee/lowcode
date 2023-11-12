@@ -26,6 +26,7 @@
     "lodash": "^4.17.21",
     "mime": "^3.0.0",
     "minimatch": "^9.0.3",
+    "monaco-editor": "^0.44.0",
     "sass": "^1.69.4",
     "short-unique-id": "^5.0.3",
     "vue": "^3.3.4"

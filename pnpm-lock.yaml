@@ -30,6 +30,7 @@ specifiers:
   lodash: ^4.17.21
   mime: ^3.0.0
   minimatch: ^9.0.3
+  monaco-editor: ^0.44.0
   prettier: ^3.0.3
   sass: ^1.69.4
   short-unique-id: ^5.0.3
@@ -54,6 +55,7 @@ dependencies:
   lodash: 4.17.21
   mime: 3.0.0
   minimatch: 9.0.3
+  monaco-editor: 0.44.0
   sass: 1.69.4
   short-unique-id: 5.0.3
   vue: 3.3.6_typescript@5.2.2
@@ -2443,6 +2445,10 @@ packages:
       for-in: 1.0.2
       is-extendable: 1.0.1
     dev: true
+
+  /monaco-editor/0.44.0:
+    resolution: {integrity: sha512-5SmjNStN6bSuSE5WPT2ZV+iYn1/yI9sd4Igtk23ChvqB7kDk9lZbB9F5frsuvpB+2njdIeGGFf2G4gbE6rCC9Q==}
+    dev: false
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
