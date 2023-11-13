@@ -8,7 +8,9 @@ export function recoverJson(node: any, target: any) {
       node[k] = target[k]
     }
     if (node[k] && typeof node[k] === 'object') {
-      recoverJson(node[k], target[k])
+      if (target[k] && typeof target[k] === 'object') {
+        recoverJson(node[k], target[k])
+      }
     }
   }
   return node

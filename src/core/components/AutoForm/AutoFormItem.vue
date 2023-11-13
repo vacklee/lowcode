@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, type Component, computed } from 'vue'
-import { isExpression, getReturnValue } from '@/core/data/code'
+import { isExpression } from '@/core/data/code'
+import { useCode } from '@/core/hooks/use-code'
 import { AutoFormColumn, AutoFromControls, AutoFromControlsEnum } from './types'
 import AppIconBtn from '../AppControls/AppIconBtn.vue'
 import ExpressionInput from './Controls/ExpressionInput.vue'
@@ -12,6 +13,9 @@ const props = defineProps<{
     setValue: (key: string, val: unknown) => unknown
   }
 }>()
+
+const expression = computed(() => props.model.getValue(props.column.name))
+const { result } = useCode(expression)
 
 /** 代码表达式 */
 const isExpressionMode = ref(
@@ -40,7 +44,7 @@ const innerValue = computed({
   get: () => {
     const value = props.model.getValue(props.column.name)
     if (isExpression(value)) {
-      return isExpressionMode.value ? value : getReturnValue(value)
+      return isExpressionMode.value ? value : result.value
     }
     return isExpressionMode.value ? void 0 : value
   },
