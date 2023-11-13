@@ -191,12 +191,12 @@ export function useDialogX() {
       component: defineAsyncComponent(
         () => import('@/core/components/AppCodeEditor/AppCodeEditor.vue')
       ),
-      componentProps: {
+      componentProps: () => ({
         modelValue: innerValue.value,
         onChange: val => {
           innerValue.value = val
         }
-      },
+      }),
       btns: [
         {
           content: '取消',

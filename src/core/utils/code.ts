@@ -25,3 +25,11 @@ export function runCode<T>(code: string): Promise<T> {
     document.head.appendChild(script)
   })
 }
+
+/** 获取类型 */
+export function getTypeOf(val: unknown) {
+  if (typeof val?.constructor?.name === 'string') {
+    return val.constructor.name
+  }
+  return typeof val
+}

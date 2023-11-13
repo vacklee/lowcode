@@ -35,7 +35,7 @@ export type UseDialogParams<C extends Component> = {
   noScroll?: boolean
   dialogProps?: Partial<DialogProps>
   component?: C
-  componentProps?: PropsOf<C>
+  componentProps?: PropsOf<C> | (() => PropsOf<C>)
   btns?: DialogBtn[]
 } & DialogEvents
 
@@ -58,18 +58,24 @@ export function useDialog() {
       state.visible = false
     }
 
-    const renderContent = () =>
-      h('div', { class: style.dialog_content }, [
+    const renderContent = () => {
+      const props =
+        typeof params.componentProps === 'function'
+          ? (params.componentProps as () => any)()
+          : params.componentProps
+
+      return h('div', { class: style.dialog_content }, [
         params.component
           ? h(params.component, {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               ref: (instance: any) => {
                 state.contentRef = instance
               },
-              ...(params.componentProps || {})
+              ...(props || {})
             })
           : null
       ])
+    }
 
     const app = createApp({
       render: () =>

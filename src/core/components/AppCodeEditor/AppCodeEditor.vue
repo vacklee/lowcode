@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { Expression } from '@/core/data/code'
 import JavaScriptEditor from './Editors/JavaScriptEditor.vue'
+import RunFeedback from './RunFeedback.vue'
 
 const props = defineProps<{
   modelValue?: Expression
@@ -23,6 +24,11 @@ const innerValue = computed({
     <div :class="$style.layout_main">
       <div :class="$style.layout_editor">
         <JavaScriptEditor v-model="innerValue" />
+      </div>
+      <div :class="$style.layout_feedback">
+        <el-scrollbar>
+          <RunFeedback :expression="innerValue" />
+        </el-scrollbar>
       </div>
     </div>
     <div :class="$style.layout_aside"></div>
@@ -46,6 +52,11 @@ const innerValue = computed({
   &_editor {
     flex: 1;
     height: 0;
+  }
+
+  &_feedback {
+    height: 200px;
+    border-top: 1px solid $border-color-base;
   }
 }
 </style>
