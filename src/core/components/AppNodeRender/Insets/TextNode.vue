@@ -3,12 +3,14 @@ import { computed } from 'vue'
 import { AppComponent } from '@/core/data/component'
 import SelectNode from '../Nodes/SelectNode.vue'
 import { TextFormat, textFormatOptions } from '@/core/config/select'
+import { useCode } from '@/core/hooks/use-code'
 
 const props = defineProps<{
   node: AppComponent
 }>()
 
-const content = computed(() => props.node.baseAttrs.content || '')
+const { result: content } = useCode(() => props.node.baseAttrs.content, '')
+
 const format = computed<TextFormat>(() => props.node.baseAttrs.format)
 const tag = computed(
   () => textFormatOptions.find(item => item.value === format.value)!.data

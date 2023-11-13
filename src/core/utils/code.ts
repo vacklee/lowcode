@@ -29,7 +29,17 @@ export function runCode<T>(code: string): Promise<T> {
 /** 获取类型 */
 export function getTypeOf(val: unknown) {
   if (typeof val?.constructor?.name === 'string') {
-    return val.constructor.name
+    return val.constructor.name.toLowerCase()
   }
   return typeof val
+}
+
+/** 获取默认值 */
+export function getDefaultValue(val: unknown) {
+  switch (getTypeOf(val)) {
+    case 'string':
+      return ''
+    default:
+      return void 0
+  }
 }

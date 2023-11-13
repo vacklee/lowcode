@@ -1,13 +1,18 @@
-import { computed, ref, Ref, watch } from 'vue'
+import { computed, isRef, ref, Ref, watch } from 'vue'
 import { getReturnValue, isExpression } from '../data/code'
 import { debounce } from 'lodash'
 
-export function useCode<T>(expression: Ref<unknown>, defaultValue?: any) {
+export function useCode<T>(
+  r: Ref<unknown> | (() => unknown),
+  defaultValue?: any
+) {
+  const expression = isRef(r) ? r : computed(r)
+
   const resultPromise = computed(() => {
     if (isExpression(expression.value)) {
       return getReturnValue<T>(expression.value)
     }
-    return Promise.resolve(defaultValue)
+    return Promise.resolve(expression.value ?? defaultValue)
   })
 
   const result = ref(defaultValue as T)
@@ -24,7 +29,7 @@ export function useCode<T>(expression: Ref<unknown>, defaultValue?: any) {
         .catch(err => {
           error.value = err
         })
-    }, 500),
+    }, 20),
     {
       immediate: true
     }
