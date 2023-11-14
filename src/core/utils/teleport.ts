@@ -1,14 +1,25 @@
 import { transformInsetStyle } from '../config/styles'
+import { Expression, isExpression } from '../data/code'
 import { AppComponent } from '../data/component'
 import { kebabCase } from 'lodash'
+import { genId } from './common'
 
 export type TeleportNode = Record<string, unknown>
 
-export function generatNode(appNode: AppComponent) {
+export function generatNode(
+  appNode: AppComponent,
+  expressions: Record<string, string> = {}
+) {
   const compName = appNode.basicInfo.name
   if (!compName) return null
 
   const elementType = kebabCase(`App${compName}`)
+
+  const flagExpression = (expression: Expression) => {
+    const id = genId()
+    expressions[id] = expression.content
+    return id
+  }
 
   const attrs: any = {}
   const compAttrs = { ...appNode.baseAttrs, ...appNode.heightAttrs }
@@ -18,7 +29,7 @@ export function generatNode(appNode: AppComponent) {
       return
     }
 
-    attrs[`:${key}`] = toRawValue(val)
+    attrs[`:${key}`] = toRawValue(val, flagExpression)
   })
 
   const styles = transformInsetStyle(appNode.visualCss, {
@@ -26,28 +37,40 @@ export function generatNode(appNode: AppComponent) {
   })
 
   if (Object.keys(styles).length) {
-    attrs[`:style`] = toRawValue(styles)
+    attrs[`:style`] = toRawValue(styles, flagExpression)
   }
 
   const node: TeleportNode = {
     elementType,
     attrs,
-    children: appNode.nodes.map(sub => generatNode(sub)).filter(Boolean)
+    children: appNode.nodes
+      .map(sub => generatNode(sub, expressions)?.node)
+      .filter(Boolean)
   }
 
-  return node
+  return { node, expressions }
 }
 
-function toRawValue(value: unknown): string {
+function toRawValue(
+  value: unknown,
+  flagExpression: (expression: Expression) => string
+): string {
+  if (isExpression(value)) {
+    return flagExpression(value)
+  }
+
   if (Array.isArray(value)) {
-    return `[${value.map(item => toRawValue(item)).join(', ')}]`
+    return `[${value.map(item => toRawValue(item, flagExpression)).join(', ')}]`
   }
 
   if (value && typeof value === 'object') {
     return `{${Object.keys(value)
       .map(key => {
         const _key = /^[\dA-Za-z_]+$/.test(key) ? key : `'${key}'`
-        return `${_key}: ${toRawValue(value[key as keyof typeof value])}`
+        return `${_key}: ${toRawValue(
+          value[key as keyof typeof value],
+          flagExpression
+        )}`
       })
       .join(', ')}}`
   }

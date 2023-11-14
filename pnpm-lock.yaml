@@ -8,6 +8,7 @@ specifiers:
   '@types/ejs': ^3.1.4
   '@types/file-saver': ^2.0.6
   '@types/lodash': ^4.14.200
+  '@types/md5': ^2.3.5
   '@types/mime': ^3.0.3
   '@types/node': ^20.8.7
   '@typescript-eslint/eslint-plugin': ^6.8.0
@@ -28,6 +29,7 @@ specifiers:
   file-saver: ^2.0.5
   jszip: ^3.10.1
   lodash: ^4.17.21
+  md5: ^2.3.0
   mime: ^3.0.0
   minimatch: ^9.0.3
   monaco-editor: ^0.44.0
@@ -53,6 +55,7 @@ dependencies:
   file-saver: 2.0.5
   jszip: 3.10.1
   lodash: 4.17.21
+  md5: 2.3.0
   mime: 3.0.0
   minimatch: 9.0.3
   monaco-editor: 0.44.0
@@ -67,6 +70,7 @@ devDependencies:
   '@types/ejs': 3.1.4
   '@types/file-saver': 2.0.6
   '@types/lodash': 4.14.200
+  '@types/md5': 2.3.5
   '@types/mime': 3.0.3
   '@types/node': 20.8.7
   '@typescript-eslint/eslint-plugin': 6.8.0_bb176f890107067ad43269db0649d807
@@ -463,6 +467,10 @@ packages:
 
   /@types/lodash/4.14.200:
     resolution: {integrity: sha512-YI/M/4HRImtNf3pJgbF+W6FrXovqj+T+/HpENLTooK9PnkacBsDpeP3IpHab40CClUfhNmdM2WTNP2sa2dni5Q==}
+
+  /@types/md5/2.3.5:
+    resolution: {integrity: sha512-/i42wjYNgE6wf0j2bcTX6kuowmdL/6PE4IVitMpm2eYKBUuYCprdcWVK+xEF0gcV6ufMCRhtxmReGfc6hIK7Jw==}
+    dev: true
 
   /@types/mime/3.0.3:
     resolution: {integrity: sha512-i8MBln35l856k5iOhKk2XJ4SeAWg75mLIpZB4v6imOagKL6twsukBZGDMNhdOVk7yRFTMPpfILocMos59Q1otQ==}
@@ -1066,6 +1074,10 @@ packages:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
+  /charenc/0.0.2:
+    resolution: {integrity: sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==}
+    dev: false
+
   /chokidar/3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
     engines: {node: '>= 8.10.0'}
@@ -1172,6 +1184,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypt/0.0.2:
+    resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
+    dev: false
 
   /css-select/4.3.0:
     resolution: {integrity: sha512-wPpOYtnsVontu2mODhA19JrqWxNsfdatRKd64kmpRbQgh1KtItko5sTnEpPdpSaJszTOhEMlF/RPz28qj4HqhQ==}
@@ -2025,7 +2041,6 @@ packages:
 
   /is-buffer/1.1.6:
     resolution: {integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==}
-    dev: true
 
   /is-data-descriptor/0.1.4:
     resolution: {integrity: sha512-+w9D5ulSoBNlmw9OHn3U2v51SyoCd0he+bB3xMl62oijhrspxowjU+AIcDY0N3iEJbUEkB15IlMASQsxYigvXg==}
@@ -2336,6 +2351,14 @@ packages:
     dependencies:
       object-visit: 1.0.1
     dev: true
+
+  /md5/2.3.0:
+    resolution: {integrity: sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==}
+    dependencies:
+      charenc: 0.0.2
+      crypt: 0.0.2
+      is-buffer: 1.1.6
+    dev: false
 
   /mdn-data/2.0.14:
     resolution: {integrity: sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow==}

@@ -1,4 +1,6 @@
 <%
+  const importVue = new Set()
+
   function renderNode(_node, tabLevel = 1) {
     const contents = [
       `<${_node.elementType}>`,
@@ -28,8 +30,24 @@
 
     return contents.join('\n')
   }
+
+  if (Object.keys(page.expressions).length) {
+    importVue.add('computed')
+  }
 _%>
-<script setup></script>
+<script setup>
+<% if (importVue.size) { _%>
+import { <% for (const item of importVue) { _%>
+<%= item _%>
+<%_ } %> } from 'vue'
+<% } _%>
+
+<% for (const key in page.expressions) { _%>
+const <%= key %> = computed(() => {
+  return <%- page.expressions[key] %>
+})
+<% } _%>
+</script>
 
 <template>
 <%- renderNode(page.node) %>

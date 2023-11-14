@@ -1,4 +1,5 @@
 import ejs from 'ejs'
+import md5 from 'md5'
 import JSZip from 'jszip'
 import { genId } from './common'
 
@@ -6,11 +7,13 @@ export function createEJS<D = any>(zip: JSZip, renderData: D) {
   const _renderCache: Record<string, Promise<string> | undefined> = {}
 
   const renderFile = async <D = any>(key: string, additionData?: D) => {
-    if (_renderCache[key]) {
-      return _renderCache[key] as Promise<string>
+    const hash = md5(JSON.stringify(additionData || {}))
+    const cacheKey = `${key}_${hash}`
+    if (_renderCache[cacheKey]) {
+      return _renderCache[cacheKey] as Promise<string>
     }
 
-    _renderCache[key] = (async () => {
+    _renderCache[cacheKey] = (async () => {
       const file = zip.files[key]
       const content = await file.async('text')
 
@@ -40,7 +43,7 @@ export function createEJS<D = any>(zip: JSZip, renderData: D) {
       return renderResult
     })()
 
-    return _renderCache[key] as Promise<string>
+    return _renderCache[cacheKey] as Promise<string>
   }
 
   return {

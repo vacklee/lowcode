@@ -16,7 +16,7 @@ function createPageData(page: AppPage) {
   const pageName = upperCamelCase(pageId)
   const groupName = upperCamelCase(groupId)
   const outputPath = [groupName, pageName, pageName].filter(Boolean).join('/')
-  const node = generatNode(createBodyNode(page))!
+  const { node, expressions } = generatNode(createBodyNode(page))!
 
   return {
     $: page,
@@ -25,6 +25,7 @@ function createPageData(page: AppPage) {
     groupId,
     groupName,
     outputPath,
-    node
+    node,
+    expressions
   }
 }

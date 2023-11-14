@@ -25,5 +25,5 @@ const handleOpen = () => {
 </script>
 
 <template>
-  <el-button size="small" @click="handleOpen">click</el-button>
+  <el-button @click="handleOpen">点击编辑代码</el-button>
 </template>
