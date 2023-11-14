@@ -1,0 +1,1 @@
+import{ag as l,f as n,i,K as c,ar as v,a0 as m,av as p}from"./index-619e6e2b.js";function h(e,s){const r=l(e)?e:n(e),a=n(()=>m(r.value)?p(r.value):Promise.resolve(r.value??s)),u=i(s),o=i(null);return c(a,v.debounce(()=>{a.value.then(t=>{u.value=t??s,o.value=null}).catch(t=>{o.value=t})},20),{immediate:!0}),{error:o,result:u,resultPromise:a}}export{h as u};

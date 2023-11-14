@@ -1,0 +1,1 @@
+._col_bn9yb_1{--space: calc((var(--cols) - 1) * var(--col-gap));flex:var(--flex);width:var(--width);position:relative}.platform-is-pc ._col_bn9yb_1{--flex: var(--pc-flex);--width: var(--pc-width)}.platform-is-mobile ._col_bn9yb_1{--flex: var(--mobile-flex);--width: var(--mobile-width)}
